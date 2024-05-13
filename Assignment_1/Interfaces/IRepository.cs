@@ -1,6 +1,8 @@
 ﻿namespace Assignment_1.Interfaces
 {
-    public interface IRepository
+    public interface IRepository<T>
     {
+        public T GetAll();
+
     }
 }

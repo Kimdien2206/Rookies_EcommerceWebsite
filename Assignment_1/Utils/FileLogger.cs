@@ -4,7 +4,7 @@
     {
         public static void Log(string logInfo)
         {
-            File.AppendAllText(@".\log.txt", logInfo);
+            File.AppendAllText(@".\log.txt", $"{DateTime.Now}: {logInfo}/n");
         }
     }
 }
