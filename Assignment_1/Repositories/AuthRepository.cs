@@ -1,4 +1,5 @@
-﻿using Assignment_1.Interfaces;
+﻿using Assignment_1.Dtos;
+using Assignment_1.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -45,11 +46,19 @@ namespace Assignment_1.Repositories
             if (result.Succeeded)
             {
                 var stringToken = await CreateToken(email);
-                return Results.Ok(stringToken);
+                RegisterSuccessResponseDto response = new RegisterSuccessResponseDto() 
+                {
+                    Email = email,
+                    Username = userName,
+                    AccessToken = stringToken
+                };
+                return Results.Ok(response);
             }
 
             return Results.BadRequest();
         }
+
+
 
         private async Task<string> CreateToken(string email)
         {

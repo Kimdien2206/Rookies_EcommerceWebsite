@@ -13,18 +13,18 @@ namespace Assignment_1.Controllers
     [ApiController]
     public class AuthController : Controller
     {
-        private readonly IAuthRepository authRepository;
+        private readonly IAuthRepository _authRepository;
 
         public AuthController(IAuthRepository authRepository)
         {
-            this.authRepository = authRepository;
+            this._authRepository = authRepository;
         }
 
         [HttpPost]
         [Route("Login")]
         public async Task<IResult> Login([FromBody] LoginRequestDto loginRequestModel)
         {
-            return await authRepository.Login(loginRequestModel.Email, loginRequestModel.Password);
+            return await _authRepository.Login(loginRequestModel.Email, loginRequestModel.Password);
             
         }
 
@@ -33,7 +33,7 @@ namespace Assignment_1.Controllers
 
         public async Task<IResult> Register([FromBody] RegisterRequestDto registerRequestModel)
         {
-            return await authRepository.Register(registerRequestModel.Username, registerRequestModel.Email, registerRequestModel.Password);
+            return await _authRepository.Register(registerRequestModel.Username, registerRequestModel.Email, registerRequestModel.Password);
         }
 
         [HttpGet]
@@ -70,6 +70,5 @@ namespace Assignment_1.Controllers
         {
             return Ok();
         }
-        
     }
 }

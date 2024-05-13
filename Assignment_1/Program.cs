@@ -31,6 +31,7 @@ builder.Services.ConfigureAll<BearerTokenOptions>(option => {
 
 
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+//builder.Services.AddScoped<IPasswordHasher<IdentityUser>, PasswordHasher<IdentityUser>>();
 
 
 var app = builder.Build();
@@ -42,7 +43,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.MapIdentityApi<IdentityUser>();
+app.MapIdentityApi<IdentityUser>();
 
 
 app.UseHttpsRedirection();
