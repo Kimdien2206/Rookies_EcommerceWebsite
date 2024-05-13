@@ -1,6 +1,6 @@
-using Assignment_1.Data;
-using Assignment_1.Interfaces;
-using Assignment_1.Repositories;
+using Rookies_EcommerceWebsite.Data;
+using Rookies_EcommerceWebsite.Interfaces;
+using Rookies_EcommerceWebsite.Repositories;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

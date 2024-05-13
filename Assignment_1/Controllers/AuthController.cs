@@ -1,5 +1,5 @@
-﻿using Assignment_1.Dtos;
-using Assignment_1.Interfaces;
+﻿using Dtos;
+using Rookies_EcommerceWebsite.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -7,7 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Assignment_1.Controllers
+namespace Rookies_EcommerceWebsite.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

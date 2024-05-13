@@ -1,6 +1,6 @@
-﻿using Assignment_1.Data;
+﻿using Rookies_EcommerceWebsite.Data;
 
-namespace Assignment_1.Interfaces
+namespace Rookies_EcommerceWebsite.Interfaces
 {
     public interface IRepository<T>
     {

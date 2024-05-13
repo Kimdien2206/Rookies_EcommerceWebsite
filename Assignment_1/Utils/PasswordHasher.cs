@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Security.Cryptography;
 
-namespace Assignment_1.Utils
+namespace Rookies_EcommerceWebsite.Utils
 {
     public class PasswordHasher : IPasswordHasher<IdentityUser>
     {

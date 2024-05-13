@@ -1,9 +1,9 @@
-﻿using Assignment_1.Utils;
+﻿using Rookies_EcommerceWebsite.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Assignment_1.Data
+namespace Rookies_EcommerceWebsite.Data
 {
     public class ApplicationDbContext : IdentityDbContext<IdentityUser, IdentityRole, string>
     {

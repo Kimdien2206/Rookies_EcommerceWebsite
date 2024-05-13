@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Assignment_1.Data.Migrations
+namespace Rookies_EcommerceWebsite.Data.Migrations
 {
     /// <inheritdoc />
     public partial class InitIdentityDB : Migration

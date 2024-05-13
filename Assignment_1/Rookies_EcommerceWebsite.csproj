@@ -26,4 +26,8 @@
     <Folder Include="UnitOfWork\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Dto\Dtos.csproj" />
+  </ItemGroup>
+
 </Project>

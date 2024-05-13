@@ -1,4 +1,4 @@
-﻿namespace Assignment_1.Utils
+﻿namespace Rookies_EcommerceWebsite.Utils
 {
     public class FileLogger
     {

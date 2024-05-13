@@ -1,4 +1,4 @@
-﻿namespace Assignment_1.Interfaces
+﻿namespace Rookies_EcommerceWebsite.Interfaces
 {
     public interface IUnitOfWork
     {

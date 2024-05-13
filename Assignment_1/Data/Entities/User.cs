@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Assignment_1.Data.Entities
+namespace Rookies_EcommerceWebsite.Data.Entities
 {
     public class User : IdentityUser
     {
