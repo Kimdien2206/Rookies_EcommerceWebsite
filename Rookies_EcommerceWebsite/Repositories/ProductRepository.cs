@@ -46,13 +46,18 @@ namespace Rookies_EcommerceWebsite.Repositories
             return products;
         }
 
-        public async Task<Product> Update(Product entity)
+        public async Task<Product> Update(string id, Product entity)
         {
-            _context.Products.Entry(entity).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            _context.Update(entity);
-            _context.SaveChangesAsync();
+            Product product = _context.Products.Find(id);
 
-            return entity;
+            product.Name = entity.Name;
+            product.Category = entity.Category;
+            product.Description = entity.Description;
+            product.UpdatedDate = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+
+            return product;
         }
 
         public Task Delete(string id)
