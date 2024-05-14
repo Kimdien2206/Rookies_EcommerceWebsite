@@ -4,9 +4,8 @@ namespace Rookies_EcommerceWebsite.Interfaces
 {
     public interface IAuthRepository
     {
-
-        public Task<IResult> Login(string email, string password);
-        public Task<IResult> Register(User user, string password);
+        Task<IResult> Login(string email, string password);
+        Task<IResult> Register(User user, string password);
 
     }
 }

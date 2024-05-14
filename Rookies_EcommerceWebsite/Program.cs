@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Rookies_EcommerceWebsite.Data.Entities;
+using AutoMapper;
+using Rookies_EcommerceWebsite.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,8 +33,15 @@ builder.Services.ConfigureAll<BearerTokenOptions>(option => {
 });
 
 
+// Inject AutoMapper
+var mapperConfig = new MapperConfiguration(mc => mc.AddProfile(new MappingProfile()));
+IMapper mapper = mapperConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
+
+
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IRepository<Product>, ProductRepository>();
+builder.Services.AddScoped<IRepository<Category>, CategoryRepository>();
 //builder.Services.AddScoped<IPasswordHasher<IdentityUser>, PasswordHasher<IdentityUser>>();
 
 

@@ -25,8 +25,7 @@ namespace Rookies_EcommerceWebsite.Controllers
         [Route("Login")]
         public async Task<IResult> Login([FromBody] LoginRequestDto loginRequestModel)
         {
-            return await _authRepository.Login(loginRequestModel.Email, loginRequestModel.Password);
-            
+            return await _authRepository.Login(loginRequestModel.UserName, loginRequestModel.Password);
         }
 
         [HttpPost]
