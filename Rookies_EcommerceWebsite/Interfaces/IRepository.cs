@@ -8,8 +8,7 @@ namespace Rookies_EcommerceWebsite.Interfaces
         public List<T> Search(string searchString);
         public T Create(T entity);
         public T Update(T entity);
-        public T Delete(int id);
-        public T GetById(int id);
+        public void Delete(int id);
         public T GetById(string id);
 
     }

@@ -6,12 +6,13 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Rookies_EcommerceWebsite.Data.Entities;
 
 namespace Rookies_EcommerceWebsite.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : Controller
+    public class AuthController : ControllerBase
     {
         private readonly IAuthRepository _authRepository;
 
@@ -33,7 +34,16 @@ namespace Rookies_EcommerceWebsite.Controllers
 
         public async Task<IResult> Register([FromBody] RegisterRequestDto registerRequestModel)
         {
-            return await _authRepository.Register(registerRequestModel.Username, registerRequestModel.Email, registerRequestModel.Password);
+            User registerUser = new User()
+            {
+                Email = registerRequestModel.Email,
+                UserName = registerRequestModel.Username,
+                Address = registerRequestModel.Address,
+                DateOfBirth = DateOnly.FromDateTime(registerRequestModel.DateOfBirth),
+                FirstName = registerRequestModel.FirstName,
+                LastName = registerRequestModel.LastName,
+            };
+            return await _authRepository.Register(registerUser, registerRequestModel.Password);
         }
 
         [HttpGet]

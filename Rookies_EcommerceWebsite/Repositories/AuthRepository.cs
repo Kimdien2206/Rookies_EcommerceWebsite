@@ -5,16 +5,17 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Rookies_EcommerceWebsite.Data.Entities;
 
 namespace Rookies_EcommerceWebsite.Repositories
 {
     public class AuthRepository : IAuthRepository
     {
-        private readonly SignInManager<IdentityUser> signInManager;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<User> signInManager;
+        private readonly UserManager<User> userManager;
         private readonly IConfiguration config;
 
-        public AuthRepository(IConfiguration config, SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager) 
+        public AuthRepository(IConfiguration config, SignInManager<User> signInManager, UserManager<User> userManager) 
         {
             this.config = config;
             this.signInManager = signInManager;
@@ -34,22 +35,21 @@ namespace Rookies_EcommerceWebsite.Repositories
             return Results.Unauthorized();
         }
 
-        public async Task<IResult> Register(string userName, string email, string password)
+        public async Task<IResult> Register(User user, string password)
         {
-            IdentityUser newUser = new IdentityUser()
-            {
-                UserName = userName,
-                Email = email,
-            };
-            var result = await userManager.CreateAsync(newUser, password);
+            var result = await userManager.CreateAsync(user, password);
 
             if (result.Succeeded)
             {
-                var stringToken = await CreateToken(email);
+                var stringToken = await CreateToken(user.Email);
                 RegisterSuccessResponseDto response = new RegisterSuccessResponseDto() 
                 {
-                    Email = email,
-                    Username = userName,
+                    Email = user.Email,
+                    Username = user.UserName,
+                    LastName = user.LastName,
+                    FirstName = user.FirstName,
+                    Address = user.Address,
+                    DateOfBirth = DateTime.Parse(user.DateOfBirth.ToString()),
                     AccessToken = stringToken
                 };
                 return Results.Ok(response);
