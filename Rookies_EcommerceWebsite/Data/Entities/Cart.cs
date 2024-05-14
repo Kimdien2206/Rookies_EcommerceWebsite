@@ -7,10 +7,11 @@ namespace Rookies_EcommerceWebsite.Data.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        [MaxLength(100)]
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         public Variant Variant { get; set; }
         public uint Amount { get; set; }
         public ulong TotalCost { get; set; }
-        public User Owner { get; set; }
+        public User Customer { get; set; }
     }
 }

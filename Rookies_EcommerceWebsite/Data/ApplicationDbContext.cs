@@ -24,20 +24,12 @@ namespace Rookies_EcommerceWebsite.Data
         {
             base.OnModelCreating(builder);
             builder.Entity<Product>()
-                .Property(e => e.Id)
-                .HasDefaultValueSql("newsequentialid()");
-            builder.Entity<Variant>()
-                .Property(e => e.Id)
-                .HasDefaultValueSql("newsequentialid()");
-            builder.Entity<Category>()
-                .Property(e => e.Id)
-                .HasDefaultValueSql("newsequentialid()");
-            builder.Entity<Invoice>()
-                .Property(e => e.Id)
-                .HasDefaultValueSql("newsequentialid()");
-            builder.Entity<Cart>()
-                .Property(e => e.Id)
-                .HasDefaultValueSql("newsequentialid()");
+                .Property(e => e.Images)
+                .HasConversion(
+                    t => string.Join(';', t),
+                    t => t.Split(';', StringSplitOptions.RemoveEmptyEntries));
+            builder.Entity<Product>()
+                .HasQueryFilter(x => x.IsDeleted == false);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -157,26 +157,26 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
 
             modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.Cart", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("newsequentialid()");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<long>("Amount")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("OwnerId")
+                    b.Property<string>("CustomerId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("TotalCost")
                         .HasColumnType("decimal(20,0)");
 
-                    b.Property<Guid>("VariantId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("VariantId")
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("VariantId");
 
@@ -185,10 +185,10 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
 
             modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.Category", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("newsequentialid()");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -205,10 +205,10 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
 
             modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.Invoice", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("newsequentialid()");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -226,11 +226,11 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
 
             modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.InvoiceVariant", b =>
                 {
-                    b.Property<Guid>("InvoiceID")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("InvoiceID")
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<Guid>("VariantID")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("VariantID")
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("Amount")
                         .HasColumnType("int");
@@ -250,13 +250,14 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
 
             modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.Product", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("newsequentialid()");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("CategoryId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -268,6 +269,9 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
                     b.Property<string>("Images")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -372,17 +376,18 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
 
             modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.Variant", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("newsequentialid()");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<long>("Stock")
                         .HasColumnType("bigint");
@@ -447,17 +452,15 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
 
             modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.Cart", b =>
                 {
-                    b.HasOne("Rookies_EcommerceWebsite.Data.Entities.User", "Owner")
+                    b.HasOne("Rookies_EcommerceWebsite.Data.Entities.User", "Customer")
                         .WithMany()
-                        .HasForeignKey("OwnerId");
+                        .HasForeignKey("CustomerId");
 
                     b.HasOne("Rookies_EcommerceWebsite.Data.Entities.Variant", "Variant")
                         .WithMany()
-                        .HasForeignKey("VariantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("VariantId");
 
-                    b.Navigation("Owner");
+                    b.Navigation("Customer");
 
                     b.Navigation("Variant");
                 });

@@ -6,9 +6,10 @@ namespace Rookies_EcommerceWebsite.Data.Entities
 {
     public class Invoice
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public Guid Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [MaxLength(100)]
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         public virtual ICollection<InvoiceVariant> InvoiceVariants { get; set; } = new List<InvoiceVariant>();
         public ulong TotalCost { get; set; }
         public DateTime CreatedDate { get; set; }

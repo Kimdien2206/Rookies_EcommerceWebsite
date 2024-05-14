@@ -4,12 +4,12 @@ namespace Rookies_EcommerceWebsite.Interfaces
 {
     public interface IRepository<T>
     {
-        public List<T> GetAll();
-        public List<T> Search(string searchString);
-        public T Create(T entity);
-        public T Update(T entity);
-        public void Delete(int id);
-        public T GetById(string id);
+        public Task<List<T>> GetAll();
+        public Task<List<T>> Search(string searchString);
+        public Task<T> Create(T entity);
+        public Task<T> Update(T entity);
+        public Task Delete(string id);
+        public Task<T> GetById(string id);
 
     }
 }
