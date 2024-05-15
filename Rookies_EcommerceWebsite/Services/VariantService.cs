@@ -14,7 +14,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> Create(Variant entity)
         {
-            Variant createdVariant = await _repository.Insert(entity);
+            Variant createdVariant = await _repository.Create(entity);
             Task task = _repository.Save();
 
             if(!task.IsCompleted)

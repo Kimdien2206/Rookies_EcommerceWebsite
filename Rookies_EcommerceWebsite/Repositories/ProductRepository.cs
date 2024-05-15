@@ -13,7 +13,7 @@ namespace Rookies_EcommerceWebsite.Repositories
         {
             this._context = context;
         }
-        public async Task<Product> Insert(Product entity)
+        public async Task<Product> Create(Product entity)
         {
             _context.Products.Add(entity);
             return entity;

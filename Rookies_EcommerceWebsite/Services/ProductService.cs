@@ -15,7 +15,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> Create(Product creatingProduct)
         {
-            Product createdProduct = await _repository.Insert(creatingProduct);
+            Product createdProduct = await _repository.Create(creatingProduct);
             await _repository.Save();
 
             if (createdProduct == null)
