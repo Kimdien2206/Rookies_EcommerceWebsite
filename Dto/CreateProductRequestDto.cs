@@ -11,7 +11,7 @@ namespace Dtos
         public string[] Images { get; set; }
         public string Slug { get; set; }
         public ulong? Price { get; set; }
-        public ICollection<string> Variants { get; set; }
+        public ICollection<CreateVariantDto> Variants { get; set; }
         public string CategoryId { get; set; }
     }
 }
