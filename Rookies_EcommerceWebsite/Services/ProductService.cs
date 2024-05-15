@@ -16,6 +16,7 @@ namespace Rookies_EcommerceWebsite.Services
         public async Task<IResult> Create(Product creatingProduct)
         {
             Product createdProduct = await _repository.Create(creatingProduct);
+            await _repository.Save();
 
             if (createdProduct == null)
             {
@@ -60,8 +61,9 @@ namespace Rookies_EcommerceWebsite.Services
         public async Task<IResult> Update(string id, Product updatingProduct)
         {
             Product updatedProduct = await _repository.Update(id, updatingProduct);
+            Task task = _repository.Save();
 
-            if (updatedProduct == null)
+            if (!task.IsCompleted)
             {
                 return Results.UnprocessableEntity(updatingProduct);
             }

@@ -3,21 +3,21 @@ using Rookies_EcommerceWebsite.Interfaces;
 
 namespace Rookies_EcommerceWebsite.Services
 {
-    public class CartService : IService<Cart>
+    public class CategoryService : IService<Category>
     {
-        private readonly IRepository<Cart> _repository;
+        private readonly IRepository<Category> _repository;
 
-        public CartService(IRepository<Cart> repository)
+        public CategoryService(IRepository<Category> repository)
         {
             this._repository = repository;
         }
 
-        public async Task<IResult> Create(Cart entity)
+        public async Task<IResult> Create(Category entity)
         {
-            Cart cart = await _repository.Create(entity);
-            Task task = _repository.Save();
+            Category cart = await _repository.Create(entity);
+            await _repository.Save();
 
-            if(!task.IsCompleted)
+            if (cart == null)
             {
                 return Results.UnprocessableEntity();
             }
@@ -39,9 +39,9 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> GetAll()
         {
-            List<Cart> carts = await _repository.GetAll();
+            List<Category> carts = await _repository.GetAll();
 
-            if(carts == null || carts.Count == 0)
+            if (carts == null || carts.Count == 0)
             {
                 return Results.NoContent();
             }
@@ -51,7 +51,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> GetById(string id)
         {
-            Cart cart = await _repository.GetById(id);
+            Category cart = await _repository.GetById(id);
 
             if (cart == null)
             {
@@ -61,17 +61,17 @@ namespace Rookies_EcommerceWebsite.Services
             return Results.Ok(cart);
         }
 
-        public async Task<IResult> Update(string id, Cart entity)
+        public async Task<IResult> Update(string id, Category entity)
         {
-            Cart updatedCart = await _repository.Update(id, entity);
-            Task task = _repository.Save();
+            Category updatedCategory = await _repository.Update(id, entity);
+            await _repository.Save();
 
-            if (!task.IsCompleted)
+            if (updatedCategory == null)
             {
                 return Results.UnprocessableEntity();
             }
 
-            return Results.Ok(updatedCart);
+            return Results.Ok(updatedCategory);
         }
     }
 }
