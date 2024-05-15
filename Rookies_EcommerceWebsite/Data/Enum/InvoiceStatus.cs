@@ -4,5 +4,6 @@
     {
         Unpaid = 0,
         Paid = 1,
+        Canceled = 2,
     }
 }

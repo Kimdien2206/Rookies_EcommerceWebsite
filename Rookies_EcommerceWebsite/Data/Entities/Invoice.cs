@@ -12,8 +12,8 @@ namespace Rookies_EcommerceWebsite.Data.Entities
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public virtual ICollection<InvoiceVariant> InvoiceVariants { get; set; } = new List<InvoiceVariant>();
         public ulong TotalCost { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public InvoiceStatus Status { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public InvoiceStatus Status { get; set; } = InvoiceStatus.Unpaid;
 
     }
 }
