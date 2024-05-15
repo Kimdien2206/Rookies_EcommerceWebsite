@@ -42,10 +42,10 @@ namespace Rookies_EcommerceWebsite.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<IResult> Update(string id, [FromBody] UpdateProductRequestDto updateProductRequestDto)
+        public async Task<IResult> Update(string id, [FromBody] UpdateCartRequestDto updateCartRequestDto)
         {
-            Cart updateProduct = _mapper.Map<Cart>(updateProductRequestDto);
-            return await _service.Update(id, updateProduct);
+            Cart updateCart = _mapper.Map<Cart>(updateCartRequestDto);
+            return await _service.Update(id, updateCart);
         }
 
         [HttpDelete]
