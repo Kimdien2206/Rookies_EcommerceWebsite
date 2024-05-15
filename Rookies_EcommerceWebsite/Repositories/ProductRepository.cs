@@ -21,7 +21,7 @@ namespace Rookies_EcommerceWebsite.Repositories
 
         public async Task<List<Product>> GetAll()
         {
-            List<Product> products = _context.Products.Include(u => u.Category).ToList();
+            List<Product> products = _context.Products.ToList();
 
             return products;
         }
@@ -31,7 +31,6 @@ namespace Rookies_EcommerceWebsite.Repositories
             Product product = _context.Products
                 .Where(e => e.Id.ToString().Equals(id))
                 .Include(u => u.Variants)
-                .Include(i => i.Category)
                 .First();
 
             return product;
@@ -49,7 +48,7 @@ namespace Rookies_EcommerceWebsite.Repositories
             Product product = _context.Products.Find(id);
 
             product.Name = entity.Name;
-            product.Category = entity.Category;
+            product.CategoryId = entity.CategoryId;
             product.Description = entity.Description;
             product.UpdatedDate = DateTime.Now;
 

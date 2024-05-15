@@ -1,4 +1,5 @@
-﻿using Rookies_EcommerceWebsite.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Rookies_EcommerceWebsite.Data;
 using Rookies_EcommerceWebsite.Data.Entities;
 using Rookies_EcommerceWebsite.Interfaces;
 
@@ -40,7 +41,10 @@ namespace Rookies_EcommerceWebsite.Repositories
 
         public async Task<Category> GetById(string id)
         {
-            Category category = _context.Categories.Find(id);
+            Category category = _context.Categories
+                .Include(u => u.Products)
+                .IgnoreAutoIncludes()
+                .FirstOrDefault(x => x.Id.Equals(id));
 
             return category;
         }
