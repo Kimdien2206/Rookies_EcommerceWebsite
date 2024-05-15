@@ -19,6 +19,6 @@ namespace Rookies_EcommerceWebsite.Data.Entities
         public DateTime? UpdatedDate { get; set; } = DateTime.Now;
         public ICollection<Variant> Variants { get; set; } = null!;
         public string CategoryId { get; set; }
-        public Category Category { get; set; } = null!;
+        //public Category Category { get; set; } = null!;
     }
 }
