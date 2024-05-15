@@ -11,52 +11,32 @@ namespace Rookies_EcommerceWebsite.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        private readonly IRepository<Category> _repository;
+        private readonly IService<Category> _service;
         private readonly IMapper _mapper;
-        public CategoryController(IRepository<Category> repository, IMapper mapper) 
+        public CategoryController(IService<Category> service, IMapper mapper) 
         {
-            this._repository = repository;
+            this._service = service;
             this._mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IResult> Get()
         {
-            List<Category> categories = await _repository.GetAll();
-
-            if(categories == null || categories.Count == 0) 
-            {
-                return Results.NoContent();
-            }
-
-            return Results.Ok(categories);
+            return await _service.GetAll();
         }
 
         [HttpGet]
         [Route("{id}")]
         public async Task<IResult> GetById(string id)
         {
-            Category category = await _repository.GetById(id);
-
-            if(category == null)
-            {
-                return Results.NotFound();
-            }
-
-            return Results.Ok(category);    
+            return await _service.GetById(id); 
         }
 
         [HttpPost]
         public async Task<IResult> Create([FromBody] CreateCategoryRequestDto createCategoryRequestDto)
         {
-            Category newCategory = new Category() 
-            {
-                Name = createCategoryRequestDto.Name,
-                Description = createCategoryRequestDto.Description,
-            };
-            await _repository.Create(newCategory);
-
-            return Results.Ok(newCategory);
+            Category newCategory = _mapper.Map<Category>(createCategoryRequestDto);
+            return await _service.Create(newCategory);
         }
         
         [HttpPut]
@@ -64,30 +44,14 @@ namespace Rookies_EcommerceWebsite.Controllers
         public async Task<IResult> Update(string id, [FromBody] UpdateCategoryRequestDto updateCategoryRequestDto)
         {
             Category updateCategory = _mapper.Map<Category>(updateCategoryRequestDto);
-            Category updatedCategory = await _repository.Update(id, updateCategory);
-
-            if (updatedCategory == null)
-            {
-                return Results.UnprocessableEntity(updateCategory);
-            }
-
-            return Results.Ok(updatedCategory);
+            return await _service.Update(id, updateCategory);
         }
 
         [HttpDelete]
         [Route("{id}")]
         public async Task<IResult> Delete(string id)
         {
-            try
-            {
-                await _repository.Delete(id);
-
-                return Results.Ok();
-            }
-            catch (KeyNotFoundException ex) 
-            {
-                return Results.NotFound(ex.Message);
-            }
+            return await _service.Delete(id);
         }
     }
 }
