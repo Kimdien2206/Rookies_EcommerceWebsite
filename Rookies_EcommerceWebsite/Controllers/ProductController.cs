@@ -40,7 +40,7 @@ namespace Rookies_EcommerceWebsite.Controllers
             return await _service.Create(createProduct);
         }
 
-        [HttpPut]
+        [HttpPatch]
         [Route("{id}")]
         public async Task<IResult> Update(string id, [FromBody] UpdateProductRequestDto updateProductRequestDto)
         {
