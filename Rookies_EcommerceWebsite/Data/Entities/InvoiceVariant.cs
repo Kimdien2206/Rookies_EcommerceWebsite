@@ -9,7 +9,6 @@ namespace Rookies_EcommerceWebsite.Data.Entities
     {
         public string InvoiceID { get; set; }
         public string VariantID { get; set; }
-        public Invoice Invoice { get; set; }
         public Variant Variant { get; set; }
         public ulong Price { get; set; }
         public ushort Amount { get; set; }

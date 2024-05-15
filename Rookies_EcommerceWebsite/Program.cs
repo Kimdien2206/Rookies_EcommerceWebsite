@@ -66,6 +66,8 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddScoped<IService<Product>, ProductService>();
 builder.Services.AddScoped<IService<Cart>, CartService>();
 builder.Services.AddScoped<IService<Variant>, VariantService>();
+builder.Services.AddScoped<IService<Category>, CategoryService>();
+builder.Services.AddScoped<IService<Invoice>, InvoiceService>();
 
 
 // Inject Repositories
@@ -74,6 +76,7 @@ builder.Services.AddScoped<IRepository<Product>, ProductRepository>();
 builder.Services.AddScoped<IRepository<Category>, CategoryRepository>();
 builder.Services.AddScoped<IRepository<Cart>, CartRepository>();
 builder.Services.AddScoped<IRepository<Variant>, VariantRepository>();
+builder.Services.AddScoped<IRepository<Invoice>, InvoiceRepository>();
 //builder.Services.AddScoped<IPasswordHasher<IdentityUser>, PasswordHasher<IdentityUser>>();
 
 
