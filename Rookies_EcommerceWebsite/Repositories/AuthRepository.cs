@@ -24,15 +24,22 @@ namespace Rookies_EcommerceWebsite.Repositories
 
         public async Task<IResult> Login(string email, string password)
         {
+            IdentityUserToken
+            signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;
             var result = await signInManager.PasswordSignInAsync(email, password, false, lockoutOnFailure: true);
 
             if (result.Succeeded)
             {
-                var stringToken = await CreateToken(email);
-                return Results.Ok(stringToken);
+                //var stringToken = await CreateToken(email);
+                return Results.Empty;
             }
 
             return Results.Unauthorized();
+        }
+
+        public async Task<IResult> Logout(string email)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<IResult> Register(User user, string password)

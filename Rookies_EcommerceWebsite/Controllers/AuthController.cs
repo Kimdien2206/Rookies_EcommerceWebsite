@@ -27,6 +27,13 @@ namespace Rookies_EcommerceWebsite.Controllers
         {
             return await _authRepository.Login(loginRequestModel.UserName, loginRequestModel.Password);
         }
+        
+        [HttpPost]
+        [Route("Logout")]
+        public async Task<IResult> Logout([FromBody] LoginRequestDto loginRequestModel)
+        {
+            return await _authRepository.Login(loginRequestModel.UserName, loginRequestModel.Password);
+        }
 
         [HttpPost]
         [Route("Register")]
@@ -42,6 +49,7 @@ namespace Rookies_EcommerceWebsite.Controllers
                 FirstName = registerRequestModel.FirstName,
                 LastName = registerRequestModel.LastName,
             };
+
             return await _authRepository.Register(registerUser, registerRequestModel.Password);
         }
 
