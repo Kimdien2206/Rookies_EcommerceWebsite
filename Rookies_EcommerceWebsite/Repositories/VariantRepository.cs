@@ -13,7 +13,7 @@ namespace Rookies_EcommerceWebsite.Repositories
             _context = context;
         }
 
-        public async Task<Variant> Create(Variant entity)
+        public async Task<Variant> Insert(Variant entity)
         {
             await _context.AddAsync(entity);
             return entity;

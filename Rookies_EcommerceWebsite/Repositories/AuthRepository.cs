@@ -24,7 +24,7 @@ namespace Rookies_EcommerceWebsite.Repositories
 
         public async Task<IResult> Login(string email, string password)
         {
-            signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;
+            //signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;
             var result = await signInManager.PasswordSignInAsync(email, password, false, lockoutOnFailure: true);
 
             if (result.Succeeded)

@@ -11,7 +11,7 @@ namespace Rookies_EcommerceWebsite.Repositories
         {
             this._context = context;
         }
-        public async Task<Category> Create(Category entity)
+        public async Task<Category> Insert(Category entity)
         {
             _context.Categories.Add(entity);
 

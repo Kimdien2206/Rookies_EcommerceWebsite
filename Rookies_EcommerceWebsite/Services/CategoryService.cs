@@ -14,7 +14,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> Create(Category entity)
         {
-            Category cart = await _repository.Create(entity);
+            Category cart = await _repository.Insert(entity);
             await _repository.Save();
 
             if (cart == null)
