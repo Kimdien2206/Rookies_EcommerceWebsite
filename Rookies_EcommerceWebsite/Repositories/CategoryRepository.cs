@@ -14,7 +14,6 @@ namespace Rookies_EcommerceWebsite.Repositories
         public async Task<Category> Create(Category entity)
         {
             _context.Categories.Add(entity);
-            await _context.SaveChangesAsync();
 
             return entity;
         }
@@ -28,8 +27,6 @@ namespace Rookies_EcommerceWebsite.Repositories
             }
 
             deleteCategory.IsDeleted = true;
-
-            _context.SaveChangesAsync();
 
             return Task.CompletedTask;
         }
@@ -61,9 +58,12 @@ namespace Rookies_EcommerceWebsite.Repositories
             category.Description = entity.Description;
             category.UpdatedDate = DateTime.Now;
 
-            await _context.SaveChangesAsync();
-
             return category;
+        }
+
+        public Task Save()
+        {
+            return _context.SaveChangesAsync();
         }
     }
 }

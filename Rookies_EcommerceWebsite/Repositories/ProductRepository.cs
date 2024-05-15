@@ -16,8 +16,6 @@ namespace Rookies_EcommerceWebsite.Repositories
         public async Task<Product> Create(Product entity)
         {
             _context.Products.Add(entity);
-            await _context.SaveChangesAsync();
-
             return entity;
         }
 
@@ -55,8 +53,6 @@ namespace Rookies_EcommerceWebsite.Repositories
             product.Description = entity.Description;
             product.UpdatedDate = DateTime.Now;
 
-            await _context.SaveChangesAsync();
-
             return product;
         }
 
@@ -71,8 +67,12 @@ namespace Rookies_EcommerceWebsite.Repositories
 
             deleteProduct.IsDeleted = true; 
 
-            _context.SaveChangesAsync();
             return Task.CompletedTask;
+        }
+
+        public Task Save()
+        {
+            return _context.SaveChangesAsync();
         }
     }
 }
