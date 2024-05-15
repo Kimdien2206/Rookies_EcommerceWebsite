@@ -8,10 +8,14 @@ namespace Rookies_EcommerceWebsite.Utils
     {
         public MappingProfile()
         {
+            CreateMap<CreateProductRequestDto, Product>();
+            CreateMap<CreateCartRequestDto, Cart>();
+            CreateMap<CreateCategoryRequestDto, Category>();
             CreateMap<UpdateProductRequestDto, Product>();
-            CreateMap<Product, UpdateProductRequestDto>();
-            CreateMap<Category, UpdateCategoryRequestDto>();
+            CreateMap<UpdateCartRequestDto, Cart>();
             CreateMap<UpdateCategoryRequestDto, Category>();
+            CreateMap<CreateVariantDto, Variant>();
+            
         }
     }
 }

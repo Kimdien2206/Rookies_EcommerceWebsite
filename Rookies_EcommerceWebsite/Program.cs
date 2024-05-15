@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Rookies_EcommerceWebsite.Data.Entities;
 using AutoMapper;
 using Rookies_EcommerceWebsite.Utils;
+using Rookies_EcommerceWebsite.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,29 @@ builder.Services.AddIdentityApiEndpoints<User>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+// Configure Identity
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Password settings.
+    options.Password.RequireDigit = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequiredLength = 6;
+
+});
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // Cookie settings
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+    options.LoginPath = "/Identity/Account/Login";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+    options.SlidingExpiration = true;
+});
+
+
 builder.Services.ConfigureAll<BearerTokenOptions>(option => {
     option.BearerTokenExpiration = TimeSpan.FromDays(14);
 });
@@ -38,7 +62,11 @@ var mapperConfig = new MapperConfiguration(mc => mc.AddProfile(new MappingProfil
 IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
+// Inject Services
+builder.Services.AddScoped<IService<Product>, ProductService>();
 
+
+// Inject Repositories
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IRepository<Product>, ProductRepository>();
 builder.Services.AddScoped<IRepository<Category>, CategoryRepository>();
@@ -54,7 +82,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapIdentityApi<IdentityUser>();
+app.MapIdentityApi<User>();
 
 
 app.UseHttpsRedirection();

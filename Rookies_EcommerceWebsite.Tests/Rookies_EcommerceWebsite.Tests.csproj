@@ -23,4 +23,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Rookies_EcommerceWebsite\Rookies_EcommerceWebsite.csproj" />
+  </ItemGroup>
+
 </Project>
