@@ -27,14 +27,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> Delete(string id)
         {
-            Task task = _repository.Delete(id);
-
-            if (task.IsCompleted)
-            {
-                return Results.Ok();
-            }
-
-            return Results.UnprocessableEntity();
+            return Results.NotFound();
         }
 
         public async Task<IResult> GetAll()
