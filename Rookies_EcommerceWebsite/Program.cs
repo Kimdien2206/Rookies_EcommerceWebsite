@@ -83,6 +83,9 @@ var mapperConfig = new MapperConfiguration(mc => mc.AddProfile(new MappingProfil
 IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
+// Inject UnitOfWork
+builder.Services.AddScoped<UnitOfWork>();
+
 // Inject Services
 builder.Services.AddScoped<IService<Product>, ProductService>();
 builder.Services.AddScoped<IService<Cart>, CartService>();

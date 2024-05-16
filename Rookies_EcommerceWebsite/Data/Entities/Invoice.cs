@@ -14,6 +14,5 @@ namespace Rookies_EcommerceWebsite.Data.Entities
         public ulong TotalCost { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public InvoiceStatus Status { get; set; } = InvoiceStatus.Unpaid;
-
     }
 }
