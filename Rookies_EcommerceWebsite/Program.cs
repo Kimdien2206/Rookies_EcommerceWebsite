@@ -92,6 +92,7 @@ builder.Services.AddScoped<IService<Cart>, CartService>();
 builder.Services.AddScoped<IService<Variant>, VariantService>();
 builder.Services.AddScoped<IService<Category>, CategoryService>();
 builder.Services.AddScoped<IService<Invoice>, InvoiceService>();
+builder.Services.AddScoped<IService<Rating>, RatingService>();
 
 
 // Inject Repositories
@@ -101,6 +102,7 @@ builder.Services.AddScoped<IRepository<Category>, CategoryRepository>();
 builder.Services.AddScoped<IRepository<Cart>, CartRepository>();
 builder.Services.AddScoped<IRepository<Variant>, VariantRepository>();
 builder.Services.AddScoped<IRepository<Invoice>, InvoiceRepository>();
+builder.Services.AddScoped<IRepository<Rating>, RatingRepository>();
 //builder.Services.AddScoped<IPasswordHasher<IdentityUser>, PasswordHasher<IdentityUser>>();
 
 

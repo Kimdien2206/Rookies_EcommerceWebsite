@@ -31,6 +31,7 @@ namespace Rookies_EcommerceWebsite.Repositories
             Product product = _context.Products
                 .Where(e => e.Id.ToString().Equals(id))
                 .Include(u => u.Variants)
+                .Include(i => i.Ratings)
                 .First();
 
             return product;

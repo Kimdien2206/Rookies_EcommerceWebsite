@@ -18,6 +18,8 @@ namespace Rookies_EcommerceWebsite.Utils
             CreateMap<CreateInvoiceRequestDto, Invoice>();
             CreateMap<UpdateInvoiceRequestDto, Invoice>();
             CreateMap<InvoiceVariantDto, InvoiceVariant>();
+            CreateMap<CreateRatingRequestDto, Rating>();
+            CreateMap<UpdateRatingRequestDto, Rating>();
         }
     }
 }
