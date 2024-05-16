@@ -8,6 +8,9 @@ using Rookies_EcommerceWebsite.Data.Entities;
 using AutoMapper;
 using Rookies_EcommerceWebsite.Utils;
 using Rookies_EcommerceWebsite.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,46 +19,64 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
+builder.Services.AddSwaggerGen(options => {
+    options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Description = "JWT Authorization header using the Bearer scheme."
+    });
+    options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme {
+                    Reference = new Microsoft.OpenApi.Models.OpenApiReference {
+                        Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                    }
+                },
+                new string[] {}
+        }
+    });
+});
 // Inject ConnectionString.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options => 
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
 
 // Inject Identity framework.
 builder.Services.AddAuthorization();
-builder.Services.AddIdentityApiEndpoints<User>()
-    .AddRoles<IdentityRole>()
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-// Configure Identity
-builder.Services.Configure<IdentityOptions>(options =>
-{
-    // Password settings.
-    options.Password.RequireDigit = true;
-    options.Password.RequireNonAlphanumeric = true;
-    options.Password.RequireUppercase = true;
-    options.Password.RequiredLength = 6;
 
+// Add Jwt token services
+var bindJwtSettings = new JwtSettings();
+builder.Configuration.Bind("JsonWebTokenKeys", bindJwtSettings);
+builder.Services.AddSingleton(bindJwtSettings);
+builder.Services.AddAuthentication(options => {
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options => {
+    options.RequireHttpsMetadata = false;
+    options.SaveToken = true;
+    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+    {
+        ValidateIssuerSigningKey = bindJwtSettings.ValidateIssuerSigningKey,
+        IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(bindJwtSettings.IssuerSigningKey)),
+        ValidateIssuer = bindJwtSettings.ValidateIssuer,
+        ValidIssuer = bindJwtSettings.ValidIssuer,
+        ValidateAudience = bindJwtSettings.ValidateAudience,
+        ValidAudience = bindJwtSettings.ValidAudience,
+        RequireExpirationTime = bindJwtSettings.RequireExpirationTime,
+        ValidateLifetime = bindJwtSettings.RequireExpirationTime,
+        ClockSkew = TimeSpan.FromDays(1),
+    };
 });
-
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    // Cookie settings
-    options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
-
-    options.LoginPath = "/Identity/Account/Login";
-    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
-    options.SlidingExpiration = true;
-});
-
-
-builder.Services.ConfigureAll<BearerTokenOptions>(option => {
-    option.BearerTokenExpiration = TimeSpan.FromDays(14);
-});
-
 
 // Inject AutoMapper
 var mapperConfig = new MapperConfiguration(mc => mc.AddProfile(new MappingProfile()));
@@ -89,13 +110,25 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapIdentityApi<User>();
-
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var roles = new[] { "Admin", "Member" };
+
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+        {
+            await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
+}
 
 app.Run();

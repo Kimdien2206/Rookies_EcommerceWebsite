@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rookies_EcommerceWebsite.Data.Entities;
@@ -33,6 +34,7 @@ namespace Rookies_EcommerceWebsite.Controllers
             return await _service.GetById(id);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IResult> Create([FromBody] CreateVariantRequestDto productDto)
         {
@@ -41,6 +43,7 @@ namespace Rookies_EcommerceWebsite.Controllers
         }
 
         [HttpPatch]
+        [Authorize(Roles = "Admin")]
         [Route("{id}")]
         public async Task<IResult> Update(string id, [FromBody] UpdateVariantRequestDto updateVariantRequestDto)
         {
@@ -49,6 +52,7 @@ namespace Rookies_EcommerceWebsite.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Admin")]
         [Route("{id}")]
         public async Task<IResult> Delete(string id)
         {

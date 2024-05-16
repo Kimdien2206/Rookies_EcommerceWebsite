@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rookies_EcommerceWebsite.Data.Entities;
@@ -32,13 +33,15 @@ namespace Rookies_EcommerceWebsite.Controllers
             return await _service.GetById(id); 
         }
 
+        [Authorize(Roles ="Admin")]
         [HttpPost]
         public async Task<IResult> Create([FromBody] CreateCategoryRequestDto createCategoryRequestDto)
         {
             Category newCategory = _mapper.Map<Category>(createCategoryRequestDto);
             return await _service.Create(newCategory);
         }
-        
+
+        [Authorize(Roles = "Admin")]
         [HttpPatch]
         [Route("{id}")]
         public async Task<IResult> Update(string id, [FromBody] UpdateCategoryRequestDto updateCategoryRequestDto)
@@ -47,6 +50,7 @@ namespace Rookies_EcommerceWebsite.Controllers
             return await _service.Update(id, updateCategory);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         [Route("{id}")]
         public async Task<IResult> Delete(string id)

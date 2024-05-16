@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rookies_EcommerceWebsite.Data.Entities;
@@ -9,6 +10,7 @@ namespace Rookies_EcommerceWebsite.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize()]
     public class InvoiceController : ControllerBase
     {
         private readonly IService<Invoice> _service;

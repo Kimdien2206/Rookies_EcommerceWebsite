@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rookies_EcommerceWebsite.Data.Entities;
@@ -9,6 +10,7 @@ namespace Rookies_EcommerceWebsite.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CartController : ControllerBase
     {
         private readonly IService<Cart> _service;
@@ -39,7 +41,7 @@ namespace Rookies_EcommerceWebsite.Controllers
             Cart createdCart = _mapper.Map<Cart>(cartDto);
             return await _service.Create(createdCart);
         }
-
+                
         [HttpPatch]
         [Route("{id}")]
         public async Task<IResult> Update(string id, [FromBody] UpdateCartRequestDto updateCartRequestDto)

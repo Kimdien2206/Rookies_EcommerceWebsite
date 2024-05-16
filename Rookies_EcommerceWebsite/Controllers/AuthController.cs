@@ -7,6 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Rookies_EcommerceWebsite.Data.Entities;
+using Rookies_EcommerceWebsite.Utils;
 
 namespace Rookies_EcommerceWebsite.Controllers
 {
@@ -83,9 +84,17 @@ namespace Rookies_EcommerceWebsite.Controllers
         [HttpPost]
         [Route("RefreshToken")]
 
-        public IActionResult RefreshToken()
+        public async Task<IResult> RefreshToken([FromBody] RefreshTokenDto refreshTokenDto)
         {
-            return Ok();
+            return await _authRepository.RefreshToken(refreshTokenDto);
+        }
+        
+        [HttpPost]
+        [Route("GetToken")]
+
+        public async Task<IResult> GetToken([FromBody] LoginRequestDto userLogins)
+        {
+            return await _authRepository.GetToken(userLogins);
         }
     }
 }

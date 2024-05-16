@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rookies_EcommerceWebsite.Data.Entities;
@@ -34,6 +35,7 @@ namespace Rookies_EcommerceWebsite.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IResult> Create([FromBody] CreateProductRequestDto productDto)
         {
             Product createProduct = _mapper.Map<Product>(productDto);
@@ -41,6 +43,7 @@ namespace Rookies_EcommerceWebsite.Controllers
         }
 
         [HttpPatch]
+        [Authorize(Roles = "Admin")]
         [Route("{id}")]
         public async Task<IResult> Update(string id, [FromBody] UpdateProductRequestDto updateProductRequestDto)
         {
@@ -49,6 +52,7 @@ namespace Rookies_EcommerceWebsite.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Admin")]
         [Route("{id}")]
         public async Task<IResult> Delete(string id)
         {

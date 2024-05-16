@@ -6,6 +6,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Rookies_EcommerceWebsite.Data.Entities;
+using Rookies_EcommerceWebsite.Utils;
+using Rookies_EcommerceWebsite.Data;
 
 namespace Rookies_EcommerceWebsite.Repositories
 {
@@ -14,12 +16,16 @@ namespace Rookies_EcommerceWebsite.Repositories
         private readonly SignInManager<User> signInManager;
         private readonly UserManager<User> userManager;
         private readonly IConfiguration config;
+        private readonly JwtSettings jwtSettings;
+        private readonly ApplicationDbContext _context;
 
-        public AuthRepository(IConfiguration config, SignInManager<User> signInManager, UserManager<User> userManager) 
+        public AuthRepository(IConfiguration config, SignInManager<User> signInManager, UserManager<User> userManager, JwtSettings jwtSettings, ApplicationDbContext context) 
         {
             this.config = config;
             this.signInManager = signInManager;
             this.userManager = userManager;
+            this.jwtSettings = jwtSettings;
+            this._context = context;    
         }
 
         public async Task<IResult> Login(string email, string password)
@@ -44,10 +50,10 @@ namespace Rookies_EcommerceWebsite.Repositories
         public async Task<IResult> Register(User user, string password)
         {
             var result = await userManager.CreateAsync(user, password);
+            await userManager.AddToRoleAsync(user, "Member");
 
             if (result.Succeeded)
             {
-                var stringToken = await CreateToken(user.Email);
                 RegisterSuccessResponseDto response = new RegisterSuccessResponseDto() 
                 {
                     Email = user.Email,
@@ -56,7 +62,6 @@ namespace Rookies_EcommerceWebsite.Repositories
                     FirstName = user.FirstName,
                     Address = user.Address,
                     DateOfBirth = DateTime.Parse(user.DateOfBirth.ToString()),
-                    AccessToken = stringToken
                 };
                 return Results.Ok(response);
             }
@@ -64,43 +69,92 @@ namespace Rookies_EcommerceWebsite.Repositories
             return Results.BadRequest();
         }
 
-
-
-        private async Task<string> CreateToken(string email)
+        public async Task<IResult> GetToken(LoginRequestDto userLogins)
         {
-            var issuer = config["Jwt:Issuer"];
-            var audience = config["Jwt:Audience"];
-            var key = Encoding.ASCII.GetBytes
-            (config["Jwt:Key"]);
-            var tokenDescriptor = new SecurityTokenDescriptor
+            try
             {
-                Subject = new ClaimsIdentity(new[]
+                var Token = new UserTokens();
+                var user = await userManager.FindByNameAsync(userLogins.UserName);
+                var role = await userManager.GetRolesAsync(user);
+                if (user == null)
                 {
-                        new Claim("Id", Guid.NewGuid().ToString()),
-                        new Claim(JwtRegisteredClaimNames.Sub, email),
-                        new Claim(JwtRegisteredClaimNames.Email, email),
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                    }),
-                Expires = DateTime.UtcNow.AddDays(14),
-                Issuer = issuer,
-                Audience = audience,
-                SigningCredentials = new SigningCredentials
-                (new SymmetricSecurityKey(key),
-                SecurityAlgorithms.HmacSha512Signature)
-            };
-
-            var identityUser = await userManager.FindByEmailAsync(email);
-            //var roles = await userManager.GetRolesAsync(identityUser);
-
-            //foreach (var role in roles)
-            //{
-            //    tokenDescriptor.Subject.AddClaim(new Claim(ClaimTypes.Role, role));
-            //}
-
-            // generate token with the above information
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
+                    return Results.BadRequest("User name is not valid");
+                }
+                var Valid = await userManager.CheckPasswordAsync(user, userLogins.Password);
+                if (Valid != null)
+                {
+                    var strToken = Guid.NewGuid().ToString();
+                    var validity = DateTime.UtcNow.AddDays(7);
+                    Token = JwtHelpers.GenTokenkey(new UserTokens()
+                    {
+                        Email = user.Email,
+                        GuidId = Guid.NewGuid(),
+                        UserName = user.UserName,
+                        Id = user.Id,
+                        ExpiredTime = validity,
+                        Role = role.FirstOrDefault()
+                    }, jwtSettings);
+                    var tokenupdate = _context.Users.Where(x => x.Id == user.Id).FirstOrDefault();
+                    tokenupdate.RefreshToken = strToken;
+                    tokenupdate.RefreshTokenValidity = validity;
+                    _context.Update(tokenupdate);
+                    _context.SaveChanges();
+                    Token.RefreshToken = strToken;
+                }
+                else
+                {
+                    return Results.BadRequest($"wrong password");
+                }
+                return Results.Ok(Token);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        
+        public async Task<IResult> RefreshToken(RefreshTokenDto userLogins)
+        {
+            try
+            {
+                var Token = new UserTokens();
+                var user = await userManager.FindByNameAsync(userLogins.UserName);
+                if (user == null)
+                {
+                    return Results.BadRequest("User name is not valid");
+                }
+                var Valid = _context.Users.Where(x => x.UserName == userLogins.UserName
+                && x.RefreshToken == userLogins.RefreshToken
+                && x.RefreshTokenValidity > DateTime.UtcNow).Count() > 0;
+                if (Valid)
+                {
+                    var strToken = Guid.NewGuid().ToString();
+                    var validity = DateTime.UtcNow.AddDays(7);
+                    Token = JwtHelpers.GenTokenkey(new UserTokens()
+                    {
+                        Email = user.Email,
+                        GuidId = Guid.NewGuid(),
+                        UserName = user.UserName,
+                        Id = user.Id,
+                        ExpiredTime = validity,
+                    }, jwtSettings);
+                    var tokenupdate = _context.Users.Where(x => x.Id == user.Id).FirstOrDefault();
+                    tokenupdate.RefreshToken = strToken;
+                    tokenupdate.RefreshTokenValidity = validity;
+                    _context.Update(tokenupdate);
+                    _context.SaveChanges();
+                    Token.RefreshToken = strToken;
+                }
+                else
+                {
+                    return Results.BadRequest($"wrong password");
+                }
+                return Results.Ok(Token);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

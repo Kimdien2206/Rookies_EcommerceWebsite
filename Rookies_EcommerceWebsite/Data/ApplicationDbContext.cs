@@ -14,6 +14,7 @@ namespace Rookies_EcommerceWebsite.Data
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<InvoiceVariant> InvoiceVariants { get; set; }
         public DbSet<Cart> Carts { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -29,6 +30,17 @@ namespace Rookies_EcommerceWebsite.Data
                     t => t.Split(';', StringSplitOptions.RemoveEmptyEntries));
             builder.Entity<Product>()
                 .HasQueryFilter(x => x.IsDeleted == false);
+
+            builder.Entity<IdentityRole>()
+                .HasData(
+                new IdentityRole()
+                {
+                    Name = "Admin"
+                },
+                new IdentityRole()
+                {
+                    Name = "User"
+                });
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
