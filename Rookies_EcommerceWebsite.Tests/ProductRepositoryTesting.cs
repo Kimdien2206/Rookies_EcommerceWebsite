@@ -6,6 +6,7 @@ using Rookies_EcommerceWebsite.Data.Entities;
 using Rookies_EcommerceWebsite.Interfaces;
 using Rookies_EcommerceWebsite.Repositories;
 using Rookies_EcommerceWebsite.Services;
+using Rookies_EcommerceWebsite.Tests.MockData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,37 +21,15 @@ namespace Rookies_EcommerceWebsite.Tests
         private readonly Mock<ApplicationDbContext> _mockObject;
         private readonly ProductRepository _productRepository;
 
-        private readonly List<Product> _products = new List<Product>()
-        {
-            new Product()
-            {
-                Id = "1",
-                Name = "Test",
-                Description = "Test",
-                Images = ["test1", "test2"],
-                Slug = "Test",
-                Price = 20000,
-                IsDeleted = true,
-            },
-            new Product()
-            {
-                Id = "2",
-                Name = "Test2",
-                Description = "Test2",
-                Images = ["test1", "test2"],
-                Slug = "Test",
-                Price = 20000,
-                IsDeleted = true,
-            }
-        };
+        
         public ProductRepositoryTesting() 
         {
             var mockSet = new Mock<DbSet<Product>>();
             mockSet = new Mock<DbSet<Product>>();
-            mockSet.As<IQueryable<Product>>().Setup(m => m.Provider).Returns(_products.AsQueryable().Provider);
-            mockSet.As<IQueryable<Product>>().Setup(m => m.Expression).Returns(_products.AsQueryable().Expression);
-            mockSet.As<IQueryable<Product>>().Setup(m => m.ElementType).Returns(_products.AsQueryable().ElementType);
-            mockSet.As<IQueryable<Product>>().Setup(m => m.GetEnumerator()).Returns(_products.GetEnumerator());
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Provider).Returns(MockProduct.GetProducts().AsQueryable().Provider);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.Expression).Returns(MockProduct.GetProducts().AsQueryable().Expression);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.ElementType).Returns(MockProduct.GetProducts().AsQueryable().ElementType);
+            mockSet.As<IQueryable<Product>>().Setup(m => m.GetEnumerator()).Returns(MockProduct.GetProducts().GetEnumerator());
 
             
             _mockObject = new Mock<ApplicationDbContext>();
@@ -63,13 +42,13 @@ namespace Rookies_EcommerceWebsite.Tests
         {
             var products = await _productRepository.GetAll();
 
-            Assert.Equal(products, _products);
+            Assert.Equal(products, MockProduct.GetProducts());
         }
 
         //[Fact]
         //public async void Create_CountIncreaseBy1()
         //{
-        //    int count = _products.Count();
+        //    int count = MockProduct.Products().Count();
         //    await _productRepository.Create(new Product() 
         //    {
         //        Id = "1",
@@ -82,7 +61,7 @@ namespace Rookies_EcommerceWebsite.Tests
         //    });
 
 
-        //    Assert.Equal(count+1, _products.Count());
+        //    Assert.Equal(count+1, MockProduct.Products().Count());
         //}
     }
 }
