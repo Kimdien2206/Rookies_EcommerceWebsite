@@ -11,6 +11,7 @@ using Rookies_EcommerceWebsite.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using CloudinaryDotNet;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,6 +79,12 @@ builder.Services.AddAuthentication(options => {
     };
 });
 
+// Inject Cloudinary
+
+var cloudinary = new Cloudinary(builder.Configuration.GetConnectionString("Cloudinary_URL"));
+builder.Services.AddSingleton(cloudinary);
+
+
 // Inject AutoMapper
 var mapperConfig = new MapperConfiguration(mc => mc.AddProfile(new MappingProfile()));
 IMapper mapper = mapperConfig.CreateMapper();
@@ -93,6 +100,7 @@ builder.Services.AddScoped<IService<Variant>, VariantService>();
 builder.Services.AddScoped<IService<Category>, CategoryService>();
 builder.Services.AddScoped<IService<Invoice>, InvoiceService>();
 builder.Services.AddScoped<IService<Rating>, RatingService>();
+builder.Services.AddScoped<IImageService, ImageService>();
 
 
 // Inject Repositories
