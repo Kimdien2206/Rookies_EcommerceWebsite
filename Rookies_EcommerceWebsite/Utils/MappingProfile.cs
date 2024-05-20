@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Dtos;
+using Dtos.Request;
 using Rookies_EcommerceWebsite.Data.Entities;
 
 namespace Rookies_EcommerceWebsite.Utils
