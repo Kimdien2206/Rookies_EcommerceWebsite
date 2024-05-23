@@ -6,16 +6,23 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
 {
     public class ProductController : Controller
     {
+        private readonly ProductService _productService;
+        public ProductController(ProductService productService)
+        {
+            this._productService = productService;
+        }
+
         public async Task<IActionResult> Index()
         {
-            ProductService productService = new ProductService();
-            List<Product> products = await productService.GetAll();
-            return View();
+            List<Product> products = await _productService.GetAll();
+            return View(products);
         }
 
         public async Task<IActionResult> Detail(string id)
         {
-            return View();
+            Product product = await _productService.GetBySlug(id);
+            ModelState.Clear();
+            return View(product);
         }
     }
 }

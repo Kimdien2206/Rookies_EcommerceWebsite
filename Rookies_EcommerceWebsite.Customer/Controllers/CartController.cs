@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Rookies_EcommerceWebsite.Customer.Models;
 
 namespace Rookies_EcommerceWebsite.Customer.Controllers
 {
@@ -8,5 +9,11 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
         {
             return View();
         }
+
+        //[HttpPost]
+        //public IActionResult Create(Cart creatingCart)
+        //{
+
+        //}
     }
 }

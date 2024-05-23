@@ -1,7 +1,15 @@
+using Rookies_EcommerceWebsite.Customer.Models;
+using Rookies_EcommerceWebsite.Customer.RequestSender;
+using Rookies_EcommerceWebsite.Customer.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IRequestSender<Product>, RequestSender<Product>>();
+
+builder.Services.AddTransient<ProductService>();
 
 var app = builder.Build();
 
