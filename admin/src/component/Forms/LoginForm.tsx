@@ -1,4 +1,5 @@
-import React from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React, { useContext } from "react";
 import { Button, Form, FormProps, Input } from "antd";
 import {
   PASSWORD_REQUIRED,
@@ -8,6 +9,8 @@ import { LoginRequest } from "../../types/Auth";
 import { getToken, login } from "../../api/AuthAPI";
 import { redirect, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import AppContext from "antd/es/app/context";
+import LocalStorage from "../../helper/localStorage";
 
 type FieldType = {
   username?: string;
@@ -21,6 +24,7 @@ const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
 
 const LoginForm = () => {
     const [cookies, setCookie] = useCookies();
+    const {setUser} = useContext(AppContext);
     const nav = useNavigate();
 
     const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
@@ -34,6 +38,13 @@ const LoginForm = () => {
             getToken(loginInfo).then(({data: tokenData}) => {
                 const tokenExpires = new Date(tokenData.expiredTime);
                 setCookie('access_token', tokenData.token, { path: '/',  expires: tokenExpires})
+                const user = {
+                  username: tokenData.userName,
+                  email: tokenData.email,
+                  role: tokenData.role
+                }
+                LocalStorage.setItem("user", user);
+                setUser && setUser(user);
                 nav("/admin/dashboard")
             })
           }

@@ -7,7 +7,7 @@ import InformationIcon from "../assets/menu/user_96px.png";
 import DeliveryIcon from "../assets/menu/in_transit_96px.png";
 import ReceiptIcon from "../assets/menu/receipt_96px.png";
 import VoucherIcon from "../assets/icon/sale_96px.png";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const generateImageIcon = (path: string) => {
   return (
@@ -49,7 +49,7 @@ const menu: MenuProps["items"] = [
     icon: generateImageIcon(ProductIcon),
     children: [
       {
-        key: "product/category",
+        key: "category/",
         label: "Category",
       },
       {
@@ -98,7 +98,7 @@ const menu: MenuProps["items"] = [
 
 const NavBar = () => {
   const nav = useNavigate();
-  
+
   const onClickHandler: MenuProps["onClick"] = (e) => {
     if (e.key === "/login") {
       nav("/");

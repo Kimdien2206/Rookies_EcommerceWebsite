@@ -1,10 +1,12 @@
 import { notification } from 'antd';
 import axios, { AxiosError, AxiosResponse } from 'axios';
+import Cookies from 'js-cookie'
+
 export const http = axios.create({
   baseURL: 'https://localhost:7144/api',
-  timeout: 10000,
+  timeout: 100000,
   headers: {
-    Authorization: localStorage.getItem('access_token') ? `Bearer ${localStorage.getItem('access_token')}` : undefined
+    Authorization: Cookies.get("access_token") ? `Bearer ${Cookies.get("access_token")}` : undefined
   },
 });
 
