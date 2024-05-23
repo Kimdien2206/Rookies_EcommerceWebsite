@@ -36,7 +36,7 @@ namespace Rookies_EcommerceWebsite.Repositories
             if (result.Succeeded)
             {
                 //var stringToken = await CreateToken(email);
-                return Results.Empty;
+                return Results.Ok(result);
             }
 
             return Results.Unauthorized();

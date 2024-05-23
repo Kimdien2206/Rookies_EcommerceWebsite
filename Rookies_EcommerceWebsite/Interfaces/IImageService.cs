@@ -5,6 +5,6 @@ namespace Rookies_EcommerceWebsite.Interfaces
 {
     public interface IImageService
     {
-        ImageUploadResult Upload(IFormFile file);
+        List<ImageUploadResult> Upload(List<IFormFile> file);
     }
 }

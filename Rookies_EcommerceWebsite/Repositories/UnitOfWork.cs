@@ -7,7 +7,7 @@ namespace Rookies_EcommerceWebsite.Repositories
     public class UnitOfWork : IDisposable
     {
         private readonly ApplicationDbContext _context;
-        public readonly IRepository<Product> productRepository;
+        public readonly IProductRepository productRepository;
         public readonly IRepository<Invoice> invoiceRepository;
         public readonly IRepository<Cart> cartRepository;
         public readonly IRepository<Variant> variantRepository;
