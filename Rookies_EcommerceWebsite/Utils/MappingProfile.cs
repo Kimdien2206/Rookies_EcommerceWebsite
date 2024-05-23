@@ -21,6 +21,7 @@ namespace Rookies_EcommerceWebsite.Utils
             CreateMap<InvoiceVariantDto, InvoiceVariant>();
             CreateMap<CreateRatingRequestDto, Rating>();
             CreateMap<UpdateRatingRequestDto, Rating>();
+            CreateMap<User, LoggedInResponse>().ForMember(i => i.DateOfBirth, o => o.MapFrom(src => DateTime.Parse(src.DateOfBirth.ToString())));
         }
     }
 }

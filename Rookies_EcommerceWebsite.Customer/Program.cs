@@ -7,7 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<IRequestSender<Product>, RequestSender<Product>>();
+builder.Services.AddTransient<IRequestSender<Product>, RequestSender<Product>>();
+builder.Services.AddTransient<IAuthRequestSender, AuthRequestSender>();
 
 builder.Services.AddTransient<ProductService>();
 
