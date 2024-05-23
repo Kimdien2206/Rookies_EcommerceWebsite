@@ -16,16 +16,12 @@ namespace Rookies_EcommerceWebsite.Controllers
         }
 
         [HttpPost]
-        public async Task<IResult> UploadImage(IFormFile formFile)
+        public IResult UploadImage()
         {
-            var result = _imageService.Upload(formFile);
+            List<IFormFile> images = HttpContext.Request.Form.Files.ToList();
+            var results = _imageService.Upload(images);
 
-            if(result.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                return Results.Ok(result);
-            }
-
-            return Results.UnprocessableEntity();
+            return Results.Ok(results);
         }
     }
 }

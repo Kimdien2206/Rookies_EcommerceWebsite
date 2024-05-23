@@ -13,18 +13,25 @@ namespace Rookies_EcommerceWebsite.Services
         {
             this.cloudinary = cloudinary;
         }
-        public ImageUploadResult Upload(IFormFile file)
+        public List<ImageUploadResult> Upload(List<IFormFile> files)
         {
-            Stream stream = file.OpenReadStream();
-
-            var uploadParams = new ImageUploadParams()
+            List<ImageUploadResult> results = new List<ImageUploadResult>();
+            foreach(var file in files)
             {
-                UseFilename = true,
-                UniqueFilename = true,
-                Overwrite = true,
-                File = new FileDescription(file.FileName, stream)
-            };
-            return cloudinary.Upload(uploadParams);
+                Stream stream = file.OpenReadStream();
+
+                var uploadParams = new ImageUploadParams()
+                {
+                    Folder = "nash",
+                    UseFilename = true,
+                    UniqueFilename = true,
+                    Overwrite = true,
+                    File = new FileDescription(file.FileName, stream)
+                };
+                ImageUploadResult result = cloudinary.Upload(uploadParams);
+                results.Add(result);
+            }
+            return results;
         }
     }
 }
