@@ -1,0 +1,88 @@
+﻿
+@{
+
+    IEnumerable<Category> categories = ViewData["Categories"] as IEnumerable<Category>;
+    UserInfo user = ViewData["User"] as UserInfo;
+}
+
+
+<nav class="navbar navbar-expand-lg navbar-light sticky-top bg-light">
+    <div class="container">
+        <div class="row w-100 ">
+            <div class="col-3">
+                <a class="navbar-brand" href="/">
+                    <img src="/img/logo.png" alt="Brand Logo" height="50" />
+                </a>
+            </div>
+            <div class="col">
+                <div class="collapse navbar-collapse h-100"
+                     id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">
+                                Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Product">
+                                Product
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Category
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
+                                @foreach(Category item in categories)
+                                {
+                                    <li><a class="dropdown-item" href="#">@item.Name</a></li>   
+                                }
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                About us
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-2 d-flex justify-content-around flex-wrap align-content-center">
+                <a href="/Cart" class="align-content-center">
+                    <i class="fas fa-shopping-cart" style="font-size: 24px"></i>
+                </a>
+
+                @if(user.LastName != null)
+                {
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                @user.LastName
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
+                                <li><a class="dropdown-item" href="#">Info</a></li>
+                                <li><a class="dropdown-item" href="#">History</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                @using(Html.BeginForm("Logout", "Auth", "post")){
+                                    <input class="dropdown-item" type="submit" value="Logout" />
+                                }
+                                </li>
+
+                            </ul>
+                        </li>
+                    </ul>
+                }
+                else 
+                {
+                <a href="/Auth/login">
+                    Login
+                </a>
+                <a href="/Auth/register">
+                    Register
+                </a>
+                }
+            </div>
+        </div>
+    </div>
+</nav>

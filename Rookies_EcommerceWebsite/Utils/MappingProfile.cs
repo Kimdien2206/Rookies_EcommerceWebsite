@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Dtos;
+using Dtos.Request;
 using Rookies_EcommerceWebsite.Data.Entities;
 
 namespace Rookies_EcommerceWebsite.Utils
@@ -18,6 +19,9 @@ namespace Rookies_EcommerceWebsite.Utils
             CreateMap<CreateInvoiceRequestDto, Invoice>();
             CreateMap<UpdateInvoiceRequestDto, Invoice>();
             CreateMap<InvoiceVariantDto, InvoiceVariant>();
+            CreateMap<CreateRatingRequestDto, Rating>();
+            CreateMap<UpdateRatingRequestDto, Rating>();
+            CreateMap<User, LoggedInResponse>().ForMember(i => i.DateOfBirth, o => o.MapFrom(src => DateTime.Parse(src.DateOfBirth.ToString())));
         }
     }
 }

@@ -5,7 +5,7 @@ using Rookies_EcommerceWebsite.Interfaces;
 
 namespace Rookies_EcommerceWebsite.Repositories
 {
-    public class ProductRepository : IRepository<Product>
+    public class ProductRepository : IProductRepository
     {
         private readonly ApplicationDbContext _context;
 
@@ -26,11 +26,12 @@ namespace Rookies_EcommerceWebsite.Repositories
             return products;
         }
 
-        public async Task<Product> GetById(string id)
+        public async Task<Product> GetBySlug(string slug)
         {
             Product product = _context.Products
-                .Where(e => e.Id.ToString().Equals(id))
+                .Where(e => e.Slug.ToString().Equals(slug))
                 .Include(u => u.Variants)
+                .Include(i => i.Ratings)
                 .First();
 
             return product;

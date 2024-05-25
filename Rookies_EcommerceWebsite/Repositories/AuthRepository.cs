@@ -8,6 +8,7 @@ using System.Text;
 using Rookies_EcommerceWebsite.Data.Entities;
 using Rookies_EcommerceWebsite.Utils;
 using Rookies_EcommerceWebsite.Data;
+using AutoMapper;
 
 namespace Rookies_EcommerceWebsite.Repositories
 {
@@ -18,25 +19,32 @@ namespace Rookies_EcommerceWebsite.Repositories
         private readonly IConfiguration config;
         private readonly JwtSettings jwtSettings;
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public AuthRepository(IConfiguration config, SignInManager<User> signInManager, UserManager<User> userManager, JwtSettings jwtSettings, ApplicationDbContext context) 
+        public AuthRepository(IConfiguration config, SignInManager<User> signInManager, UserManager<User> userManager, JwtSettings jwtSettings, ApplicationDbContext context, IMapper mapper) 
         {
             this.config = config;
             this.signInManager = signInManager;
             this.userManager = userManager;
             this.jwtSettings = jwtSettings;
             this._context = context;    
+            this._mapper = mapper;
         }
 
-        public async Task<IResult> Login(string email, string password)
+        public async Task<IResult> Login(string userName, string password)
         {
             //signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;
-            var result = await signInManager.PasswordSignInAsync(email, password, false, lockoutOnFailure: true);
+            var result = await signInManager.PasswordSignInAsync(userName, password, false, lockoutOnFailure: true);
 
             if (result.Succeeded)
             {
                 //var stringToken = await CreateToken(email);
-                return Results.Empty;
+                User userInfo = await userManager.FindByNameAsync(userName);
+                
+                LoggedInResponse response = _mapper.Map<LoggedInResponse>(userInfo);
+                Console.Write(response.ToString());
+
+                return Results.Ok(response);
             }
 
             return Results.Unauthorized();

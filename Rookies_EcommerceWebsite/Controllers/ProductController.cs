@@ -28,10 +28,10 @@ namespace Rookies_EcommerceWebsite.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
-        public async Task<IResult> GetById(string id)
+        [Route("{slug}")]
+        public async Task<IResult> GetBySlug(string slug)
         {
-            return await _service.GetById(id);
+            return await _service.GetById(slug);
         }
 
         [HttpPost]

@@ -8,17 +8,20 @@ namespace Rookies_EcommerceWebsite.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User, IdentityRole, string>
     {
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Variant> Variants { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Invoice> Invoices { get; set; }
-        public DbSet<InvoiceVariant> InvoiceVariants { get; set; }
-        public DbSet<Cart> Carts { get; set; }
-        public DbSet<Rating> Ratings { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<Variant> Variants { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Invoice> Invoices { get; set; }
+        public virtual DbSet<InvoiceVariant> InvoiceVariants { get; set; }
+        public virtual DbSet<Cart> Carts { get; set; }
+        public virtual DbSet<Rating> Ratings { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
+
         }
+
+        public ApplicationDbContext() { }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -1,0 +1,11 @@
+
+.background-image{
+    background-image: url("/background.jpg");
+    background-size: cover;
+
+    background-repeat: no-repeat;
+}
+
+.login-form{
+    opacity: 1 !important;
+}

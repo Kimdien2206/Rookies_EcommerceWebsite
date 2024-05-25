@@ -1,28 +1,49 @@
-﻿using Rookies_EcommerceWebsite.Data.Entities;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Rookies_EcommerceWebsite.Data.Entities;
+using Rookies_EcommerceWebsite.Data.Enum;
 using Rookies_EcommerceWebsite.Interfaces;
+using Rookies_EcommerceWebsite.Repositories;
 
 namespace Rookies_EcommerceWebsite.Services
 {
     public class InvoiceService : IService<Invoice>
     {
         private readonly IRepository<Invoice> _repository;
+        private readonly UnitOfWork _unitOfWork;
 
-        public InvoiceService(IRepository<Invoice> repository)
+        public InvoiceService(IRepository<Invoice> repository, UnitOfWork unitOfWork)
         {
             this._repository = repository;
+            this._unitOfWork = unitOfWork;
         }
 
         public async Task<IResult> Create(Invoice entity)
         {
-            Invoice invoice = await _repository.Create(entity);
-            await _repository.Save();
-
+            Invoice invoice = await _unitOfWork.invoiceRepository.Create(entity);
             if (invoice == null)
             {
                 return Results.UnprocessableEntity();
             }
 
-            return Results.Ok(invoice);
+            foreach (InvoiceVariant invoiceVariant in invoice.InvoiceVariants)
+            {
+                Variant variant = await _unitOfWork.variantRepository.GetById(invoiceVariant.VariantID);  
+                
+                if(invoiceVariant.Amount <= variant.Stock)
+                {
+                    variant.Stock -= invoiceVariant.Amount;
+                }
+            }
+            try
+            {
+                await _unitOfWork.SaveChangesAsync();
+                return Results.Ok(invoice);
+                
+            }
+            catch (Exception ex)
+            {
+                return Results.UnprocessableEntity(ex);
+            }
         }
 
         public async Task<IResult> Delete(string id)
@@ -56,15 +77,39 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> Update(string id, Invoice entity)
         {
-            Invoice updatedInvoice = await _repository.Update(id, entity);
-            Task task = _repository.Save();
-
-            if (!task.IsCompleted)
+            if (entity.Status == InvoiceStatus.Canceled)
             {
-                return Results.UnprocessableEntity();
-            }
+                Invoice updatedInvoice = await _unitOfWork.invoiceRepository.Update(id, entity);
+                Invoice invoiceWithVariant = await _unitOfWork.invoiceRepository.GetById(id);
+                foreach (InvoiceVariant invoiceVariant in invoiceWithVariant.InvoiceVariants)
+                {
+                    Variant variant = invoiceVariant.Variant;
+                    
+                    variant.Stock += invoiceVariant.Amount;
+                    invoiceVariant.Amount = 0; 
+                }
 
-            return Results.Ok(updatedInvoice);
+                try
+                {
+                    _unitOfWork.SaveChanges();
+                    return Results.Ok(updatedInvoice);
+                }
+                catch (Exception ex)
+                {
+                    return Results.UnprocessableEntity(ex);
+                }
+            }
+            else
+            {
+                Invoice updatedInvoice = await _repository.Update(id, entity);
+                Task task = _repository.Save();
+
+                if (!task.IsCompleted)
+                {
+                    return Results.UnprocessableEntity();
+                }
+                return Results.Ok(updatedInvoice);
+            }
         }
     }
 }

@@ -11,6 +11,7 @@ using Rookies_EcommerceWebsite.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using CloudinaryDotNet;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,10 +79,19 @@ builder.Services.AddAuthentication(options => {
     };
 });
 
+// Inject Cloudinary
+
+var cloudinary = new Cloudinary(builder.Configuration.GetConnectionString("Cloudinary_URL"));
+builder.Services.AddSingleton(cloudinary);
+
+
 // Inject AutoMapper
 var mapperConfig = new MapperConfiguration(mc => mc.AddProfile(new MappingProfile()));
 IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
+
+// Inject UnitOfWork
+builder.Services.AddScoped<UnitOfWork>();
 
 // Inject Services
 builder.Services.AddScoped<IService<Product>, ProductService>();
@@ -89,15 +99,18 @@ builder.Services.AddScoped<IService<Cart>, CartService>();
 builder.Services.AddScoped<IService<Variant>, VariantService>();
 builder.Services.AddScoped<IService<Category>, CategoryService>();
 builder.Services.AddScoped<IService<Invoice>, InvoiceService>();
+builder.Services.AddScoped<IService<Rating>, RatingService>();
+builder.Services.AddScoped<IImageService, ImageService>();
 
 
 // Inject Repositories
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
-builder.Services.AddScoped<IRepository<Product>, ProductRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IRepository<Category>, CategoryRepository>();
 builder.Services.AddScoped<IRepository<Cart>, CartRepository>();
 builder.Services.AddScoped<IRepository<Variant>, VariantRepository>();
 builder.Services.AddScoped<IRepository<Invoice>, InvoiceRepository>();
+builder.Services.AddScoped<IRepository<Rating>, RatingRepository>();
 //builder.Services.AddScoped<IPasswordHasher<IdentityUser>, PasswordHasher<IdentityUser>>();
 
 
@@ -110,7 +123,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
+app.UseCors(policy => policy
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowAnyOrigin()
+    );
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

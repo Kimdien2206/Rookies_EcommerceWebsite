@@ -6,9 +6,9 @@ namespace Rookies_EcommerceWebsite.Services
 {
     public class ProductService : IService<Product>
     {
-        private readonly IRepository<Product> _repository;
+        private readonly IProductRepository _repository;
 
-        public ProductService(IRepository<Product> repository)
+        public ProductService(IProductRepository repository)
         {
             this._repository = repository;
         }
@@ -38,9 +38,9 @@ namespace Rookies_EcommerceWebsite.Services
             return Results.UnprocessableEntity();
         }
 
-        public async Task<IResult> GetById(string id)
+        public async Task<IResult> GetById(string slug)
         {
-            Product product = await _repository.GetById(id);
+            Product product = await _repository.GetBySlug(slug);
             if (product == null)
             {
                 return Results.NotFound();
