@@ -34,7 +34,8 @@ const LoginForm = () => {
           password: values.password,
         };
         login(loginInfo).then(({ data }) => {
-          if(data.succeeded){
+          console.log(data)
+          if(data?.refreshToken){
             getToken(loginInfo).then(({data: tokenData}) => {
                 const tokenExpires = new Date(tokenData.expiredTime);
                 setCookie('access_token', tokenData.token, { path: '/',  expires: tokenExpires})
@@ -48,7 +49,7 @@ const LoginForm = () => {
                 nav("/admin/dashboard")
             })
           }
-        });
+        }).catch((error) => {throw new Error(error)});
       }
     
     };
