@@ -2,10 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using Rookies_EcommerceWebsite.Customer.Models;
 using Rookies_EcommerceWebsite.Customer.Services;
 using System.Diagnostics;
+//using System.Web.Mvc;
 
 namespace Rookies_EcommerceWebsite.Customer.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : Microsoft.AspNetCore.Mvc.Controller
     {
         private readonly ILogger<HomeController> _logger;
 

@@ -23,13 +23,14 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
         {
             if (ModelState.IsValid)
             {
-                User loggedInUser = await _requestSender.Login(loginModel.UserName, loginModel.Password);
+                UserInfo loggedInUser = await _requestSender.Login(loginModel.UserName, loginModel.Password);
                 if (loggedInUser != null)
                 {
                     UserToken token = await _requestSender.GetToken(loginModel.UserName, loginModel.Password);
                     Response.Cookies.Append("access_token", token.Token);
                     Response.Cookies.Append("refresh_token", token.RefreshToken);
-                    Response.Cookies.Append("role", token.Role);
+
+
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -40,6 +41,15 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
         public IActionResult Register()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("access_token");
+            Response.Cookies.Delete("refresh_token");
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

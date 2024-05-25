@@ -12,6 +12,6 @@ namespace Rookies_EcommerceWebsite.Customer.Models
         public uint Amount { get; set; }
         public ulong TotalCost { get; set; }
         public string? CustomerId { get; set; } = null!;
-        public User Customer { get; set; }
+        public UserInfo Customer { get; set; }
     }
 }

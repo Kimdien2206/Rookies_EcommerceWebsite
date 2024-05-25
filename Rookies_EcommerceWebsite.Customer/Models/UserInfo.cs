@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Rookies_EcommerceWebsite.Customer.Models
 {
-    public class User
+    public class UserInfo
     {
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } 

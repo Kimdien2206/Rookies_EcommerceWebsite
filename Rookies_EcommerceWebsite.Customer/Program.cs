@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddTransient<IRequestSender<Product>, RequestSender<Product>>();
+builder.Services.AddTransient<IRequestSender<Category>, RequestSender<Category>>();
 builder.Services.AddTransient<IAuthRequestSender, AuthRequestSender>();
 
 builder.Services.AddTransient<ProductService>();

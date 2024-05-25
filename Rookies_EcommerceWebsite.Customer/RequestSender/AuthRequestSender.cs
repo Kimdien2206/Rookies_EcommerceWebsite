@@ -14,7 +14,7 @@ namespace Rookies_EcommerceWebsite.Customer.RequestSender
         {
         }
 
-        public async Task<User> Login(string username, string password)
+        public async Task<UserInfo> Login(string username, string password)
         {
             HttpClient _httpClient = new HttpClient();
             //Passing service base url
@@ -35,7 +35,7 @@ namespace Rookies_EcommerceWebsite.Customer.RequestSender
                 //Storing the response details recieved from web api
                 var EmpResponse = Res.Content.ReadAsStringAsync().Result;
                 //Deserializing the response recieved from web api and storing into the Product list
-                return JsonConvert.DeserializeObject<User>(EmpResponse);
+                return JsonConvert.DeserializeObject<UserInfo>(EmpResponse);
             }
             //returning the employee list to view
             return null;
@@ -75,7 +75,7 @@ namespace Rookies_EcommerceWebsite.Customer.RequestSender
             throw new NotImplementedException();
         }
 
-        public Task<User> SignUp(User user)
+        public Task<UserInfo> SignUp(UserInfo user)
         {
             throw new NotImplementedException();
         }

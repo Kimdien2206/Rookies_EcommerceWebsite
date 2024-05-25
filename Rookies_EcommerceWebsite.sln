@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rookies_EcommerceWebsite.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dtos", "Dto\Dtos.csproj", "{C332B2E0-489B-456C-B90A-5F5C46906D5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rookies_EcommerceWebsite.Customer", "Rookies_EcommerceWebsite.Customer\Rookies_EcommerceWebsite.Customer.csproj", "{78B28B20-3A55-4D64-948A-A79469BB12C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rookies_EcommerceWebsite.Customer", "Rookies_EcommerceWebsite.Customer\Rookies_EcommerceWebsite.Customer.csproj", "{78B28B20-3A55-4D64-948A-A79469BB12C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
