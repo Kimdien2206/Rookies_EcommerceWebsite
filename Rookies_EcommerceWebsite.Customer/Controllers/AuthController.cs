@@ -41,23 +41,33 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
             }    
             return View();
         }
-        
+
+        [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Register(RegisterViewModel model)
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                return RedirectToAction("Index", "Home");
+                UserInfo userInfo = await _requestSender.SignUp(model);
+                if(userInfo != null) 
+                {
+                    UserToken token = await _requestSender.GetToken(model.Username, model.ConfirmPassword);
+                    Response.Cookies.Append("access_token", token.Token);
+                    Response.Cookies.Append("user_id", token.Id);
+                    Response.Cookies.Append("refresh_token", token.RefreshToken);
+
+                    HttpContext.Session.SetString("LastName", userInfo.LastName);
+                    HttpContext.Session.SetString("Id", userInfo.Id);
+
+                    return RedirectToAction("Index", "Home");
+                }
             }
-            else
-            {
-                return View(model);
-            }
+            return View(model);
         }
 
         [HttpPost]

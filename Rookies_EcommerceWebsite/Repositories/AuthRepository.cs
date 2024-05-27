@@ -69,6 +69,7 @@ namespace Rookies_EcommerceWebsite.Repositories
                     LastName = user.LastName,
                     FirstName = user.FirstName,
                     Address = user.Address,
+                    Id = user.Id,
                     DateOfBirth = DateTime.Parse(user.DateOfBirth.ToString()),
                 };
                 return Results.Ok(response);

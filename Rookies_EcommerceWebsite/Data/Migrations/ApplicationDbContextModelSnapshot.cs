@@ -194,7 +194,7 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
 
                     b.HasIndex("VariantId");
 
-                    b.ToTable("Carts");
+                    b.ToTable("Carts", (string)null);
                 });
 
             modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.Category", b =>
@@ -223,7 +223,7 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.Invoice", b =>
@@ -244,7 +244,7 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Invoices");
+                    b.ToTable("Invoices", (string)null);
                 });
 
             modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.InvoiceVariant", b =>
@@ -268,7 +268,7 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
 
                     b.HasIndex("VariantID");
 
-                    b.ToTable("InvoiceVariants");
+                    b.ToTable("InvoiceVariants", (string)null);
                 });
 
             modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.Product", b =>
@@ -314,7 +314,7 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.Rating", b =>
@@ -350,7 +350,7 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Ratings");
+                    b.ToTable("Ratings", (string)null);
                 });
 
             modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.User", b =>
@@ -468,7 +468,7 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Variants");
+                    b.ToTable("Variants", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

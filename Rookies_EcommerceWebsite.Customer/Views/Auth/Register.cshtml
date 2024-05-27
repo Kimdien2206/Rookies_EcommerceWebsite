@@ -3,66 +3,84 @@
 *@
 @{
 }
+@model Rookies_EcommerceWebsite.Customer.Models.ViewModels.RegisterViewModel
+
 
 <div class="container">
     <h1>Sign Up</h1>
-    <form>
+    @using (Html.BeginForm("Register", "Auth", "post"))
+    {
+        @Html.ValidationSummary(true)
         <div class="form-group">
-            <label htmlFor="txtFullName">Full Name:</label>
-            <input type="text"
-                   class="form-control"
-                   id="txtFullName"
-                   placeholder="Full name" />
+            @Html.LabelFor(model => model.Username)
+            @Html.EditorFor(model => model.Username, new
+                {
+                    htmlAttributes = new { @class = "form-control" }
+                })
         </div>
         <div class="form-group">
-            <label htmlFor="txtAddress">Address:</label>
-            <input type="text"
-                   class="form-control"
-                   id="txtAddress"
-                   placeholder="Address" />
+            @Html.LabelFor(model => model.FirstName, "First Name")
+            @Html.EditorFor(model => model.FirstName, new
+                {
+                    htmlAttributes = new { @class = "form-control" }
+                })
         </div>
         <div class="form-group">
-            <label htmlFor="txtPhoneNumber">Phone Number:</label>
-            <input type="text"
-                   class="form-control"
-                   id="txtPhoneNumber"
-                   placeholder="Phone Number" />
+            @Html.LabelFor(model => model.LastName, "Last Name")
+            @Html.EditorFor(model => model.LastName, new
+                {
+                    htmlAttributes = new { @class = "form-control" }
+                })
         </div>
         <div class="form-group">
-            <label htmlFor="dtDateOfBirth">Date of Birth:</label>
-            <input type="date"
-                   class="form-control"
-                   id="dtDateOfBirth" />
+            @Html.LabelFor(model => model.Address)
+            @Html.EditorFor(model => model.Address, new
+                {
+                    htmlAttributes = new { @class = "form-control" }
+                })
         </div>
         <div class="form-group">
-            <label htmlFor="exampleInputEmail1">Email address</label>
-            <input type="email"
-                   class="form-control"
-                   id="exampleInputEmail1"
-                   aria-describedby="emailHelp"
-                   placeholder="Enter email" />
-            <small id="emailHelp" class="form-text text-muted">
-                We'll never share your email with anyone else.
-            </small>
+            @Html.LabelFor(model => model.PhoneNumber, "Phone Number")
+            @Html.EditorFor(model => model.PhoneNumber, new
+                {
+                    htmlAttributes = new { @class = "form-control" }
+                })
         </div>
         <div class="form-group">
-            <label htmlFor="exampleInputPassword1">Password</label>
-            <input type="password"
-                   class="form-control"
-                   id="exampleInputPassword1"
-                   placeholder="Password" />
+            @Html.LabelFor(model => model.DateOfBirth, "Date Of Birth")
+            @Html.EditorFor(model => model.DateOfBirth, new
+                {
+                    htmlAttributes = new { @class = "form-control" }
+                })
         </div>
         <div class="form-group">
-            <label htmlFor="exampleInputPassword1">Re-enter Password</label>
-            <input type="password"
-                   class="form-control"
-                   id="exampleInputPassword1"
-                   placeholder="Password" />
+            @Html.LabelFor(model => model.Email)
+            @Html.EditorFor(model => model.Email, new
+                {
+                    htmlAttributes = new { @class = "form-control" }
+                })
+            
         </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password)
+            @Html.EditorFor(model => model.Password, new
+            {
+                    htmlAttributes = new { @class = "form-control" }
+            })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfirmPassword)
+            @Html.EditorFor(model => model.ConfirmPassword, new
+                {
+                    htmlAttributes = new { @class = "form-control" }
+                })
+        </div>
+        @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger"})
+
         <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary">
                 Register
             </button>
         </div>
-    </form>
+    }
 </div>
