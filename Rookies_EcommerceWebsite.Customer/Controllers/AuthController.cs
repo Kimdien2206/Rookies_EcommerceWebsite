@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Rookies_EcommerceWebsite.Customer.Models;
+using Rookies_EcommerceWebsite.Customer.Models.ViewModels;
 using Rookies_EcommerceWebsite.Customer.RequestSender;
 
 namespace Rookies_EcommerceWebsite.Customer.Controllers
@@ -28,9 +29,12 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
                 {
                     UserToken token = await _requestSender.GetToken(loginModel.UserName, loginModel.Password);
                     Response.Cookies.Append("access_token", token.Token);
+                    Response.Cookies.Append("user_id", token.Id);
                     Response.Cookies.Append("refresh_token", token.RefreshToken);
 
-
+                    UserInfo userInfo = await _requestSender.GetUserInfo(token.Id, token.Token);
+                    HttpContext.Session.SetString("LastName", userInfo.LastName);
+                    HttpContext.Session.SetString("Id", userInfo.Id);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -44,10 +48,25 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
         }
 
         [HttpPost]
+        public IActionResult Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return View(model);
+            }
+        }
+
+        [HttpPost]
         public IActionResult Logout()
         {
             Response.Cookies.Delete("access_token");
             Response.Cookies.Delete("refresh_token");
+
+            HttpContext.Session.Clear();    
 
             return RedirectToAction("Index", "Home");
         }

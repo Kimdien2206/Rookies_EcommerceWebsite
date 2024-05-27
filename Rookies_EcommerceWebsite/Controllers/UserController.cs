@@ -9,7 +9,6 @@ namespace Rookies_EcommerceWebsite.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
     public class UserController : ControllerBase
     {
         private readonly IService<User> _service;
@@ -21,6 +20,7 @@ namespace Rookies_EcommerceWebsite.Controllers
             this._mapper = mapper;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public Task<IResult> Get()
         {
@@ -29,7 +29,8 @@ namespace Rookies_EcommerceWebsite.Controllers
         
         [HttpGet]
         [Route("{id}")]
-        public Task<IResult> Get(string id)
+        [Authorize]
+        public Task<IResult> GetById(string id)
         {
             return _service.GetById(id); 
         }

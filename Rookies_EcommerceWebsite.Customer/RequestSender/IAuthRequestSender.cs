@@ -8,6 +8,6 @@ namespace Rookies_EcommerceWebsite.Customer.RequestSender
         Task<UserToken> GetToken(string username, string password);
         void Logout();
         Task<UserInfo> SignUp(UserInfo user);
-
+        Task<UserInfo> GetUserInfo(string id, string token);
     }
 }
