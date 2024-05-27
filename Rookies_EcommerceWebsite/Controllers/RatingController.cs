@@ -35,7 +35,6 @@ namespace Rookies_EcommerceWebsite.Controllers
             return await _service.GetById(id);
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IResult> Create([FromBody] CreateRatingRequestDto ratingDto)
         {

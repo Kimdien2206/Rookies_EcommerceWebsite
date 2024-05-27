@@ -51,12 +51,12 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1a4dd231-10cc-47c6-9f28-28254911f354",
+                            Id = "e41ec221-7b89-4391-a62b-cb63ea171765",
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = "3be22992-acc9-4012-ab07-9d21bd13d1c3",
+                            Id = "a8daea2c-cb21-4341-8e84-e4acfd923923",
                             Name = "User"
                         });
                 });
@@ -323,12 +323,18 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("AuthorId")
-                        .IsRequired()
-                        .HasMaxLength(450)
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -341,8 +347,6 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
                         .HasColumnType("real");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
 
                     b.HasIndex("ProductId");
 
@@ -561,19 +565,11 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
 
             modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.Rating", b =>
                 {
-                    b.HasOne("Rookies_EcommerceWebsite.Data.Entities.User", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Rookies_EcommerceWebsite.Data.Entities.Product", null)
                         .WithMany("Ratings")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.User", b =>
