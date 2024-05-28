@@ -10,10 +10,10 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public IActionResult Create(Cart creatingCart)
-        //{
-
-        //}
+        [HttpPost]
+        public async Task<IActionResult> Add(Cart creatingCart)
+        {
+            return RedirectToAction("Detail", "Product", new {id = creatingCart});
+        }
     }
 }

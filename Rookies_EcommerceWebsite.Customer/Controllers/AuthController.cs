@@ -75,6 +75,7 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
         {
             Response.Cookies.Delete("access_token");
             Response.Cookies.Delete("refresh_token");
+            Response.Cookies.Delete("user_id");
 
             HttpContext.Session.Clear();    
 

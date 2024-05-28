@@ -10,10 +10,12 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IRequestSender<Product>, RequestSender<Product>>();
 builder.Services.AddTransient<IRequestSender<Category>, RequestSender<Category>>();
 builder.Services.AddTransient<IRequestSender<Rating>, RequestSender<Rating>>();
+builder.Services.AddTransient<IRequestSender<Category>, RequestSender<Category>>();
 builder.Services.AddTransient<IAuthRequestSender, AuthRequestSender>();
 
 builder.Services.AddTransient<ProductService>();
 builder.Services.AddTransient<RatingService>();
+builder.Services.AddTransient<CategoryService>();
 
 builder.Services.AddSession(options =>
 {

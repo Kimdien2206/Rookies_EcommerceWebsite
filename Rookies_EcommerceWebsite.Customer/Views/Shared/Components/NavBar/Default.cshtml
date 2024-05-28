@@ -35,7 +35,7 @@
                             <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
                                 @foreach(Category item in categories)
                                 {
-                                    <li><a class="dropdown-item" href="#">@item.Name</a></li>   
+                                    <li><a class="dropdown-item" href="/Category/Detail/@item.Id">@item.Name</a></li>   
                                 }
                             </ul>
                         </li>
@@ -60,7 +60,7 @@
                                 @user.LastName
                             </a>
                             <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarDarkDropdownMenuLink">
-                                <li><a class="dropdown-item" href="#">Info</a></li>
+                                <li><a class="dropdown-item" href="/User">Info</a></li>
                                 <li><a class="dropdown-item" href="#">History</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
