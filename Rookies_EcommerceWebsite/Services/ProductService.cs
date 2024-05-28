@@ -28,7 +28,9 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> Delete(string id)
         {
-            Task task = _repository.Delete(id);
+            await _repository.Delete(id);
+            Task task = _repository.Save();
+            task.Wait();
 
             if (task.IsCompleted)
             {

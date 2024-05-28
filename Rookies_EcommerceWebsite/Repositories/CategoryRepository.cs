@@ -22,7 +22,7 @@ namespace Rookies_EcommerceWebsite.Repositories
         public Task Delete(string id)
         {
             Category deleteCategory = _context.Categories.Find(id);
-            if (deleteCategory != null)
+            if (deleteCategory == null)
             {
                 return Task.FromException(new KeyNotFoundException("Deleting object doesn't exist"));
             }

@@ -33,6 +33,8 @@ namespace Rookies_EcommerceWebsite.Data
                     t => t.Split(';', StringSplitOptions.RemoveEmptyEntries));
             builder.Entity<Product>()
                 .HasQueryFilter(x => x.IsDeleted == false);
+            builder.Entity<Category>()
+                .HasQueryFilter(x => x.IsDeleted == false);
 
             builder.Entity<IdentityRole>()
                 .HasData(
