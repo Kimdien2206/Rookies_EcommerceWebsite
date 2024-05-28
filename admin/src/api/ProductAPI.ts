@@ -9,3 +9,6 @@ export const createProduct = (data: ProductCreateDto) => {
     return http.post("/Product", data);
 }
 
+export const deleteProduct = (productId: string) => { 
+    return http.delete(`/product/${productId}`);
+}
