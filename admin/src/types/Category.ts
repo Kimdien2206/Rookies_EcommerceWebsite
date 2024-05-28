@@ -11,3 +11,8 @@ export type CategoryCreateDto = {
     name: string, 
     description: string,
 }
+
+export type CategoryUpdateDto = {
+    name: string, 
+    description: string,
+}

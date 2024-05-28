@@ -6,7 +6,7 @@ import "./index.css";
 import { ConfigProvider } from "antd";
 import { SWRConfig } from "swr";
 // import { http } from "./api/index.ts";
-import axios from "axios";
+import { http } from "./api/index.ts";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -20,7 +20,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <AppProvider>
         <SWRConfig
           value={{
-            fetcher: (resource) => axios.get(resource).then(res => res.data)
+            fetcher: (resource) => http.get(resource).then(res => res.data)
           }}
         >
           <App />

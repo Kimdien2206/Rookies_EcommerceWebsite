@@ -11,20 +11,27 @@ import {
   UploadProps,
 } from "antd";
 import { FormInstance } from "antd/es/form/Form";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
 import { FORM_NO_BOTTOM_MARGIN } from "../../constant";
-import { ProductFormType } from "../../types/Product";
+import { Product, ProductFormType } from "../../types/Product";
 import { formatInputNumber } from "../../helper/formater";
 import useSWR from "swr";
 import { Category } from "../../types/Category";
+import { ProductContext } from "../../context/ProductContext";
 import { REQUIRED_RULE } from "../../constant/inputRules";
 
-type ProductCreateFormProps = {
+type ProductEditFormProps = {
   setImageList: Dispatch<SetStateAction<UploadFile[]>>;
   form: FormInstance<ProductFormType>;
 };
 
-const ProductCreateForm = (props: ProductCreateFormProps) => {
+const ProductEditForm: FC<ProductEditFormProps> = ({ setImageList, form }) => {
   const [fileList, setFileList] = useState<UploadFile[]>([
     {
       uid: "-1",
@@ -34,10 +41,11 @@ const ProductCreateForm = (props: ProductCreateFormProps) => {
     },
   ]);
   const { data } = useSWR("https://localhost:7144/api/Category");
+  const { product } = useContext(ProductContext);
 
   const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     console.log(newFileList);
-    props.setImageList([...newFileList]);
+    setImageList([...newFileList]);
     setFileList(newFileList);
   };
   const normFile = (e: any) => {
@@ -49,7 +57,7 @@ const ProductCreateForm = (props: ProductCreateFormProps) => {
     return e?.fileList;
   };
   return (
-    <Form form={props.form}>
+    <Form form={form}>
       <Space direction="vertical" style={{ width: "100%" }}>
         <Descriptions title="Product information" bordered>
           <Descriptions.Item label="ID" span={3}>
@@ -60,6 +68,7 @@ const ProductCreateForm = (props: ProductCreateFormProps) => {
               name={"name"}
               rules={[REQUIRED_RULE]}
               style={FORM_NO_BOTTOM_MARGIN}
+              initialValue={product?.name}
             >
               <Input style={{ width: "100%" }} />
             </Form.Item>
@@ -69,6 +78,7 @@ const ProductCreateForm = (props: ProductCreateFormProps) => {
               name={"category"}
               rules={[REQUIRED_RULE]}
               style={FORM_NO_BOTTOM_MARGIN}
+              initialValue={product?.categoryId}
             >
               <Select
                 allowClear
@@ -104,6 +114,7 @@ const ProductCreateForm = (props: ProductCreateFormProps) => {
               name={"description"}
               rules={[REQUIRED_RULE]}
               style={FORM_NO_BOTTOM_MARGIN}
+              initialValue={product?.description}
             >
               <Input.TextArea style={{ width: "100%", height: 150 }} />
             </Form.Item>
@@ -113,6 +124,7 @@ const ProductCreateForm = (props: ProductCreateFormProps) => {
               name={"price"}
               rules={[REQUIRED_RULE]}
               style={FORM_NO_BOTTOM_MARGIN}
+              initialValue={product?.price}
             >
               <InputNumber
                 min={1000}
@@ -131,4 +143,4 @@ const ProductCreateForm = (props: ProductCreateFormProps) => {
   );
 };
 
-export default ProductCreateForm;
+export default ProductEditForm;

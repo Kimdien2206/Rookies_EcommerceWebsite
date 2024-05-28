@@ -18,6 +18,15 @@ export type ProductCreateDto = {
     categoryId: string
 }
 
+export type ProductUpdateDto = {
+    name: string
+    description: string
+    images?: string[]
+    slug: string
+    price: number
+    categoryId: string
+}
+
 export type ProductFormType = {
     name: string
     description: string

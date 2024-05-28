@@ -1,5 +1,5 @@
 import { http } from ".";
-import { CategoryCreateDto } from "../types/Category";
+import { CategoryCreateDto, CategoryUpdateDto } from "../types/Category";
 
 
 export const createCategory = (newCategory: CategoryCreateDto) => { 
@@ -8,4 +8,8 @@ export const createCategory = (newCategory: CategoryCreateDto) => {
 
 export const deleteCategory = (categoryId: string) => { 
     return http.delete(`/category/${categoryId}`);
+}
+
+export const updateCategory = (categoryId: string, newCategoryInfo: CategoryUpdateDto) => { 
+    return http.patch(`/category/${categoryId}`, newCategoryInfo);
 }

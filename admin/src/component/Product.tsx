@@ -1,12 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Input, Space, Spin } from "antd";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { useState } from "react";
 import useSWR from "swr";
 import ProductTable from "./Table/ProductTable";
-import ProductModal from "./Modals/ProductModal";
+import ProductCreateModal from "./Modals/ProductCreateModal";
+import ProductEditModal from "./Modals/ProductEditModal";
+import { ProductProvider } from "../context/ProductContext";
 
-const Product = () => {
+const Products = () => {
   const { data, isLoading } = useSWR("https://localhost:7144/api/Product");
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
 
   return (
     <Spin spinning={isLoading}>
@@ -15,7 +19,7 @@ const Product = () => {
           <Button
             type="primary"
             onClick={() => {
-              setIsModalOpen(true);
+              setIsCreateModalOpen(true);
               // dispatch({ type: SET_ACTION, payload: ACTION_CREATE })
             }}
           >
@@ -28,18 +32,27 @@ const Product = () => {
             style={{ width: "100%" }}
           />
         </Space>
-        {renderModal(isModalOpen, setIsModalOpen)}
-        <ProductTable data={data} />
+        <ProductProvider>
+          {isCreateModalOpen && (
+            <ProductCreateModal
+              isOpen={isCreateModalOpen}
+              setIsModalOpen={setIsCreateModalOpen}
+            />
+          )}
+          {isEditModalOpen && (
+            <ProductEditModal
+              isOpen={isEditModalOpen}
+              setIsModalOpen={setIsEditModalOpen}
+            />
+          )}
+          <ProductTable
+            data={data}
+            setIsModalOpen={setIsEditModalOpen}
+          />
+        </ProductProvider>
       </Space>
     </Spin>
   );
 };
 
-function renderModal(isOpen: boolean, setIsModalOpen: Dispatch<SetStateAction<boolean>>) {
-    if (isOpen === false)
-      return null;
-        return <ProductModal isOpen={isOpen} setIsModalOpen={setIsModalOpen} />
-    }
-  
-
-export default Product;
+export default Products;

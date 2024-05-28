@@ -1,12 +1,14 @@
-import { Button, Input, Space, Spin } from "antd";
+import { Button, Form, Input, Space, Spin } from "antd";
 import React, { useState } from "react";
 import useSWR from "swr";
 import CategoryTable from "./Table/CategoryTable";
 import CategoryModal from "./Modals/CategoryModal";
+import { useForm } from "antd/es/form/Form";
 
 const Category = () => {
   const { data, isLoading } = useSWR("https://localhost:7144/api/Category");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [form] = useForm();
 
   return (
     <Spin spinning={isLoading}>
@@ -24,11 +26,12 @@ const Category = () => {
             // onChange={onChange}
           />
         </Space>
-        <CategoryTable
-          data={data}
-          // setData={setSearchData}
-          // discounts={discounts}
-        />
+        <Form form={form} component={false}>
+          <CategoryTable
+            data={data}
+            form={form}
+          />
+        </Form>
       </Space>
       <CategoryModal
         // setDataState={setSearchData}

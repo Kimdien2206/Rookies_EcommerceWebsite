@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Modal, Spin, UploadFile, notification } from "antd";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, FC, SetStateAction, useState } from "react";
 import ProductCreateForm from "../Forms/ProductCreateForm";
 import { useForm } from "antd/es/form/Form";
 import {
@@ -12,13 +12,17 @@ import slugify from "slugify";
 import { createProduct, uploadImage } from "../../api/ProductAPI";
 import { mutate } from "swr";
 import { UploadResponse } from "../../types/UploadImageResponse";
+import { uploadImageFunc } from "../../helper/utils";
 
-type ProductModalProps = {
+type ProductCreateModalProps = {
   isOpen: boolean;
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-const ProductModal = (props: ProductModalProps) => {
+const ProductCreateModal: FC<ProductCreateModalProps> = ({
+  isOpen,
+  setIsModalOpen,
+}) => {
   const [imageList, setImageList] = useState<UploadFile[]>([]);
   const [form] = useForm<ProductFormType>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -42,45 +46,22 @@ const ProductModal = (props: ProductModalProps) => {
           createProduct(newProduct)
             .then(() => {
               mutate("https://localhost:7144/api/Product");
-              props.setIsModalOpen(false);
+              setIsModalOpen(false);
               setIsLoading(false);
               form.resetFields();
-              notification.success({message: "Create product succeeded"});
+              notification.success({ message: "Create product succeeded" });
             })
             .catch((error) => {
-              notification.error({message: "Something went wrong"});
+              notification.error({ message: "Something went wrong" });
               throw new Error(error);
             });
         });
     });
   };
-
-  const uploadImageFunc = (imageList: UploadFile[], slugString: string) =>
-    new Promise<string[]>((resolve, reject) => {
-      const formData = new FormData();
-      imageList.forEach((item: UploadFile, index: number) => {
-        formData.append(
-          "file",
-          item?.originFileObj,
-          `${slugString}-${index + 1}.${item?.originFileObj.type.split("/")[1]}`
-        );
-      });
-      let URLs: string[] = [];
-      uploadImage(formData)
-        .then(({ data }) => {
-          URLs = data.map((item: UploadResponse) => item.url);
-          return resolve(URLs);
-        })
-        .catch((error) => {
-          console.log(error);
-          return reject(error);
-        });
-    });
-
   return (
     <Modal
       title={"Create new product"}
-      open={props.isOpen}
+      open={isOpen}
       width={"70vw"}
       //   footer={setModalFooter(action)}
       onCancel={() => {
@@ -90,10 +71,10 @@ const ProductModal = (props: ProductModalProps) => {
           okText: "Yes",
           cancelText: "No",
           onOk: () => {
-            props.setIsModalOpen((prev: boolean) => !prev);
+            setIsModalOpen(false);
           },
           onCancel: () => {
-            props.setIsModalOpen((prev: boolean) => !prev);
+            setIsModalOpen(false);
           },
         });
       }}
@@ -108,4 +89,4 @@ const ProductModal = (props: ProductModalProps) => {
   );
 };
 
-export default ProductModal;
+export default ProductCreateModal;

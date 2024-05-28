@@ -89,8 +89,8 @@ const menu: MenuProps["items"] = [
     icon: generateImageIcon(VoucherIcon),
   },
   {
-    key: "customer-management",
-    label: "Customer",
+    key: "user",
+    label: "Users",
     icon: generateImageIcon(InformationIcon),
   },
 ];
