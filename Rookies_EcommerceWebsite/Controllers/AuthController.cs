@@ -49,6 +49,7 @@ namespace Rookies_EcommerceWebsite.Controllers
                 DateOfBirth = DateOnly.FromDateTime(registerRequestModel.DateOfBirth),
                 FirstName = registerRequestModel.FirstName,
                 LastName = registerRequestModel.LastName,
+                PhoneNumber = registerRequestModel.PhoneNumber,
             };
 
             return await _authRepository.Register(registerUser, registerRequestModel.Password);

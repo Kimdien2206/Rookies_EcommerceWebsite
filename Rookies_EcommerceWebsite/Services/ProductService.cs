@@ -64,6 +64,7 @@ namespace Rookies_EcommerceWebsite.Services
         {
             Product updatedProduct = await _repository.Update(id, updatingProduct);
             Task task = _repository.Save();
+            task.Wait();
 
             if (!task.IsCompleted)
             {

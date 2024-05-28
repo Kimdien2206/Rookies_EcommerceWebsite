@@ -50,7 +50,6 @@ namespace Rookies_EcommerceWebsite.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.LogTo(s => FileLogger.Log(s));
-            
         }
     }
 }
