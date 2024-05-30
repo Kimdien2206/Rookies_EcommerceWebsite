@@ -5,7 +5,6 @@ import { AppProvider } from "./context/AppContext.tsx";
 import "./index.css";
 import { ConfigProvider } from "antd";
 import { SWRConfig } from "swr";
-// import { http } from "./api/index.ts";
 import { http } from "./api/index.ts";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

@@ -7,6 +7,6 @@ namespace Dtos
 {
     public class CreateVariantRequestDto
     {
-        List<CreateVariantDto> Variants;
+        IEnumerable<CreateVariantDto> Variants {  get; set; }
     }
 }

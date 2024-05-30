@@ -6,9 +6,8 @@ namespace Dtos
 {
     public class InvoiceVariantDto
     {
-        public string VariantID { get; set; }
-        public ulong Price { get; set; }
+        public string VariantId { get; set; }
         public ushort Amount { get; set; }
-        public ulong TotalCost { get; set; }
+        public string CartId { get; set; }
     }
 }
