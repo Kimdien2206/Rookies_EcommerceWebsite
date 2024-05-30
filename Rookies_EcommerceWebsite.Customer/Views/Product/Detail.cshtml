@@ -1,5 +1,5 @@
 ﻿@model Rookies_EcommerceWebsite.Customer.Models.Product
-
+@inject IHttpContextAccessor Accessor
 
 <div class="container-fluid mt-5 m-5" style="width: auto">
     <div class="row">
@@ -40,41 +40,70 @@
                     <h2>@Model.Name</h2>
                     <h3 class="text-right">@Model.Price.Value.ToString("n0")đ</h3>
                 </div>
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="ratings">
-                        @for(int i = 1; i <= 5; i++){
-                            if(Model.Ratings.Count !=0 && i <= Model.Ratings.Average(x => x.Rate))
+                @using (Html.BeginForm("AddToCart", "Cart"))
+                {
+                    @if(Accessor.HttpContext.Session.GetString("Id") != null)
+                    {
+                        @Html.Hidden("CustomerId", Accessor.HttpContext.Session.GetString("Id"));
+                        
+                    }
+                    @Html.Hidden("Slug", Model.Slug)
+
+                    <div class="container-fluid p-0 d-flex flex-row flex-wrap justify-content-end gap-2">
+                        @foreach(Variant item in Model.Variants)
+                        {
+                            @if(item.Stock == 0)
                             {
-                                <i class="fa fa-star rating-color"></i>
+                                <input class="form-check-input" type="radio" disabled name="VariantId" required id="@item.Id" value="@item.Id">
+                                <label class="btn btn-outline-primary disabled" for="@item.Id">
+                                    @item.Name
+                                </label>
                             }
                             else
                             {
-                                <i class="fa fa-star"></i>
+                                <input class="form-check-input btn-check" type="radio" name="VariantId" id="@item.Id" value="@item.Id">
+                                <label class="btn btn-outline-primary" for="@item.Id">
+                                    @item.Name
+                                </label>
                             }
                         }
                     </div>
-                    <h5 class="review-count">@Model.Ratings.Count Review(s)</h5>
-                </div>
-                <div class="d-flex justify-content-end">
-                    <div class="input-group mb-4 w-25">
-                        <span class="input-group-prepend">
-                            <button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="quant[1]">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                        </span>
-                        <input type="text" name="quant[1]" class="form-control input-number text-center" value="1" min="1" max="10">
-                        <span class="input-group-append">
-                            <button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="quant[1]">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </span>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="ratings">
+                            @for(int i = 1; i <= 5; i++){
+                                if(Model.Ratings.Count !=0 && i <= Model.Ratings.Average(x => x.Rate))
+                                {
+                                    <i class="fa fa-star rating-color"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa fa-star"></i>
+                                }
+                            }
+                        </div>
+                        <h5 class="review-count">@Model.Ratings.Count Review(s)</h5>
                     </div>
+                    <div class="d-flex justify-content-end">
+                        <div class="input-group mb-4 w-25">
+                            <span class="input-group-prepend">
+                                <button type="button" class="btn btn-primary btn-number" disabled="disabled" data-type="minus" data-field="Amount">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </span>
+                            <input type="text" name="Amount" class="form-control input-number text-center" value="1" min="1" max="10">
+                            <span class="input-group-append">
+                                <button type="button" class="btn btn-primary btn-number" data-type="plus" data-field="Amount">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </span>
+                        </div>
 
-                </div>
-                <div class="d-grid gap-3">
-                    <button class="btn btn-primary btn-lg btn-block" type="submit">Add to Cart</button>
-                    <button class="btn btn-primary btn-lg btn-block">Buy now</button>
-                </div>   
+                    </div>
+                    <div class="d-grid gap-3">
+                            <input class="btn btn-primary btn-lg btn-block" type="submit" name="Command" value="Add to Cart">
+                            <input class="btn btn-primary btn-lg btn-block" type="submit" name="Command" value="Buy now">
+                    </div>   
+                }
             </div>
             <div>
                 <div class="container-fluid mt-5">

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Rookies_EcommerceWebsite.Customer.Models;
 using Rookies_EcommerceWebsite.Customer.RequestSender;
 using Rookies_EcommerceWebsite.Customer.Services;
@@ -11,11 +12,17 @@ builder.Services.AddTransient<IRequestSender<Product>, RequestSender<Product>>()
 builder.Services.AddTransient<IRequestSender<Category>, RequestSender<Category>>();
 builder.Services.AddTransient<IRequestSender<Rating>, RequestSender<Rating>>();
 builder.Services.AddTransient<IRequestSender<Category>, RequestSender<Category>>();
+builder.Services.AddTransient<ICartRequestSender, CartRequestSender>();
 builder.Services.AddTransient<IAuthRequestSender, AuthRequestSender>();
+builder.Services.AddTransient<IInvoiceRequestSender, InvoiceRequestSender>();
 
 builder.Services.AddTransient<ProductService>();
 builder.Services.AddTransient<RatingService>();
 builder.Services.AddTransient<CategoryService>();
+builder.Services.AddTransient<CartService>();
+builder.Services.AddTransient<InvoiceService>();
+
+
 
 builder.Services.AddSession(options =>
 {
@@ -23,6 +30,7 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 var app = builder.Build();
 

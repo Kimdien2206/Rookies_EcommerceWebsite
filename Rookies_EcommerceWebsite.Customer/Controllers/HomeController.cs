@@ -15,7 +15,7 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] string query)
         {
             return View();
         }

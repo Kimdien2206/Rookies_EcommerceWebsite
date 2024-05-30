@@ -80,4 +80,16 @@ input {
         input:checked ~ label {
             color: #34AC9E;
         }
+
+.variant-radio {
+    width: 20%;
+    text-align: center;
+}
+
+.variant-radio:hover {
+    background-color: blanchedalmond;
+}
+
+.variant-input::selection {
+    background-color: aqua;
 }

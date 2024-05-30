@@ -2,9 +2,13 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    Cart[] carts = ViewData["Carts"] as Cart[];
 }
+@model Rookies_EcommerceWebsite.Customer.Models.ViewModels.InvoiceViewModel
 
 
+
+        
 <div class="container-fluid mt-5">
     <div class="row mx-2">
         <div class="col-7">
@@ -21,42 +25,77 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr scope="row">
-                            <th scope="row">1</th>
-                            <td >
-                                <img src="/img/logo.png" style="width: 50px" />
-                            </td>
-                            <td >
-                                Name
-                            </td>
-                            <td >1</td>
-                            <td >100,000đ</td>
-                            <td class="col h-100">
-                                <button type="button" class="btn-close" aria-label="Close"></button>
-                            </td>
-                        </tr>
+                        @if(carts != null && carts.Length != 0)
+                        {
+                            @for(int i = 0; i < carts.Length; i++)
+                            {
+                                <input form="createCart" name="invoiceVariants[@i].CartId" value="@carts[i].Id" />
+                                <input form="createCart" name="invoiceVariants[@i].VariantId" value="@carts[i].VariantId" />
+                                <tr scope="row">
+                                    <th scope="row"></th>
+                                    <td >
+                                        <img src="/img/logo.png" style="width: 50px" />
+                                    </td>
+                                    <td >
+                                            @carts[i].Variant.Name
+                                    </td>
+                                        <td>
+
+                                        <input form="createCart" type="number" name="invoiceVariants[@i].Amount" class="form-control input-number text-center" value="@carts[i].Amount" min="1" max="10">
+                                                
+                                        </td>
+                                        <td>@carts[i].TotalCost.ToString("n0") đ</td>
+                                    <td class="col h-100">
+                                            @using (Html.BeginForm("RemoveCart", "Cart", FormMethod.Post))
+                                            {
+                                                @Html.Hidden("id", carts[i].Id)
+                                                <input type="submit" class="btn btn-close" value="" aria-label="Close" />
+                                            }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center">No data</td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
         </div>
         <div class="col">
-            <form>
-                <div class="mb-3">
-                    <label for="txtEmail" class="form-label">Email address:</label>
-                    <input type="email" class="form-control" id="txtEmail" aria-describedby="emailHelp">
-                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            @using (Html.BeginForm("Create", "Invoice", FormMethod.Post, new { id="createCart" }))
+            {
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email)
+                    @Html.EditorFor(model => model.Email, new
+                        {
+                            htmlAttributes = new { @class = "form-control" }
+                        })
                 </div>
-                <div class="mb-3">
-                    <label for="txtName" class="form-label">Name:</label>
-                    <input type="text" class="form-control" id="txtName">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name)
+                    @Html.EditorFor(model => model.Name, new
+                        {
+                            htmlAttributes = new { @class = "form-control" }
+                        })
                 </div>
-                <div class="mb-3">
-                    <label for="txtAddress" class="form-label">Address:</label>
-                    <input type="text" class="form-control" id="txtAddress">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Address)
+                    @Html.EditorFor(model => model.Address, new
+                    {
+                    htmlAttributes = new { @class = "form-control" }
+                    })
                 </div>
-                <div class="mb-3">
-                    <label for="txtPhone" class="form-label">Phone number:</label>
-                    <input type="tel" class="form-control" id="txtPhone">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PhoneNumber)
+                    @Html.EditorFor(model => model.PhoneNumber, new
+                        {
+                            htmlAttributes = new { @class = "form-control" }
+                        })
                 </div>
                 <div class="card">
                     <div class="card-body">
@@ -65,10 +104,10 @@
                         <div class="cart-info">
                             <div class="cart-info-txt">
                                 <p>
-                                    Bạn đang có ... sản phẩm trong giỏ hàng
+                                    You are having @((carts is not null) ? @carts.Count() : 0) product(s) in your cart
                                 </p>
                                 <div class="d-flex justify-content-between">
-                                    <span>Thành tiền:</span> <span>100.000đ</span>
+                                    <span>Thành tiền:</span> <strong>@((carts is not null) ? @carts.Sum(u => (long)u.TotalCost).ToString("n0") : 0) đ</strong>
                                 </div>
                             </div>
                             
@@ -77,7 +116,7 @@
                         <button type="submit" class="btn btn-primary w-100">Submit</button>
                     </div>
                 </div>
-            </form>
+            } 
         </div>
     </div>
 </div>

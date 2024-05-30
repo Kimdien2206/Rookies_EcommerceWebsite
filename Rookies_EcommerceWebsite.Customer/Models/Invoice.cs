@@ -6,13 +6,14 @@ namespace Rookies_EcommerceWebsite.Customer.Models
 {
     public class Invoice
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [MaxLength(100)]
         public string Id { get; set; } = Guid.NewGuid().ToString();
-        public virtual ICollection<InvoiceVariant> InvoiceVariants { get; set; } = new List<InvoiceVariant>();
+        public string Email { get; set; }
+        public string Name { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Address { get; set; }
         public ulong TotalCost { get; set; }
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
-        public InvoiceStatus Status { get; set; } = InvoiceStatus.Unpaid;
+        public DateTime CreatedDate { get; set; }
+        public InvoiceStatus Status { get; set; }
+        public virtual ICollection<InvoiceVariant> InvoiceVariants { get; set; } = new List<InvoiceVariant>();
     }
 }

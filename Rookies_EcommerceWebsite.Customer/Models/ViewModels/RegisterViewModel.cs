@@ -7,7 +7,6 @@ namespace Rookies_EcommerceWebsite.Customer.Models.ViewModels
         [Required]
         public string Username { get; set; }
         
-        [Required]
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
@@ -16,8 +15,9 @@ namespace Rookies_EcommerceWebsite.Customer.Models.ViewModels
         public string Address { get; set; }
         
         [Required]
-        [MaxLength(10, ErrorMessage = "Phone number contain only 10 digits")]
-        [DataType(DataType.PhoneNumber)]
+        [MaxLength(10)]
+        [MinLength(10, ErrorMessage = "Phone number must contain 10 digits")]
+        [DataType(DataType.PhoneNumber, ErrorMessage ="Incorrect phone number")]
         public string PhoneNumber { get; set; }
 
         [Required]
