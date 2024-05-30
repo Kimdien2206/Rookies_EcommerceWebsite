@@ -51,12 +51,12 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e41ec221-7b89-4391-a62b-cb63ea171765",
+                            Id = "a3731718-809d-4676-a99d-955730f41a0b",
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = "a8daea2c-cb21-4341-8e84-e4acfd923923",
+                            Id = "9b7acaeb-ce2e-4170-9d00-692b0c49a1ad",
                             Name = "User"
                         });
                 });
@@ -194,7 +194,7 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
 
                     b.HasIndex("VariantId");
 
-                    b.ToTable("Carts", (string)null);
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.Category", b =>
@@ -223,7 +223,7 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.Invoice", b =>
@@ -233,8 +233,24 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -244,7 +260,7 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Invoices", (string)null);
+                    b.ToTable("Invoices");
                 });
 
             modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.InvoiceVariant", b =>
@@ -268,7 +284,7 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
 
                     b.HasIndex("VariantID");
 
-                    b.ToTable("InvoiceVariants", (string)null);
+                    b.ToTable("InvoiceVariants");
                 });
 
             modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.Product", b =>
@@ -314,7 +330,7 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.Rating", b =>
@@ -350,7 +366,7 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Ratings", (string)null);
+                    b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.User", b =>
@@ -459,6 +475,7 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<long>("Stock")
@@ -468,7 +485,7 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Variants", (string)null);
+                    b.ToTable("Variants");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -585,7 +602,9 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
                 {
                     b.HasOne("Rookies_EcommerceWebsite.Data.Entities.Product", null)
                         .WithMany("Variants")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.Category", b =>

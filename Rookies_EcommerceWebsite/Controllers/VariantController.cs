@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Dtos;
+using Dtos.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +37,7 @@ namespace Rookies_EcommerceWebsite.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IResult> Create([FromBody] CreateVariantRequestDto productDto)
+        public async Task<IResult> Create([FromBody] CreateVariantDto productDto)
         {
             Variant createVariant = _mapper.Map<Variant>(productDto);
             return await _service.Create(createVariant);

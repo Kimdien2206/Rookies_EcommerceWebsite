@@ -10,7 +10,6 @@ namespace Rookies_EcommerceWebsite.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class CartController : ControllerBase
     {
         private readonly IService<Cart> _service;

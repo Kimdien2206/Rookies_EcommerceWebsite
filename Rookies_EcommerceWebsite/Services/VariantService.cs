@@ -16,7 +16,7 @@ namespace Rookies_EcommerceWebsite.Services
         {
             Variant createdVariant = await _repository.Create(entity);
             Task task = _repository.Save();
-
+            task.Wait();
             if(!task.IsCompleted)
             {
                 return Results.UnprocessableEntity();

@@ -36,7 +36,7 @@ namespace Rookies_EcommerceWebsite.Controllers
             string currCode = configuration["VNPay:CurrCode"];
             string locale = configuration["VNPay:Locale"];
             string orderType = configuration["VNPay:OrderType"];
-            string returnUrl = configuration["VNPay:ReturnUrl"].ToString() + requestDto.InvoiceId;
+            string returnUrl = configuration["VNPay:ReturnUrl"].ToString();
             string defaultOrderInfor = configuration["VNPay:DefaultOrderInfor"];
 
             vnPayService.AddRequestData("vnp_Version", version);

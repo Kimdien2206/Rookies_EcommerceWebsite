@@ -1,4 +1,5 @@
-﻿using Rookies_EcommerceWebsite.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Rookies_EcommerceWebsite.Data;
 using Rookies_EcommerceWebsite.Data.Entities;
 using Rookies_EcommerceWebsite.Interfaces;
 
@@ -28,7 +29,7 @@ namespace Rookies_EcommerceWebsite.Repositories
 
         public async Task<List<Cart>> GetAll()
         {
-            List<Cart> cart = _context.Carts.ToList();
+            List<Cart> cart = _context.Carts.Include(u => u.Variant).ToList();
             return cart;
         }
 

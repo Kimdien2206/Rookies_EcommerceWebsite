@@ -74,5 +74,12 @@ namespace Rookies_EcommerceWebsite.Repositories
         {
             return _context.SaveChangesAsync();
         }
+
+        public async Task<Product> GetById(string id)
+        {
+            Product product = _context.Products.Find(id);
+
+            return product;
+        }
     }
 }

@@ -10,6 +10,7 @@ namespace Rookies_EcommerceWebsite.Interfaces
         Task<Product> Update(string id, Product entity);
         Task Delete(string id);
         Task<Product> GetBySlug(string slug);
+        Task<Product> GetById(string id);
         Task Save();
     }
 }

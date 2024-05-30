@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.VisualBasic;
 using Rookies_EcommerceWebsite.Data.Entities;
 using Rookies_EcommerceWebsite.Data.Enum;
 using Rookies_EcommerceWebsite.Interfaces;
@@ -33,6 +34,13 @@ namespace Rookies_EcommerceWebsite.Services
                 {
                     variant.Stock -= invoiceVariant.Amount;
                 }
+
+                Product product = await _unitOfWork.productRepository.GetById(variant.ProductId);
+                if(product == null)
+                {
+                    return Results.NotFound();
+                }
+                invoice.TotalCost += (ulong)product.Price;
             }
             try
             {

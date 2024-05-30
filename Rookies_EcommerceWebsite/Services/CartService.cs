@@ -1,21 +1,38 @@
 ﻿using Rookies_EcommerceWebsite.Data.Entities;
 using Rookies_EcommerceWebsite.Interfaces;
+using Rookies_EcommerceWebsite.Repositories;
 
 namespace Rookies_EcommerceWebsite.Services
 {
     public class CartService : IService<Cart>
     {
         private readonly IRepository<Cart> _repository;
+        private readonly UnitOfWork _unitOfWork;
 
-        public CartService(IRepository<Cart> repository)
+        public CartService(IRepository<Cart> repository, UnitOfWork unitOfWork)
         {
             this._repository = repository;
+            this._unitOfWork = unitOfWork;
         }
 
         public async Task<IResult> Create(Cart entity)
         {
-            Cart cart = await _repository.Create(entity);
-            await _repository.Save();
+            Variant variant = await _unitOfWork.variantRepository.GetById(entity.VariantId);
+            if(variant == null)
+            {
+                return Results.NotFound(variant);
+            }
+            Product product = await _unitOfWork.productRepository.GetById(variant.ProductId);
+
+            if(product == null)
+            {
+                return Results.NotFound(product);
+            }
+
+            entity.TotalCost = (ulong)(entity.Amount * product.Price);
+
+            Cart cart = await _unitOfWork.cartRepository.Create(entity);
+            _unitOfWork.SaveChanges();
 
             if(cart == null)
             {
@@ -27,7 +44,9 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> Delete(string id)
         {
-            Task task = _repository.Delete(id);
+            _repository.Delete(id);
+            Task task = _repository.Save();
+            task.Wait();
 
             if (task.IsCompleted)
             {

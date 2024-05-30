@@ -10,7 +10,6 @@ namespace Rookies_EcommerceWebsite.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize()]
     public class InvoiceController : ControllerBase
     {
         private readonly IService<Invoice> _service;
@@ -44,6 +43,7 @@ namespace Rookies_EcommerceWebsite.Controllers
 
         [HttpPatch]
         [Route("{id}")]
+        [Authorize]
         public async Task<IResult> UpdateStatus(string id, [FromBody] UpdateInvoiceRequestDto updateInvoiceRequestDto)
         {
             Invoice updateInvoice = _mapper.Map<Invoice>(updateInvoiceRequestDto);
@@ -52,6 +52,7 @@ namespace Rookies_EcommerceWebsite.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize]
         public async Task<IResult> Delete(string id)
         {
             return await _service.Delete(id);
