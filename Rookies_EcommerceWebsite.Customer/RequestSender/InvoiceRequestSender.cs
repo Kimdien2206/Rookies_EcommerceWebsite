@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Dtos;
+using Newtonsoft.Json;
 using Rookies_EcommerceWebsite.Customer.Models;
 using System.IO;
 using System.Net.Http;
@@ -13,7 +14,7 @@ namespace Rookies_EcommerceWebsite.Customer.RequestSender
         public InvoiceRequestSender()
         {
         }
-        public async Task<Invoice> Create(Invoice entity)
+        public async Task<Invoice> Create(CreateInvoiceRequestDto entity)
         {
             HttpClient _httpClient = new HttpClient();
 

@@ -1,4 +1,6 @@
-﻿using Rookies_EcommerceWebsite.Customer.Models;
+﻿using Dtos;
+using Rookies_EcommerceWebsite.Customer.Models;
+using Rookies_EcommerceWebsite.Customer.Models.ViewModels;
 using Rookies_EcommerceWebsite.Customer.RequestSender;
 
 namespace Rookies_EcommerceWebsite.Customer.Services
@@ -11,9 +13,28 @@ namespace Rookies_EcommerceWebsite.Customer.Services
             this._requestSender = requestSender;
         }
 
-        public async Task<Invoice> Create(Invoice invoice) 
+        public async Task<Invoice> Create(InvoiceViewModel invoice) 
         {
-            return await _requestSender.Create(invoice);
+            List<InvoiceVariantDto> variants = new List<InvoiceVariantDto>();
+            foreach (CreateInvoiceVariant item in invoice.invoiceVariants)
+            {
+
+                variants.Add(new InvoiceVariantDto()
+                {
+                    Amount = item.Amount,
+                    VariantId = item.VariantID,
+                    CartId = item.CartId,
+                });
+            }
+            CreateInvoiceRequestDto newInvoice = new CreateInvoiceRequestDto()
+            {
+                Name = invoice.Name,
+                PhoneNumber = invoice.PhoneNumber,
+                Address = invoice.Address,
+                Email = invoice.Email,
+                InvoiceVariants = variants,
+            };
+            return await _requestSender.Create(newInvoice);
         }
         public async Task<List<Invoice>> GetList()
         {

@@ -3,7 +3,7 @@ using Rookies_EcommerceWebsite.Interfaces;
 
 namespace Rookies_EcommerceWebsite.Services
 {
-    public class RatingService : IService<Rating>
+    public class RatingService 
     {
         private readonly IRepository<Rating> _repository;
         public RatingService(IRepository<Rating> repository)

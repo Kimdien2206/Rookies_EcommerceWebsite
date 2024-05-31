@@ -22,26 +22,7 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(InvoiceViewModel invoiceViewModel)
         {
-            List<InvoiceVariant> variants = new List<InvoiceVariant>();
-            foreach(CreateInvoiceVariant item in invoiceViewModel.invoiceVariants)
-            {
-                
-                variants.Add(new InvoiceVariant() 
-                { 
-                    Amount = item.Amount,
-                    VariantID = item.VariantID,
-
-                });
-            }
-            Invoice newInvoice = new Invoice()
-            {
-                Name = invoiceViewModel.Name,
-                PhoneNumber = invoiceViewModel.PhoneNumber,
-                Address = invoiceViewModel.Address,
-                Email = invoiceViewModel.Email,
-                InvoiceVariants = variants,
-            };
-            Invoice createdInvoice = await _invoiceService.Create(newInvoice);
+            Invoice createdInvoice = await _invoiceService.Create(invoiceViewModel);
             if (createdInvoice != null)
             {
                 VnPayLinkRequestModel requestModel = new VnPayLinkRequestModel()

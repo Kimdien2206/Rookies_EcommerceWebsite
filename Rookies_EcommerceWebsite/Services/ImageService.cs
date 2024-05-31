@@ -5,7 +5,7 @@ using Rookies_EcommerceWebsite.Interfaces;
 
 namespace Rookies_EcommerceWebsite.Services
 {
-    public class ImageService : IImageService
+    public class ImageService
     {
         private readonly Cloudinary cloudinary;
 

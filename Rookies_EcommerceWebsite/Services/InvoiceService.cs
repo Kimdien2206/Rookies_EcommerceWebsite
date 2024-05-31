@@ -7,7 +7,7 @@ using Rookies_EcommerceWebsite.Repositories;
 
 namespace Rookies_EcommerceWebsite.Services
 {
-    public class InvoiceService : IService<Invoice>
+    public class InvoiceService
     {
         private readonly IRepository<Invoice> _repository;
         private readonly UnitOfWork _unitOfWork;
@@ -35,11 +35,16 @@ namespace Rookies_EcommerceWebsite.Services
                     variant.Stock -= invoiceVariant.Amount;
                 }
 
+                
+
                 Product product = await _unitOfWork.productRepository.GetById(variant.ProductId);
+                
                 if(product == null)
                 {
                     return Results.NotFound();
                 }
+                invoiceVariant.Price = (ulong)product.Price;
+                invoiceVariant.TotalCost = (ulong)product.Price * invoiceVariant.Amount;
                 invoice.TotalCost += (ulong)product.Price;
             }
             try

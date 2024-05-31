@@ -1,4 +1,5 @@
-﻿using Rookies_EcommerceWebsite.Customer.Models;
+﻿using Dtos;
+using Rookies_EcommerceWebsite.Customer.Models;
 
 namespace Rookies_EcommerceWebsite.Customer.RequestSender
 {
@@ -7,6 +8,6 @@ namespace Rookies_EcommerceWebsite.Customer.RequestSender
         Task<List<Invoice>> GetList();
         Task<Invoice> GetDetail(string id);
         Task<string> GetPaymentLink(VnPayLinkRequestModel entity);
-        Task<Invoice> Create(Invoice entity);
+        Task<Invoice> Create(CreateInvoiceRequestDto entity);
     }
 }

@@ -4,7 +4,7 @@ using Dtos;
 
 namespace Rookies_EcommerceWebsite.Services
 {
-    public class ProductService : IService<Product>
+    public class ProductService 
     {
         private readonly IProductRepository _repository;
 

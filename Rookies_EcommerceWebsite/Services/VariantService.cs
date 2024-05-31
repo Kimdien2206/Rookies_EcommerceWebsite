@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Rookies_EcommerceWebsite.Services
 {
-    public class VariantService : IService<Variant>
+    public class VariantService 
     {
         private readonly IRepository<Variant> _repository;
         public VariantService(IRepository<Variant> repository) 

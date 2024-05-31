@@ -94,14 +94,14 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddScoped<UnitOfWork>();
 
 // Inject Services
-builder.Services.AddScoped<IService<Product>, ProductService>();
-builder.Services.AddScoped<IService<Cart>, CartService>();
-builder.Services.AddScoped<IService<Variant>, VariantService>();
-builder.Services.AddScoped<IService<Category>, CategoryService>();
-builder.Services.AddScoped<IService<Invoice>, InvoiceService>();
-builder.Services.AddScoped<IService<Rating>, RatingService>();
-builder.Services.AddScoped<IService<User>, UserService>();
-builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<CartService>();
+builder.Services.AddScoped<VariantService>();
+builder.Services.AddScoped<CategoryService>();
+builder.Services.AddScoped<InvoiceService>();
+builder.Services.AddScoped<RatingService>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<ImageService>();
 
 
 // Inject Repositories

@@ -3,7 +3,7 @@ using Rookies_EcommerceWebsite.Interfaces;
 
 namespace Rookies_EcommerceWebsite.Services
 {
-    public class CategoryService : IService<Category>
+    public class CategoryService 
     {
         private readonly IRepository<Category> _repository;
 

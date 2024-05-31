@@ -3,7 +3,7 @@ using Rookies_EcommerceWebsite.Interfaces;
 
 namespace Rookies_EcommerceWebsite.Services
 {
-    public class UserService : IService<User>
+    public class UserService 
     {
         private readonly IRepository<User> _repository;
         public UserService(IRepository<User> repository)

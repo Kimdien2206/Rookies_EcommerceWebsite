@@ -4,6 +4,6 @@
     {
         public string VariantID { get; set; }
         public ushort Amount { get; set; }
-        public ushort CartId { get; set; }
+        public string CartId { get; set; }
     }
 }

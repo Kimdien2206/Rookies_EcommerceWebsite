@@ -4,7 +4,7 @@ using Rookies_EcommerceWebsite.Repositories;
 
 namespace Rookies_EcommerceWebsite.Services
 {
-    public class CartService : IService<Cart>
+    public class CartService
     {
         private readonly IRepository<Cart> _repository;
         private readonly UnitOfWork _unitOfWork;
