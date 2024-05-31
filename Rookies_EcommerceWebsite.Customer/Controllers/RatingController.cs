@@ -20,7 +20,8 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateRatingModel model)
         {
-            
+            if (ModelState.IsValid)
+            {
                 Rating rating = new Rating()
                 {
                     PhoneNumber = model.PhoneNumber,
@@ -31,8 +32,11 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
                     Rate = model.Rate,
                 };
                 await _ratingService.Create(rating);
-            
-
+            }
+            else
+            {
+                TempData["Message"] = "Please fill all the input before submitting";
+            }
             return RedirectToAction("Detail", "Product", new { id = model.RedirectSlug });
         }
     }

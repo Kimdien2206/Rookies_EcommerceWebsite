@@ -93,3 +93,7 @@ input {
 .variant-input::selection {
     background-color: aqua;
 }
+
+.labels{
+    padding-right: 15px;
+}

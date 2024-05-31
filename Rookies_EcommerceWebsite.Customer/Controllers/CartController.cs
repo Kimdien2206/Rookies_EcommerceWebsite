@@ -13,6 +13,7 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
         }
         public async Task<IActionResult> Index()
         {
+            ViewData["Title"] = "Cart";
             string userId = HttpContext.Session.GetString("Id");
             List<Cart> carts;
             if(userId != null) 

@@ -14,12 +14,16 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
 
         public async Task<IActionResult> Index()
         {
+            ViewData["Title"] = "Product List";
+
             List<Product> products = await _productService.GetAll();
             return View(products);
         }
 
         public async Task<IActionResult> Detail(string id)
         {
+            ViewData["Title"] = "Product Detail";
+
             Product product = await _productService.GetBySlug(id);
             ModelState.Clear();
             return View(product);

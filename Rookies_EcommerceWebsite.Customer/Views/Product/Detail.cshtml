@@ -1,6 +1,10 @@
 ﻿@model Rookies_EcommerceWebsite.Customer.Models.Product
 @inject IHttpContextAccessor Accessor
 
+@{
+    string message = TempData["Message"] as string;
+}
+
 <div class="container-fluid mt-5 m-5" style="width: auto">
     <div class="row">
         <div class="col-7">
@@ -106,7 +110,7 @@
                 }
             </div>
             <div>
-                <div class="container-fluid mt-5">
+                <div class="container-fluid mt-5 overflow-scroll">
                     <div class="row border border-2 rounded text-center">
                         <h4>Customer reviews</h4>
                         <div>
@@ -114,25 +118,33 @@
                             {
                                 @foreach(var item in Model.Ratings)
                                 {
-                                    <div class="row border border-2 rounded">
-                                        <div class="col d-flex justify-content-between">
-                                            <span>@item.Content</span>
-                                            <div>                                   
-                                            @for (int i = 1; i <= 5; i++)
-                                            {
-                                                if (i <= item.Rate)
+                                    <div class="row">
+                                        <div class="d-flex flex-column justify-content-start text-start">
+                                            <span>Customer: @item.FullName</span>
+                                            <div class="col d-flex justify-content-between">
+                                                <span>@item.Content</span>
+                                                <div>                                   
+                                                @for (int i = 1; i <= 5; i++)
                                                 {
-                                                    <i class="fa fa-star rating-color"></i>
+                                                    if (i <= item.Rate)
+                                                    {
+                                                        <i class="fa fa-star rating-color"></i>
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="fa fa-star"></i>
+                                                    }
                                                 }
-                                                else
-                                                {
-                                                    <i class="fa fa-star"></i>
-                                                }
-                                            }
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <hr/>
                                 }
+                            }
+                            else
+                            {
+                                <span>No data</span>
                             }
                         </div>
                     </div>
@@ -195,6 +207,7 @@
                         <div class="form-floating mb-4">
                             <textarea class="form-control" name="Content" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px; resize: none"></textarea>
                             <label for="floatingTextarea2">Comments</label>
+                            <p class="text-danger">@message</p>
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-primary  mt-4">Rate</button>
                             </div>

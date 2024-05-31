@@ -16,6 +16,7 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            ViewData["Title"] = "Login";
             return View();
         }
 
@@ -45,6 +46,7 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+            ViewData["Title"] = "Register";
             return View();
         }
 
