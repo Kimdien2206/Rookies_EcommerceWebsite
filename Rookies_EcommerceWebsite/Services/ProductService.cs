@@ -40,7 +40,7 @@ namespace Rookies_EcommerceWebsite.Services
             return Results.UnprocessableEntity();
         }
 
-        public async Task<IResult> GetById(string slug)
+        public async Task<IResult> GetBySlug(string slug)
         {
             Product product = await _repository.GetBySlug(slug);
             if (product == null)
@@ -48,6 +48,18 @@ namespace Rookies_EcommerceWebsite.Services
                 return Results.NotFound();
             }
             return Results.Ok(product);
+        }
+        
+        public async Task<IResult> GetUpcoming()
+        {
+            List<Product> products = await _repository.GetAll();
+            if (products == null)
+            {
+                return Results.NotFound();
+            }
+
+            List<Product> upcoming = products.OrderByDescending(u => u.CreatedDate).Take(5).ToList();
+            return Results.Ok(upcoming);
         }
 
         public async Task<IResult> GetAll()

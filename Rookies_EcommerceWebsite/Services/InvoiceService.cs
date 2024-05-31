@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using AutoMapper;
+using Dtos;
+using Dtos.Request;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.VisualBasic;
 using Rookies_EcommerceWebsite.Data.Entities;
 using Rookies_EcommerceWebsite.Data.Enum;
@@ -11,15 +14,18 @@ namespace Rookies_EcommerceWebsite.Services
     {
         private readonly IRepository<Invoice> _repository;
         private readonly UnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public InvoiceService(IRepository<Invoice> repository, UnitOfWork unitOfWork)
+        public InvoiceService(IRepository<Invoice> repository, UnitOfWork unitOfWork, IMapper mapper)
         {
             this._repository = repository;
             this._unitOfWork = unitOfWork;
+            this._mapper = mapper;
         }
 
-        public async Task<IResult> Create(Invoice entity)
+        public async Task<IResult> Create(CreateInvoiceRequestDto requestDto)
         {
+            Invoice entity = _mapper.Map<Invoice>(requestDto);
             Invoice invoice = await _unitOfWork.invoiceRepository.Create(entity);
             if (invoice == null)
             {
@@ -35,18 +41,23 @@ namespace Rookies_EcommerceWebsite.Services
                     variant.Stock -= invoiceVariant.Amount;
                 }
 
-                
-
                 Product product = await _unitOfWork.productRepository.GetById(variant.ProductId);
                 
                 if(product == null)
                 {
                     return Results.NotFound();
                 }
+
                 invoiceVariant.Price = (ulong)product.Price;
                 invoiceVariant.TotalCost = (ulong)product.Price * invoiceVariant.Amount;
                 invoice.TotalCost += (ulong)product.Price;
             }
+
+            foreach(InvoiceVariantDto item in requestDto.InvoiceVariants)
+            {
+                await _unitOfWork.cartRepository.Delete(item.CartId);
+            }
+
             try
             {
                 await _unitOfWork.SaveChangesAsync();
