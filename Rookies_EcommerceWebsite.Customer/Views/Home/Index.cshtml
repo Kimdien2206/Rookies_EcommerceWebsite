@@ -1,5 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    List<Product> products = ViewData["Products"] as List<Product>;
 }
 
 <div>
@@ -16,9 +17,6 @@
             <div class="carousel-item">
                 <img class="d-block w-100" src="/img/slide-3.jpg" alt="Third slide" />
             </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="/img/slide-4.jpg" alt="Forth slide" />
-            </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -28,6 +26,41 @@
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
         </button>
+    </div>
+
+    <div class="container mt-5">
+        <div class="d-flex flex-row justify-content-between align-items-baseline">
+            <strong>
+                <h3>Features Products</h3>
+            </strong>
+            <a href="Product" class="nav-link link-dark">View All Products <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <hr class="m-0"/>
+        <div class="container-fluid mt-5">
+            @if(products is not null)
+            {
+                <swiper-container slides-per-view="3" autoplay="true" delay="3000" speed="500" loop="true" space-between="70" navigation="true" pagination="true">
+                    @foreach(Product item in products)
+                    {
+                        <swiper-slide>
+                            <div class="card">
+                                <img src="@item.Images[0]" class="card-img-top img-thumbnail" />
+                                <div class="card-body">
+                                    <h5 class="card-title text-truncate">@item.Name</h5>
+                                    <p class="card-text">
+                                        @item.Price.Value.ToString("n0")đ
+                                    </p>
+                                    <a href="/Product/Detail/@item.Slug" class="stretched-link"></a>
+                                </div>
+                            </div>
+                        </swiper-slide>
+                    }
+                </swiper-container>
+            }
+            else{
+                <p>No Data</p>
+            }
+        </div>
     </div>
 </div>
 
