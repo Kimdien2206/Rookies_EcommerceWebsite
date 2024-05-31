@@ -8,6 +8,5 @@ namespace Dtos.Request
     {
         public string Name { get; set; }
         public uint Stock { get; set; }
-        public string ProductId { get; set; }
     }
 }
