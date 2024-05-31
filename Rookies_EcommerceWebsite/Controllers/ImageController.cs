@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rookies_EcommerceWebsite.Interfaces;
+using Rookies_EcommerceWebsite.Services;
 
 namespace Rookies_EcommerceWebsite.Controllers
 {
@@ -9,8 +10,8 @@ namespace Rookies_EcommerceWebsite.Controllers
     [ApiController]
     public class ImageController : ControllerBase
     {
-        private readonly IImageService _imageService;
-        public ImageController(IImageService imageService) 
+        private readonly ImageService _imageService;
+        public ImageController(ImageService imageService) 
         {
             this._imageService = imageService;
         }

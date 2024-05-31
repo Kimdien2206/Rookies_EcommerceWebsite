@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rookies_EcommerceWebsite.Data.Entities;
 using Rookies_EcommerceWebsite.Interfaces;
+using Rookies_EcommerceWebsite.Services;
 
 namespace Rookies_EcommerceWebsite.Controllers
 {
@@ -12,10 +13,10 @@ namespace Rookies_EcommerceWebsite.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly IService<Product> _service;
+        private readonly ProductService _service;
         private readonly IMapper _mapper;
 
-        public ProductController(IService<Product> service, IMapper mapper)
+        public ProductController(ProductService service, IMapper mapper)
         {
             this._service = service;
             this._mapper = mapper;
@@ -26,12 +27,19 @@ namespace Rookies_EcommerceWebsite.Controllers
         {
             return await _service.GetAll();
         }
+        
+        [HttpGet]
+        [Route("Upcoming")]
+        public async Task<IResult> GetUpcoming()
+        {
+            return await _service.GetUpcoming();
+        }
 
         [HttpGet]
         [Route("{slug}")]
         public async Task<IResult> GetBySlug(string slug)
         {
-            return await _service.GetById(slug);
+            return await _service.GetBySlug(slug);
         }
 
         [HttpPost]

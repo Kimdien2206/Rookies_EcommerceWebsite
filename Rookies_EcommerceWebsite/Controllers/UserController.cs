@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rookies_EcommerceWebsite.Data.Entities;
 using Rookies_EcommerceWebsite.Interfaces;
+using Rookies_EcommerceWebsite.Services;
 
 namespace Rookies_EcommerceWebsite.Controllers
 {
@@ -11,10 +12,10 @@ namespace Rookies_EcommerceWebsite.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IService<User> _service;
+        private readonly UserService _service;
         private readonly IMapper _mapper;
 
-        public UserController(IService<User> service, IMapper mapper)
+        public UserController(UserService service, IMapper mapper)
         {
             this._service = service;
             this._mapper = mapper;

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rookies_EcommerceWebsite.Data.Entities;
 using Rookies_EcommerceWebsite.Interfaces;
+using Rookies_EcommerceWebsite.Services;
 
 namespace Rookies_EcommerceWebsite.Controllers
 {
@@ -12,9 +13,9 @@ namespace Rookies_EcommerceWebsite.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        private readonly IService<Category> _service;
+        private readonly CategoryService _service;
         private readonly IMapper _mapper;
-        public CategoryController(IService<Category> service, IMapper mapper) 
+        public CategoryController(CategoryService service, IMapper mapper) 
         {
             this._service = service;
             this._mapper = mapper;

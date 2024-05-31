@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rookies_EcommerceWebsite.Data.Entities;
 using Rookies_EcommerceWebsite.Interfaces;
+using Rookies_EcommerceWebsite.Services;
 
 namespace Rookies_EcommerceWebsite.Controllers
 {
@@ -12,10 +13,10 @@ namespace Rookies_EcommerceWebsite.Controllers
     [ApiController]
     public class InvoiceController : ControllerBase
     {
-        private readonly IService<Invoice> _service;
+        private readonly InvoiceService _service;
         private readonly IMapper _mapper;
 
-        public InvoiceController(IService<Invoice> service, IMapper mapper)
+        public InvoiceController(InvoiceService service, IMapper mapper)
         {
             this._service = service;
             this._mapper = mapper;
@@ -35,10 +36,9 @@ namespace Rookies_EcommerceWebsite.Controllers
         }
 
         [HttpPost]
-        public async Task<IResult> Create([FromBody] CreateInvoiceRequestDto productDto)
+        public async Task<IResult> Create([FromBody] CreateInvoiceRequestDto requestDto)
         {
-            Invoice createInvoice = _mapper.Map<Invoice>(productDto);
-            return await _service.Create(createInvoice);
+            return await _service.Create(requestDto);
         }
 
         [HttpPatch]
