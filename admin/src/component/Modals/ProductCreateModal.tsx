@@ -28,8 +28,8 @@ const ProductCreateModal: FC<ProductCreateModalProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleOKModal = () => {
-    setIsLoading(true);
     form.validateFields().then((data) => {
+      setIsLoading(true);
       console.log(data);
       const slugString = slugify(data.name);
 
@@ -41,6 +41,7 @@ const ProductCreateModal: FC<ProductCreateModalProps> = ({
             price: data.price,
             description: data.description,
             categoryId: data.category,
+            variants: data.variants,
             images: URLs ? URLs : undefined,
           };
           createProduct(newProduct)
@@ -56,6 +57,8 @@ const ProductCreateModal: FC<ProductCreateModalProps> = ({
               throw new Error(error);
             });
         });
+    }).finally(() => {
+      setIsLoading(false)
     });
   };
   return (

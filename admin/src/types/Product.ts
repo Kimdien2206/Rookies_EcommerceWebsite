@@ -16,6 +16,7 @@ export type ProductCreateDto = {
     slug: string
     price: number
     categoryId: string
+    variants: Variant[]
 }
 
 export type ProductUpdateDto = {
@@ -34,4 +35,10 @@ export type ProductFormType = {
     slug: string
     price: number
     category: string
+    variants: Variant[]
+}
+
+type Variant = {
+    name: string
+    stock: number
 }

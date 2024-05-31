@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Descriptions,
   Divider,
@@ -11,20 +12,21 @@ import {
   UploadProps,
 } from "antd";
 import { FormInstance } from "antd/es/form/Form";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, FC, SetStateAction, useState } from "react";
 import { FORM_NO_BOTTOM_MARGIN } from "../../constant";
 import { ProductFormType } from "../../types/Product";
 import { formatInputNumber } from "../../helper/formater";
 import useSWR from "swr";
 import { Category } from "../../types/Category";
 import { REQUIRED_RULE } from "../../constant/inputRules";
+import ProductVariantCreateForm from "./ProductVariantCreateForm";
 
 type ProductCreateFormProps = {
   setImageList: Dispatch<SetStateAction<UploadFile[]>>;
   form: FormInstance<ProductFormType>;
 };
 
-const ProductCreateForm = (props: ProductCreateFormProps) => {
+const ProductCreateForm : FC<ProductCreateFormProps> = ({ setImageList, form}) => {
   const [fileList, setFileList] = useState<UploadFile[]>([
     {
       uid: "-1",
@@ -37,7 +39,7 @@ const ProductCreateForm = (props: ProductCreateFormProps) => {
 
   const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     console.log(newFileList);
-    props.setImageList([...newFileList]);
+    setImageList([...newFileList]);
     setFileList(newFileList);
   };
   const normFile = (e: any) => {
@@ -49,7 +51,7 @@ const ProductCreateForm = (props: ProductCreateFormProps) => {
     return e?.fileList;
   };
   return (
-    <Form form={props.form}>
+    <Form form={form}>
       <Space direction="vertical" style={{ width: "100%" }}>
         <Descriptions title="Product information" bordered>
           <Descriptions.Item label="ID" span={3}>
@@ -125,7 +127,7 @@ const ProductCreateForm = (props: ProductCreateFormProps) => {
           </Descriptions.Item>
         </Descriptions>
         <Divider />
-        {/* <ProductInventoryCreateForm form={form} /> */}
+        <ProductVariantCreateForm form={form} />
       </Space>
     </Form>
   );

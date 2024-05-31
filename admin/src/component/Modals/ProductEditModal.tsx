@@ -13,6 +13,7 @@ import {
   Product,
   ProductCreateDto,
   ProductFormType,
+  ProductUpdateDto,
 } from "../../types/Product";
 import slugify from "slugify";
 import {
@@ -53,13 +54,13 @@ const ProductEditModal: FC<ProductEditModalProps> = ({
 
       imageList &&
         uploadImageFunc(imageList, slugString).then((URLs) => {
-          const newProduct: ProductCreateDto = {
+          const newProduct: ProductUpdateDto = {
             name: data.name,
             slug: slugString,
             price: data.price,
             description: data.description,
             categoryId: data.category,
-            // images: URLs ? URLs : undefined,
+            images: URLs ? URLs : undefined,
           };
           updateProduct(product.id, newProduct)
             .then(() => {
