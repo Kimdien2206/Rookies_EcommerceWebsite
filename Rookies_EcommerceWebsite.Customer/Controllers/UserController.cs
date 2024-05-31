@@ -6,8 +6,6 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
     {
         public IActionResult Index()
         {
-            ViewData["Title"] = "User";
-
             return View();
         }
     }
