@@ -13,9 +13,9 @@ namespace Rookies_EcommerceWebsite.Utils
             CreateMap<CreateCartRequestDto, Cart>();
             CreateMap<CreateCategoryRequestDto, Category>();
             CreateMap<UpdateProductRequestDto, Product>();
+            CreateMap<CreateVariantDto, Variant>();
             CreateMap<UpdateCartRequestDto, Cart>();
             CreateMap<UpdateCategoryRequestDto, Category>();
-            CreateMap<CreateVariantDto, Variant>();
             CreateMap<CreateInvoiceRequestDto, Invoice>();
             CreateMap<UpdateInvoiceRequestDto, Invoice>();
             CreateMap<InvoiceVariantDto, InvoiceVariant>();

@@ -51,6 +51,7 @@ namespace Rookies_EcommerceWebsite.Repositories
             product.Name = entity.Name;
             product.CategoryId = entity.CategoryId;
             product.Description = entity.Description;
+            product.Images = entity.Images;
             product.UpdatedDate = DateTime.Now;
 
             return product;

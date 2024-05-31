@@ -40,6 +40,11 @@ namespace Rookies_EcommerceWebsite.Services
                 {
                     variant.Stock -= invoiceVariant.Amount;
                 }
+                else
+                {
+                    return Results.UnprocessableEntity();
+                }
+
 
                 Product product = await _unitOfWork.productRepository.GetById(variant.ProductId);
                 
