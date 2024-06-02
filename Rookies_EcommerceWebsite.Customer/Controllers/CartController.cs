@@ -37,6 +37,7 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
                     await _cartService.Create(creatingCart);
                     return RedirectToAction("Detail", "Product", new { id = Slug });
                 case "Buy now":
+                    await _cartService.Create(creatingCart);
                     return RedirectToAction("Index", "Cart");
                 default:
                     return NotFound();
