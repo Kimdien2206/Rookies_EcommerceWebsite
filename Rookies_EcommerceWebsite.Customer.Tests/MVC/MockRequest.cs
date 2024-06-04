@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rookies_EcommerceWebsite.Tests
+namespace Rookies_EcommerceWebsite.Tests.MVC
 {
-    internal class AuthRepositoryTesting
+    public class MockRequest
     {
     }
 }

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rookies_EcommerceWebsite.Tests.MockData
+namespace Rookies_EcommerceWebsite.Tests.API.MockData
 {
     public static class MockProduct
     {
@@ -18,7 +18,7 @@ namespace Rookies_EcommerceWebsite.Tests.MockData
                 Name = "Test",
                 Description = "Test",
                 Images = ["test1", "test2"],
-                Slug = "Test",
+                Slug = "Test-1",
                 Price = 20000,
                 IsDeleted = true,
             },
@@ -28,16 +28,22 @@ namespace Rookies_EcommerceWebsite.Tests.MockData
                 Name = "Test2",
                 Description = "Test2",
                 Images = ["test1", "test2"],
-                Slug = "Test",
+                Slug = "Test-2",
                 Price = 20000,
                 IsDeleted = true,
             }
         };
 
-        
-        public static List<Product> GetProducts() 
+
+        public static List<Product> GetProducts()
         {
             return MockData;
+        }
+
+        public static Product Add(Product product)
+        {
+            MockData.Add(product);
+            return product;
         }
     }
 }
