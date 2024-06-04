@@ -1,4 +1,7 @@
-﻿using Rookies_EcommerceWebsite.Data.Entities;
+﻿using AutoMapper;
+using Dtos.Response;
+using Rookies_EcommerceWebsite.API.Interfaces;
+using Rookies_EcommerceWebsite.Data.Entities;
 using Rookies_EcommerceWebsite.Interfaces;
 using Rookies_EcommerceWebsite.Repositories;
 
@@ -6,13 +9,15 @@ namespace Rookies_EcommerceWebsite.Services
 {
     public class CartService
     {
-        private readonly IRepository<Cart> _repository;
+        private readonly ICartRepository _repository;
         private readonly UnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public CartService(IRepository<Cart> repository, UnitOfWork unitOfWork)
+        public CartService(ICartRepository repository, UnitOfWork unitOfWork, IMapper mapper)
         {
             this._repository = repository;
             this._unitOfWork = unitOfWork;
+            this._mapper = mapper;
         }
 
         public async Task<IResult> Create(Cart entity)
@@ -78,6 +83,24 @@ namespace Rookies_EcommerceWebsite.Services
             }
 
             return Results.Ok(cart);
+        }
+        
+        public async Task<IResult> GetByCustomrId(string id)
+        {
+            List<Cart> carts = await _repository.GetByCustomerId(id);
+
+            List<GetListCartResponse> responses = _mapper.Map<List<GetListCartResponse>>(carts);
+
+            foreach (var item in responses)
+            {
+                item.Variant.Product = _mapper.Map<GetListCartProductResponse>(await _unitOfWork.productRepository.GetById(item.Variant.ProductId));
+            }
+            if (carts == null)
+            {
+                return Results.NotFound();
+            }
+
+            return Results.Ok(responses);
         }
 
         public async Task<IResult> Update(string id, Cart entity)

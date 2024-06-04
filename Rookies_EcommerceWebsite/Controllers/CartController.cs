@@ -34,6 +34,13 @@ namespace Rookies_EcommerceWebsite.Controllers
         {
             return await _service.GetById(id);
         }
+        
+        [HttpGet]
+        [Route("Customer/{id}")]
+        public async Task<IResult> GetByCustomerId(string id)
+        {
+            return await _service.GetByCustomrId(id);
+        }
 
         [HttpPost]
         public async Task<IResult> Create([FromBody] CreateCartRequestDto cartDto)

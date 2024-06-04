@@ -10,7 +10,7 @@ namespace Rookies_EcommerceWebsite.Repositories
         private readonly ApplicationDbContext _context;
         public readonly IProductRepository productRepository;
         public readonly IInvoiceRepository invoiceRepository;
-        public readonly IRepository<Cart> cartRepository;
+        public readonly ICartRepository cartRepository;
         public readonly IRepository<Variant> variantRepository;
 
         public UnitOfWork(ApplicationDbContext context)

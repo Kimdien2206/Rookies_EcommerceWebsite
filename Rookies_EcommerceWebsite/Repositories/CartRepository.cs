@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Rookies_EcommerceWebsite.API.Interfaces;
 using Rookies_EcommerceWebsite.Data;
 using Rookies_EcommerceWebsite.Data.Entities;
 using Rookies_EcommerceWebsite.Interfaces;
 
 namespace Rookies_EcommerceWebsite.Repositories
 {
-    public class CartRepository : IRepository<Cart>
+    public class CartRepository : ICartRepository
     {
         private readonly ApplicationDbContext _context;
 
@@ -31,6 +32,12 @@ namespace Rookies_EcommerceWebsite.Repositories
         {
             List<Cart> cart = _context.Carts.Include(u => u.Variant).ToList();
             return cart;
+        }
+
+        public async Task<List<Cart>> GetByCustomerId(string id)
+        {
+            List<Cart> carts = _context.Carts.Include(u => u.Variant).Where(u => u.CustomerId.Equals(id)).ToList();
+            return carts;
         }
 
         public async Task<Cart> GetById(string id)
