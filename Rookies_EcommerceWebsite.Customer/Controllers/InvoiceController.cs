@@ -18,20 +18,23 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(InvoiceViewModel invoiceViewModel)
         {
-            Invoice createdInvoice = await _invoiceService.Create(invoiceViewModel);
-            if (createdInvoice != null)
+            if (ModelState.IsValid || invoiceViewModel.invoiceVariants.Count != 0)
             {
-                VnPayLinkRequestModel requestModel = new VnPayLinkRequestModel()
+                Invoice createdInvoice = await _invoiceService.Create(invoiceViewModel);
+                if (createdInvoice != null)
                 {
-                    InvoiceId = createdInvoice.Id,
-                    Amount = createdInvoice.TotalCost,
-                    CreateDate = createdInvoice.CreatedDate,
-                };
-                string link = await _invoiceService.GetPaymentLink(requestModel);
+                    VnPayLinkRequestModel requestModel = new VnPayLinkRequestModel()
+                    {
+                        InvoiceId = createdInvoice.Id,
+                        Amount = createdInvoice.TotalCost,
+                        CreateDate = createdInvoice.CreatedDate,
+                    };
+                    string link = await _invoiceService.GetPaymentLink(requestModel);
 
-                return Redirect(link);
+                    return Redirect(link);
+                }
             }
-            return BadRequest();
+            return RedirectToAction("Index", "Cart");
         }
     }
 }

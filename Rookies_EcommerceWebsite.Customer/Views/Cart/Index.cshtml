@@ -77,6 +77,8 @@
                         {
                             htmlAttributes = new { @class = "form-control" }
                         })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(model => model.Name)
@@ -84,13 +86,16 @@
                         {
                             htmlAttributes = new { @class = "form-control" }
                         })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(model => model.Address)
                     @Html.EditorFor(model => model.Address, new
-                    {
-                    htmlAttributes = new { @class = "form-control" }
-                    })
+                        {
+                            htmlAttributes = new { @class = "form-control" }
+                        })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+
                 </div>
                 <div class="form-group">
                     @Html.LabelFor(model => model.PhoneNumber)
@@ -98,6 +103,8 @@
                         {
                             htmlAttributes = new { @class = "form-control" }
                         })
+                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+
                 </div>
                 <div class="card">
                     <div class="card-body">

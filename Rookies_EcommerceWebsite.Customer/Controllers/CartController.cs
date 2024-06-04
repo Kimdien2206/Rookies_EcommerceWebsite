@@ -32,31 +32,44 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
             string email = HttpContext.Session.GetString("Email");
             string address = HttpContext.Session.GetString("Address");
 
-            InvoiceViewModel viewModel = new InvoiceViewModel()
+            InvoiceViewModel viewModel;
+            if (name != null)
             {
-                Name = name,
-                PhoneNumber = phoneNumber,
-                Email = email,
-                Address = address
-            };
+                viewModel = new InvoiceViewModel()
+                {
+                    Name = name,
+                    PhoneNumber = phoneNumber,
+                    Email = email,
+                    Address = address
+                };
+            }
+            else
+            {
+                viewModel = new InvoiceViewModel();
+            }
 
             return View(viewModel);
         }
 
         [HttpPost]
         public async Task<IActionResult> AddToCart(Cart creatingCart, string Command, string Slug)
-        {
-            switch (Command)
+        {   
+            if(creatingCart.CustomerId != null)
             {
-                case "Add to Cart":
-                    await _cartService.Create(creatingCart);
-                    return RedirectToAction("Detail", "Product", new { id = Slug });
-                case "Buy now":
-                    await _cartService.Create(creatingCart);
-                    return RedirectToAction("Index", "Cart");
-                default:
-                    return NotFound();
+                switch (Command)
+                {
+                    case "Add to Cart":
+                        await _cartService.Create(creatingCart);
+                        return RedirectToAction("Detail", "Product", new { id = Slug });
+                    case "Buy now":
+                        await _cartService.Create(creatingCart);
+                        return RedirectToAction("Index", "Cart");
+                    default:
+                        return NotFound();
+                }
             }
+            ViewData["Title"] = "Login Required";
+            return View("LoginRequired");
         }
 
         [HttpPost]

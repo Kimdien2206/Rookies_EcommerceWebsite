@@ -1,8 +1,14 @@
-﻿namespace Rookies_EcommerceWebsite.Customer.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Rookies_EcommerceWebsite.Customer.Models
 {
     public class LoginModel
     {
+        [Required]
         public string UserName { get; set; }
+        
+        [DataType(DataType.Password)]
+        [Required]
         public string Password { get; set; }
     }
 }

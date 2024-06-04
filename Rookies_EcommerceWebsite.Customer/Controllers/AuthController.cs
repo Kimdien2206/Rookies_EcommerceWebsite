@@ -44,7 +44,7 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }    
-            return View();
+            return View(loginModel);
         }
 
         [HttpGet]
