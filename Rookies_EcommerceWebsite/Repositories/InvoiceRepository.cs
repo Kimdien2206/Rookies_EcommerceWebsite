@@ -1,11 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Rookies_EcommerceWebsite.API.Interfaces;
 using Rookies_EcommerceWebsite.Data;
 using Rookies_EcommerceWebsite.Data.Entities;
+using Rookies_EcommerceWebsite.Data.Enum;
 using Rookies_EcommerceWebsite.Interfaces;
 
 namespace Rookies_EcommerceWebsite.Repositories
 {
-    public class InvoiceRepository : IRepository<Invoice>
+    public class InvoiceRepository : IInvoiceRepository
     {
         private readonly ApplicationDbContext _context;
         public InvoiceRepository(ApplicationDbContext context) 
@@ -58,6 +60,20 @@ namespace Rookies_EcommerceWebsite.Repositories
         public Task Save()
         {
             return _context.SaveChangesAsync();
+        }
+
+        public async Task<List<Invoice>> GetPaidInvoice()
+        {
+            List<Invoice> products = _context.Invoices.Where(u => u.Status == InvoiceStatus.Paid).ToList();
+
+            return products;
+        }
+
+        public async Task<List<Invoice>> GetUnpaidInvoice()
+        {
+            List<Invoice> products = _context.Invoices.Where(u => u.Status == InvoiceStatus.Unpaid).ToList();
+
+            return products;
         }
     }
 }

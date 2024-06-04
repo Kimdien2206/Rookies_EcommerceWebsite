@@ -1,4 +1,5 @@
-﻿using Rookies_EcommerceWebsite.Data;
+﻿using Rookies_EcommerceWebsite.API.Interfaces;
+using Rookies_EcommerceWebsite.Data;
 using Rookies_EcommerceWebsite.Data.Entities;
 using Rookies_EcommerceWebsite.Interfaces;
 
@@ -8,7 +9,7 @@ namespace Rookies_EcommerceWebsite.Repositories
     {
         private readonly ApplicationDbContext _context;
         public readonly IProductRepository productRepository;
-        public readonly IRepository<Invoice> invoiceRepository;
+        public readonly IInvoiceRepository invoiceRepository;
         public readonly IRepository<Cart> cartRepository;
         public readonly IRepository<Variant> variantRepository;
 

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using CloudinaryDotNet;
+using Rookies_EcommerceWebsite.API.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -107,10 +108,10 @@ builder.Services.AddScoped<ImageService>();
 // Inject Repositories
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
 builder.Services.AddScoped<IRepository<Category>, CategoryRepository>();
 builder.Services.AddScoped<IRepository<Cart>, CartRepository>();
 builder.Services.AddScoped<IRepository<Variant>, VariantRepository>();
-builder.Services.AddScoped<IRepository<Invoice>, InvoiceRepository>();
 builder.Services.AddScoped<IRepository<Rating>, RatingRepository>();
 builder.Services.AddScoped<IRepository<User>, UserRepository>();
 //builder.Services.AddScoped<IPasswordHasher<IdentityUser>, PasswordHasher<IdentityUser>>();

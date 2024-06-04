@@ -3,6 +3,7 @@ using Dtos;
 using Dtos.Request;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.VisualBasic;
+using Rookies_EcommerceWebsite.API.Interfaces;
 using Rookies_EcommerceWebsite.Data.Entities;
 using Rookies_EcommerceWebsite.Data.Enum;
 using Rookies_EcommerceWebsite.Interfaces;
@@ -12,11 +13,11 @@ namespace Rookies_EcommerceWebsite.Services
 {
     public class InvoiceService
     {
-        private readonly IRepository<Invoice> _repository;
+        private readonly IInvoiceRepository _repository;
         private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public InvoiceService(IRepository<Invoice> repository, UnitOfWork unitOfWork, IMapper mapper)
+        public InvoiceService(IInvoiceRepository repository, UnitOfWork unitOfWork, IMapper mapper)
         {
             this._repository = repository;
             this._unitOfWork = unitOfWork;
@@ -26,6 +27,10 @@ namespace Rookies_EcommerceWebsite.Services
         public async Task<IResult> Create(CreateInvoiceRequestDto requestDto)
         {
             Invoice entity = _mapper.Map<Invoice>(requestDto);
+            if(entity == null)
+            {
+                return Results.BadRequest();
+            }
             Invoice invoice = await _unitOfWork.invoiceRepository.Create(entity);
             if (invoice == null)
             {
@@ -83,6 +88,30 @@ namespace Rookies_EcommerceWebsite.Services
         public async Task<IResult> GetAll()
         {
             List<Invoice> invoices = await _repository.GetAll();
+
+            if (invoices == null || invoices.Count == 0)
+            {
+                return Results.NoContent();
+            }
+
+            return Results.Ok(invoices);
+        }
+
+        public async Task<IResult> GetPaidInvoice()
+        {
+            List<Invoice> invoices = await _repository.GetPaidInvoice();
+
+            if (invoices == null || invoices.Count == 0)
+            {
+                return Results.NoContent();
+            }
+
+            return Results.Ok(invoices);
+        } 
+        
+        public async Task<IResult> GetUnpaidInvoice()
+        {
+            List<Invoice> invoices = await _repository.GetUnpaidInvoice();
 
             if (invoices == null || invoices.Count == 0)
             {

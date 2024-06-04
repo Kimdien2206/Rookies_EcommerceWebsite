@@ -32,7 +32,7 @@ namespace Rookies_EcommerceWebsite.Repositories
                 .Where(e => e.Slug.ToString().Equals(slug))
                 .Include(u => u.Variants)
                 .Include(i => i.Ratings)
-                .First();
+                .FirstOrDefault();
 
             return product;
         }
