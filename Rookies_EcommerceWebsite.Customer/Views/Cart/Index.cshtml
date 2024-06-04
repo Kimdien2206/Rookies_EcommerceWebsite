@@ -1,8 +1,9 @@
-﻿@*
+﻿@using Dtos.Response
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    Cart[] carts = ViewData["Carts"] as Cart[];
+    GetListCartResponse[] carts = ViewData["Carts"] as GetListCartResponse[];
 }
 @model Rookies_EcommerceWebsite.Customer.Models.ViewModels.InvoiceViewModel
 
@@ -31,13 +32,14 @@
                             {
                                 <input form="createCart" name="invoiceVariants[@i].CartId" value="@carts[i].Id" />
                                 <input form="createCart" name="invoiceVariants[@i].VariantId" value="@carts[i].VariantId" />
-                                <tr scope="row">
-                                    <th scope="row"></th>
+                                <tr>
+                                    <th scope="row">@(i+1)</th>
                                     <td >
-                                        <img src="/img/logo.png" style="width: 50px" />
+                                        <img src="@carts[i].Variant.Product.Images[0]" style="width: 50px" />
                                     </td>
                                     <td >
-                                            @carts[i].Variant.Name
+                                            <p>@carts[i].Variant.Product.Name</p>
+                                            <p>Variant: @carts[i].Variant.Name</p>
                                     </td>
                                         <td>
 
@@ -45,7 +47,7 @@
                                                 
                                         </td>
                                         <td>@carts[i].TotalCost.ToString("n0") đ</td>
-                                    <td class="col h-100">
+                                    <td>
                                             @using (Html.BeginForm("RemoveCart", "Cart", FormMethod.Post))
                                             {
                                                 @Html.Hidden("id", carts[i].Id)

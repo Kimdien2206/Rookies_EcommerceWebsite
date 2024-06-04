@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Dtos.Response;
+using Microsoft.AspNetCore.Mvc;
 using Rookies_EcommerceWebsite.Customer.Models;
 using Rookies_EcommerceWebsite.Customer.Models.ViewModels;
 using Rookies_EcommerceWebsite.Customer.Services;
@@ -16,14 +17,13 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
         {
             ViewData["Title"] = "Cart";
             string userId = HttpContext.Session.GetString("Id");
-            List<Cart> carts;
+            List<GetListCartResponse> carts;
             if(userId != null) 
             {
-                carts = await _cartService.GetAll();
+                carts = await _cartService.GetAllByCustomerId(userId);
                 if(carts is not null)
                 {
-
-                ViewData["Carts"] = carts.ToArray();
+                    ViewData["Carts"] = carts.ToArray();
                 }
             }
 

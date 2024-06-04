@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Dtos.Response;
+using Newtonsoft.Json;
 using Rookies_EcommerceWebsite.Customer.Interface;
 using Rookies_EcommerceWebsite.Customer.Models;
 using System.Net.Http.Headers;
@@ -12,7 +13,7 @@ namespace Rookies_EcommerceWebsite.Customer.RequestSender
         public CartRequestSender()
         {
         }
-        public async Task<List<Cart>> GetList(string path)
+        public async Task<List<Cart>> GetList()
         {
             HttpClient _httpClient = new HttpClient();
 
@@ -22,7 +23,7 @@ namespace Rookies_EcommerceWebsite.Customer.RequestSender
             //Define request data format
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             //Sending request to find web api REST service resource GetAllProducts using HttpClient
-            HttpResponseMessage Res = await _httpClient.GetAsync(path);
+            HttpResponseMessage Res = await _httpClient.GetAsync("Cart");
             //Checking the response is successful or not which is sent using HttpClient
             if (Res.IsSuccessStatusCode)
             {
@@ -34,7 +35,8 @@ namespace Rookies_EcommerceWebsite.Customer.RequestSender
             //returning the employee list to view
             return null;
         }
-        public async Task<Cart> GetDetail(string path, string id)
+        
+        public async Task<List<GetListCartResponse>> GetByCustomerId(string id)
         {
             HttpClient _httpClient = new HttpClient();
 
@@ -44,7 +46,29 @@ namespace Rookies_EcommerceWebsite.Customer.RequestSender
             //Define request data format
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             //Sending request to find web api REST service resource GetAllProducts using HttpClient
-            HttpResponseMessage Res = await _httpClient.GetAsync($"{path}/{id}");
+            HttpResponseMessage Res = await _httpClient.GetAsync($"Cart/Customer/{id}");
+            //Checking the response is successful or not which is sent using HttpClient
+            if (Res.IsSuccessStatusCode)
+            {
+                //Storing the response details recieved from web api
+                var EmpResponse = Res.Content.ReadAsStringAsync().Result;
+                //Deserializing the response recieved from web api and storing into the Product list
+                return JsonConvert.DeserializeObject<List<GetListCartResponse>>(EmpResponse);
+            }
+            //returning the employee list to view
+            return null;
+        }
+        public async Task<Cart> GetDetail(string id)
+        {
+            HttpClient _httpClient = new HttpClient();
+
+            //Passing service base url
+            _httpClient.BaseAddress = new Uri(_baseURL);
+            _httpClient.DefaultRequestHeaders.Clear();
+            //Define request data format
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            //Sending request to find web api REST service resource GetAllProducts using HttpClient
+            HttpResponseMessage Res = await _httpClient.GetAsync($"Cart/{id}");
             //Checking the response is successful or not which is sent using HttpClient
             if (Res.IsSuccessStatusCode)
             {
@@ -57,7 +81,7 @@ namespace Rookies_EcommerceWebsite.Customer.RequestSender
             return null;
         }
 
-        public async Task<Cart> Create(string path, Cart entity)
+        public async Task<Cart> Create(Cart entity)
         {
             HttpClient _httpClient = new HttpClient();
 
@@ -67,7 +91,7 @@ namespace Rookies_EcommerceWebsite.Customer.RequestSender
             //Define request data format
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             //Sending request to find web api REST service resource GetAllProducts using HttpClient
-            HttpResponseMessage Res = await _httpClient.PostAsJsonAsync<Cart>(path, entity);
+            HttpResponseMessage Res = await _httpClient.PostAsJsonAsync<Cart>("Cart", entity);
             //Checking the response is successful or not which is sent using HttpClient
             if (Res.IsSuccessStatusCode)
             {
@@ -80,7 +104,7 @@ namespace Rookies_EcommerceWebsite.Customer.RequestSender
             return null;
         }
 
-        public async Task<Task> Delete(string path, string id)
+        public async Task<Task> Delete(string id)
         {
             HttpClient _httpClient = new HttpClient();
 
@@ -90,7 +114,7 @@ namespace Rookies_EcommerceWebsite.Customer.RequestSender
             //Define request data format
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             //Sending request to find web api REST service resource GetAllProducts using HttpClient
-            HttpResponseMessage Res = await _httpClient.DeleteAsync($"{path}/{id}");
+            HttpResponseMessage Res = await _httpClient.DeleteAsync($"Cart/{id}");
             //Checking the response is successful or not which is sent using HttpClient
             if (Res.IsSuccessStatusCode)
             {
