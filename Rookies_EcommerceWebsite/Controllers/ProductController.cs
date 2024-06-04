@@ -47,6 +47,10 @@ namespace Rookies_EcommerceWebsite.Controllers
         public async Task<IResult> Create([FromBody] CreateProductRequestDto productDto)
         {
             Product createProduct = _mapper.Map<Product>(productDto);
+            if(createProduct == null)
+            {
+                return Results.BadRequest();
+            }
             return await _service.Create(createProduct);
         }
 
@@ -56,6 +60,10 @@ namespace Rookies_EcommerceWebsite.Controllers
         public async Task<IResult> Update(string id, [FromBody] UpdateProductRequestDto updateProductRequestDto)
         {
             Product updateProduct = _mapper.Map<Product>(updateProductRequestDto);
+            if (updateProduct == null)
+            {
+                return Results.BadRequest();
+            }
             return await _service.Update(id, updateProduct);
         }
 

@@ -41,6 +41,10 @@ namespace Rookies_EcommerceWebsite.Controllers
         public async Task<IResult> Create([FromBody] CreateVariantDto productDto)
         {
             Variant createVariant = _mapper.Map<Variant>(productDto);
+            if(createVariant == null)
+            {
+                return Results.BadRequest();
+            }
             return await _service.Create(createVariant);
         }
 
@@ -50,6 +54,10 @@ namespace Rookies_EcommerceWebsite.Controllers
         public async Task<IResult> Update(string id, [FromBody] UpdateVariantRequestDto updateVariantRequestDto)
         {
             Variant updateVariant = _mapper.Map<Variant>(updateVariantRequestDto);
+            if(updateVariant == null)
+            {
+                return Results.BadRequest();
+            }
             return await _service.Update(id, updateVariant);
         }
 

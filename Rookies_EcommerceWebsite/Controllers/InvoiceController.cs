@@ -23,9 +23,17 @@ namespace Rookies_EcommerceWebsite.Controllers
         }
 
         [HttpGet]
-        public async Task<IResult> Get()
+        [Route("Paid")]
+        public async Task<IResult> GetPaid()
         {
-            return await _service.GetAll();
+            return await _service.GetPaidInvoice();
+        }
+        
+        [HttpGet]
+        [Route("Unpaid")]
+        public async Task<IResult> GetUnpaid()
+        {
+            return await _service.GetUnpaidInvoice();
         }
 
         [HttpGet]
@@ -47,6 +55,10 @@ namespace Rookies_EcommerceWebsite.Controllers
         public async Task<IResult> UpdateStatus(string id, [FromBody] UpdateInvoiceRequestDto updateInvoiceRequestDto)
         {
             Invoice updateInvoice = _mapper.Map<Invoice>(updateInvoiceRequestDto);
+            if(updateInvoice == null) 
+            {
+                return Results.BadRequest();
+            }
             return await _service.Update(id, updateInvoice);
         }
 

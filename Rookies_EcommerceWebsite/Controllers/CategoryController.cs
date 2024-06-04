@@ -39,6 +39,10 @@ namespace Rookies_EcommerceWebsite.Controllers
         public async Task<IResult> Create([FromBody] CreateCategoryRequestDto createCategoryRequestDto)
         {
             Category newCategory = _mapper.Map<Category>(createCategoryRequestDto);
+            if (newCategory == null)
+            {
+                return Results.BadRequest();
+            }
             return await _service.Create(newCategory);
         }
 
@@ -48,6 +52,10 @@ namespace Rookies_EcommerceWebsite.Controllers
         public async Task<IResult> Update(string id, [FromBody] UpdateCategoryRequestDto updateCategoryRequestDto)
         {
             Category updateCategory = _mapper.Map<Category>(updateCategoryRequestDto);
+            if(updateCategory == null)
+            {
+                return Results.BadRequest();
+            }
             return await _service.Update(id, updateCategory);
         }
 

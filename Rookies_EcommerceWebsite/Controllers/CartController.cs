@@ -38,8 +38,12 @@ namespace Rookies_EcommerceWebsite.Controllers
         [HttpPost]
         public async Task<IResult> Create([FromBody] CreateCartRequestDto cartDto)
         {
-            Cart createdCart = _mapper.Map<Cart>(cartDto);
-            return await _service.Create(createdCart);
+            Cart creatingCart = _mapper.Map<Cart>(cartDto);
+            if(creatingCart == null)
+            {
+                return Results.BadRequest();
+            }
+            return await _service.Create(creatingCart);
         }
                 
         [HttpPatch]
@@ -47,6 +51,10 @@ namespace Rookies_EcommerceWebsite.Controllers
         public async Task<IResult> Update(string id, [FromBody] UpdateCartRequestDto updateCartRequestDto)
         {
             Cart updateCart = _mapper.Map<Cart>(updateCartRequestDto);
+            if (updateCart == null)
+            {
+                return Results.BadRequest();
+            }
             return await _service.Update(id, updateCart);
         }
 

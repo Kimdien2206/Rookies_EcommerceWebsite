@@ -26,6 +26,11 @@ namespace Rookies_EcommerceWebsite.Controllers
         [HttpPost]
         public async Task<IResult> CreatePaymentUrl([FromBody] VnPayPaymentRequestDto requestDto) 
         {
+            if(requestDto == null)
+            {
+                return Results.BadRequest();
+            }
+
             // GET ALL VNPAY CONFIG VARIABLE
             string apiURL = configuration["VNPay:ApiURL"];
             string version = configuration["VNPay:Version"];

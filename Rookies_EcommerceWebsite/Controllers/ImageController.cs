@@ -20,6 +20,10 @@ namespace Rookies_EcommerceWebsite.Controllers
         public IResult UploadImage()
         {
             List<IFormFile> images = HttpContext.Request.Form.Files.ToList();
+            if(images == null || images.Count == 0)
+            {
+                return Results.BadRequest();
+            }
             var results = _imageService.Upload(images);
 
             return Results.Ok(results);
