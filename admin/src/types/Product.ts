@@ -38,7 +38,7 @@ export type ProductFormType = {
     variants: Variant[]
 }
 
-type Variant = {
+export type Variant = {
     name: string
     stock: number
 }

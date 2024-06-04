@@ -13,6 +13,7 @@ import { createProduct, uploadImage } from "../../api/ProductAPI";
 import { mutate } from "swr";
 import { UploadResponse } from "../../types/UploadImageResponse";
 import { uploadImageFunc } from "../../helper/utils";
+import { PRODUCT_KEY } from "../../constant/apiKey";
 
 type ProductCreateModalProps = {
   isOpen: boolean;
@@ -46,7 +47,7 @@ const ProductCreateModal: FC<ProductCreateModalProps> = ({
           };
           createProduct(newProduct)
             .then(() => {
-              mutate("https://localhost:7144/api/Product");
+              mutate(PRODUCT_KEY);
               setIsModalOpen(false);
               setIsLoading(false);
               form.resetFields();

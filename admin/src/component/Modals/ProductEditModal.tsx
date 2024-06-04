@@ -7,26 +7,20 @@ import React, {
   useContext,
   useState,
 } from "react";
-import ProductCreateForm from "../Forms/ProductCreateForm";
 import { useForm } from "antd/es/form/Form";
 import {
-  Product,
-  ProductCreateDto,
   ProductFormType,
   ProductUpdateDto,
 } from "../../types/Product";
 import slugify from "slugify";
 import {
-  createProduct,
   updateProduct,
-  uploadImage,
 } from "../../api/ProductAPI";
 import { mutate } from "swr";
-import { UploadResponse } from "../../types/UploadImageResponse";
 import ProductEditForm from "../Forms/ProductEditForm";
-import { shallowEqual, useSelector } from "react-redux";
 import { ProductContext } from "../../context/ProductContext";
 import { uploadImageFunc } from "../../helper/utils";
+import { PRODUCT_KEY } from "../../constant/apiKey";
 
 type ProductEditModalProps = {
   isOpen: boolean;
@@ -41,10 +35,6 @@ const ProductEditModal: FC<ProductEditModalProps> = ({
   const [form] = useForm<ProductFormType>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { product } = useContext(ProductContext);
-  // const selectedData: Product = useSelector(
-  //   (state: ProductState) => state.selectedProduct,
-  //   shallowEqual
-  // )
 
   const handleOKModal = () => {
     // setIsLoading(true);
@@ -64,7 +54,7 @@ const ProductEditModal: FC<ProductEditModalProps> = ({
           };
           updateProduct(product.id, newProduct)
             .then(() => {
-              mutate("https://localhost:7144/api/Product");
+              mutate(PRODUCT_KEY);
               setIsModalOpen(false);
               setIsLoading(false);
               form.resetFields();

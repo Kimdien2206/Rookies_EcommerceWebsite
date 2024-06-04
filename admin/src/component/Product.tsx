@@ -6,9 +6,10 @@ import ProductTable from "./Table/ProductTable";
 import ProductCreateModal from "./Modals/ProductCreateModal";
 import ProductEditModal from "./Modals/ProductEditModal";
 import { ProductProvider } from "../context/ProductContext";
+import { PRODUCT_KEY } from "../constant/apiKey";
 
 const Products = () => {
-  const { data, isLoading } = useSWR("https://localhost:7144/api/Product");
+  const { data, isLoading } = useSWR(PRODUCT_KEY);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
 

@@ -5,6 +5,7 @@ import { Category, CategoryCreateDto } from "../../types/Category";
 import CategoryCreateForm from "../Forms/CategoryCreateForm";
 import { createCategory } from "../../api/CategoryAPI";
 import { mutate } from "swr";
+import { CATEGORY_KEY } from "../../constant/apiKey";
 
 type CategoryModalProps = {
   isOpen: boolean;
@@ -24,7 +25,7 @@ const CategoryModal = (props: CategoryModalProps) => {
 
       createCategory(newCategory)
         .then(() => {
-          mutate("https://localhost:7144/api/Category");
+          mutate(CATEGORY_KEY);
           form.resetFields();
           props.setIsModalOpen(prev => !prev);
         })

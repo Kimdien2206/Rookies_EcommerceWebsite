@@ -4,9 +4,10 @@ import useSWR from "swr";
 import CategoryTable from "./Table/CategoryTable";
 import CategoryModal from "./Modals/CategoryModal";
 import { useForm } from "antd/es/form/Form";
+import { CATEGORY_KEY } from "../constant/apiKey";
 
 const Category = () => {
-  const { data, isLoading } = useSWR("https://localhost:7144/api/Category");
+  const { data, isLoading } = useSWR(CATEGORY_KEY);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [form] = useForm();
 
