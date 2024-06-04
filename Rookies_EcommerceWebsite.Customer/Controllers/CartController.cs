@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Rookies_EcommerceWebsite.Customer.Models;
+using Rookies_EcommerceWebsite.Customer.Models.ViewModels;
 using Rookies_EcommerceWebsite.Customer.Services;
 
 namespace Rookies_EcommerceWebsite.Customer.Controllers
@@ -25,7 +26,21 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
                 ViewData["Carts"] = carts.ToArray();
                 }
             }
-            return View();
+
+            string name = HttpContext.Session.GetString("LastName");
+            string phoneNumber = HttpContext.Session.GetString("PhoneNumber");
+            string email = HttpContext.Session.GetString("Email");
+            string address = HttpContext.Session.GetString("Address");
+
+            InvoiceViewModel viewModel = new InvoiceViewModel()
+            {
+                Name = name,
+                PhoneNumber = phoneNumber,
+                Email = email,
+                Address = address
+            };
+
+            return View(viewModel);
         }
 
         [HttpPost]

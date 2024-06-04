@@ -1,5 +1,6 @@
 ﻿using Dtos;
 using Newtonsoft.Json;
+using Rookies_EcommerceWebsite.Customer.Interface;
 using Rookies_EcommerceWebsite.Customer.Models;
 using Rookies_EcommerceWebsite.Customer.Models.ViewModels;
 using System.IO;

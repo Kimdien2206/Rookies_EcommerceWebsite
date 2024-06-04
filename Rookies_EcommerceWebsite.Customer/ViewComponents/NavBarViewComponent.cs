@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Rookies_EcommerceWebsite.Customer.Interface;
 using Rookies_EcommerceWebsite.Customer.Models;
-using Rookies_EcommerceWebsite.Customer.RequestSender;
 
 namespace Rookies_EcommerceWebsite.Customer.ViewComponents
 {
@@ -30,6 +30,10 @@ namespace Rookies_EcommerceWebsite.Customer.ViewComponents
                 if (userModel != null)
                 {
                     HttpContext.Session.SetString("LastName", userModel.LastName);
+                    HttpContext.Session.SetString("FirstName", userModel.FirstName);
+                    HttpContext.Session.SetString("Address", userModel.Address);
+                    HttpContext.Session.SetString("PhoneNumber", userModel.PhoneNumber);
+                    HttpContext.Session.SetString("Email", userModel.Email);
                     HttpContext.Session.SetString("Id", userModel.Id);
                     ViewData["User"] = userModel;
                 }

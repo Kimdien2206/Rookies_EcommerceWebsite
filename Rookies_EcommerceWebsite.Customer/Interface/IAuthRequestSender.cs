@@ -1,9 +1,9 @@
 ﻿using Rookies_EcommerceWebsite.Customer.Models;
 using Rookies_EcommerceWebsite.Customer.Models.ViewModels;
 
-namespace Rookies_EcommerceWebsite.Customer.RequestSender
+namespace Rookies_EcommerceWebsite.Customer.Interface
 {
-    public interface IAuthRequestSender 
+    public interface IAuthRequestSender
     {
         Task<UserInfo> Login(string username, string password);
         Task<UserToken> GetToken(string username, string password);

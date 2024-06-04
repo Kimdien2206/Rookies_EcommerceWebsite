@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
+using Rookies_EcommerceWebsite.Customer.Interface;
 using Rookies_EcommerceWebsite.Customer.Models;
-using Rookies_EcommerceWebsite.Customer.RequestSender;
 using System.Net.Http.Headers;
 
 namespace Rookies_EcommerceWebsite.Customer.Services

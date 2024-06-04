@@ -17,7 +17,7 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
             ViewData["Title"] = "Product List";
 
             List<Product> products = await _productService.GetAll();
-            return View(products);
+            return View("Index", products);
         }
 
         public async Task<IActionResult> Detail(string id)
@@ -26,7 +26,7 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
 
             Product product = await _productService.GetBySlug(id);
             ModelState.Clear();
-            return View(product);
+            return View("Detail", product);
         }
     }
 }

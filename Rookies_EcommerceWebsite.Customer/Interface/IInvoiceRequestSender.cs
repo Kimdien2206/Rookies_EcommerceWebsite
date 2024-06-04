@@ -1,7 +1,7 @@
 ﻿using Dtos;
 using Rookies_EcommerceWebsite.Customer.Models;
 
-namespace Rookies_EcommerceWebsite.Customer.RequestSender
+namespace Rookies_EcommerceWebsite.Customer.Interface
 {
     public interface IInvoiceRequestSender
     {

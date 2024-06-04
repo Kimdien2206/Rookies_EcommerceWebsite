@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Rookies_EcommerceWebsite.Customer.Interface;
 using Rookies_EcommerceWebsite.Customer.Models;
 using Rookies_EcommerceWebsite.Customer.Models.ViewModels;
-using Rookies_EcommerceWebsite.Customer.RequestSender;
 
 namespace Rookies_EcommerceWebsite.Customer.Controllers
 {
@@ -35,6 +35,10 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
 
                     UserInfo userInfo = await _requestSender.GetUserInfo(token.Id, token.Token);
                     HttpContext.Session.SetString("LastName", userInfo.LastName);
+                    HttpContext.Session.SetString("FirstName", userInfo.FirstName);
+                    HttpContext.Session.SetString("Address", userInfo.Address);
+                    HttpContext.Session.SetString("PhoneNumber", userInfo.PhoneNumber);
+                    HttpContext.Session.SetString("Email", userInfo.Email);
                     HttpContext.Session.SetString("Id", userInfo.Id);
 
                     return RedirectToAction("Index", "Home");

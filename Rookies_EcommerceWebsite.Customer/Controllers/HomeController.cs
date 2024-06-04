@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Rookies_EcommerceWebsite.Customer.Interface;
 using Rookies_EcommerceWebsite.Customer.Models;
-using Rookies_EcommerceWebsite.Customer.RequestSender;
 using Rookies_EcommerceWebsite.Customer.Services;
 using System.Diagnostics;
 //using System.Web.Mvc;
