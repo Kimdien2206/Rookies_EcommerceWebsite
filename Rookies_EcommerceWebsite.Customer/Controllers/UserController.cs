@@ -1,10 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Rookies_EcommerceWebsite.Customer.Models;
+using Rookies_EcommerceWebsite.Customer.Services;
 
 namespace Rookies_EcommerceWebsite.Customer.Controllers
 {
     public class UserController : Controller
     {
+        private readonly UserService _userService;
+        public UserController(UserService userService)
+        {
+            this._userService = userService;
+        }
         public IActionResult Index()
         {
             ViewData["Title"] = "User";
@@ -29,7 +35,19 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(UserInfo userInfo)
         {
+            string userId = HttpContext.Session.GetString("Id");
+                string token = HttpContext.Request.Cookies["access_token"];
 
+            if(userId != null && token != null)
+            {
+
+                UserInfo newInfo = await _userService.Update(userId, userInfo, token);
+                HttpContext.Session.SetString("LastName", newInfo.LastName);
+                HttpContext.Session.SetString("FirstName", newInfo.FirstName);
+                HttpContext.Session.SetString("PhoneNumber", newInfo.PhoneNumber);
+                HttpContext.Session.SetString("Email", newInfo.Email);
+                HttpContext.Session.SetString("Address", newInfo.Address);
+            }
 
             return RedirectToAction("Index");
         }

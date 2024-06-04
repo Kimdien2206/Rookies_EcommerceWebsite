@@ -16,11 +16,13 @@ builder.Services.AddTransient<IRequestSender<Category>, RequestSender<Category>>
 builder.Services.AddTransient<ICartRequestSender, CartRequestSender>();
 builder.Services.AddTransient<IAuthRequestSender, AuthRequestSender>();
 builder.Services.AddTransient<IInvoiceRequestSender, InvoiceRequestSender>();
+builder.Services.AddTransient<IUserRequestSender, UserRequestSender>();
 
 builder.Services.AddTransient<ProductService>();
 builder.Services.AddTransient<RatingService>();
 builder.Services.AddTransient<CategoryService>();
 builder.Services.AddTransient<CartService>();
+builder.Services.AddTransient<UserService>();
 builder.Services.AddTransient<InvoiceService>();
 
 

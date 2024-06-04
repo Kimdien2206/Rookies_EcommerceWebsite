@@ -25,6 +25,8 @@ namespace Rookies_EcommerceWebsite.Utils
             CreateMap<Cart, GetListCartResponse>();
             CreateMap<Variant, GetListCartVariantResponse>();
             CreateMap<Product, GetListCartProductResponse>();
+            CreateMap<UpdateUserRequestDto, User>();
+            CreateMap<User, GetUserInfoResponse>().ForMember(i => i.DateOfBirth, o => o.MapFrom(src => DateTime.Parse(src.DateOfBirth.ToString())));
             CreateMap<User, LoggedInResponse>().ForMember(i => i.DateOfBirth, o => o.MapFrom(src => DateTime.Parse(src.DateOfBirth.ToString())));
         }
     }

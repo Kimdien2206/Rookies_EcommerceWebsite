@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Dtos.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +35,15 @@ namespace Rookies_EcommerceWebsite.Controllers
         public Task<IResult> GetById(string id)
         {
             return _service.GetById(id); 
+        }
+
+        [HttpPatch]
+        [Route("{id}")]
+        [Authorize]
+        public Task<IResult> Update(string id, UpdateUserRequestDto user)
+        {
+            User newInfo = _mapper.Map<User>(user);
+            return _service.Update(id, newInfo);
         }
     }
 }

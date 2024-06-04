@@ -5,13 +5,16 @@ namespace Rookies_EcommerceWebsite.Customer.Services
 {
     public class UserService
     {
-        private readonly IRequestSender<UserInfo> _requestSender;
+        private readonly IUserRequestSender _requestSender;
 
-        public UserService(IRequestSender<UserInfo> requestSender)
+        public UserService(IUserRequestSender requestSender)
         {
             this._requestSender = requestSender;
         }
 
-
+        public async Task<UserInfo> Update(string id, UserInfo model, string token)
+        {
+            return await _requestSender.Update(id, model, token);
+        }
     }
 }

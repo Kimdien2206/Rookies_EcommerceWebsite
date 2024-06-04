@@ -35,7 +35,8 @@ namespace Rookies_EcommerceWebsite.Repositories
 
         public Task Save()
         {
-            throw new NotImplementedException();
+            return _context.SaveChangesAsync();
+
         }
 
         public Task<List<User>> Search(string searchString)
@@ -43,9 +44,17 @@ namespace Rookies_EcommerceWebsite.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<User> Update(string id, User entity)
+        public async Task<User> Update(string id, User entity)
         {
-            throw new NotImplementedException();
+            User currentUser = _context.Users.Find(id);
+
+            currentUser.Address = entity.Address;
+            currentUser.Email = entity.Email;
+            currentUser.FirstName = entity.FirstName;
+            currentUser.LastName = entity.LastName;
+            currentUser.PhoneNumber = entity.PhoneNumber;
+
+            return currentUser;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Dtos.Response;
+using Microsoft.AspNetCore.Mvc;
 using Rookies_EcommerceWebsite.Customer.Models;
 using Rookies_EcommerceWebsite.Customer.Models.ViewModels;
 using Rookies_EcommerceWebsite.Customer.Services;
@@ -11,13 +12,6 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
         public InvoiceController(InvoiceService invoiceService)
         {
             this._invoiceService = invoiceService;
-        }
-
-        public IActionResult Index()
-        {
-            ViewData["Title"] = "Invoice";
-
-            return View();
         }
 
 

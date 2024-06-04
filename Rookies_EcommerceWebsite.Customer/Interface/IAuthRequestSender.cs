@@ -1,4 +1,5 @@
-﻿using Rookies_EcommerceWebsite.Customer.Models;
+﻿using Dtos.Response;
+using Rookies_EcommerceWebsite.Customer.Models;
 using Rookies_EcommerceWebsite.Customer.Models.ViewModels;
 
 namespace Rookies_EcommerceWebsite.Customer.Interface

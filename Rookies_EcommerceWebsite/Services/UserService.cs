@@ -1,4 +1,6 @@
-﻿using Rookies_EcommerceWebsite.Data.Entities;
+﻿using AutoMapper;
+using Dtos.Response;
+using Rookies_EcommerceWebsite.Data.Entities;
 using Rookies_EcommerceWebsite.Interfaces;
 
 namespace Rookies_EcommerceWebsite.Services
@@ -6,9 +8,11 @@ namespace Rookies_EcommerceWebsite.Services
     public class UserService 
     {
         private readonly IRepository<User> _repository;
-        public UserService(IRepository<User> repository)
+        private readonly IMapper _mapper;
+        public UserService(IRepository<User> repository, IMapper mapper)
         {
             this._repository = repository;
+            this._mapper = mapper;
         }
 
         public Task<IResult> Create(User entity)
@@ -29,8 +33,9 @@ namespace Rookies_EcommerceWebsite.Services
             {
                 return Results.NoContent();
             }
+            List<GetUserInfoResponse> responses = _mapper.Map<List<GetUserInfoResponse>>(users);
 
-            return Results.Ok(users);
+            return Results.Ok(responses);
         }
 
         public async Task<IResult> GetById(string id)
@@ -42,12 +47,23 @@ namespace Rookies_EcommerceWebsite.Services
                 return Results.NotFound();
             }
 
-            return Results.Ok(user);    
+            GetUserInfoResponse response = _mapper.Map<GetUserInfoResponse>(user);
+
+            return Results.Ok(response);    
         }
 
-        public Task<IResult> Update(string id, User entity)
+        public async Task<IResult> Update(string id, User entity)
         {
-            throw new NotImplementedException();
+            User user = await _repository.Update(id, entity);
+
+            if (user == null)
+            {
+                return Results.NotFound();
+            }
+
+            GetUserInfoResponse response = _mapper.Map<GetUserInfoResponse>(user);
+
+            return Results.Ok(response);
         }
     }
 }
