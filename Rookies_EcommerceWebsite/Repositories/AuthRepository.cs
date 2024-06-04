@@ -33,12 +33,10 @@ namespace Rookies_EcommerceWebsite.Repositories
 
         public async Task<IResult> Login(string userName, string password)
         {
-            //signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;
             var result = await signInManager.PasswordSignInAsync(userName, password, false, lockoutOnFailure: true);
 
             if (result.Succeeded)
             {
-                //var stringToken = await CreateToken(email);
                 User userInfo = await userManager.FindByNameAsync(userName);
                 
                 LoggedInResponse response = _mapper.Map<LoggedInResponse>(userInfo);
