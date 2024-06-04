@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useContext } from "react";
-import { Button, Form, FormProps, Input } from "antd";
+import { Button, Form, FormProps, Input, notification } from "antd";
 import {
   PASSWORD_REQUIRED,
   USERNAME_REQUIRED,
@@ -46,10 +46,14 @@ const LoginForm = () => {
                 }
                 LocalStorage.setItem("user", user);
                 setUser && setUser(user);
+                notification.success({message: "Login success"})
                 nav("/admin/dashboard")
             })
           }
-        }).catch((error) => {throw new Error(error)});
+        }).catch((error) => {
+          notification.error({message: "Login failed"})
+          throw new Error(error)
+        });
       }
     
     };
