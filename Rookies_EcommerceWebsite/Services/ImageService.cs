@@ -24,7 +24,6 @@ namespace Rookies_EcommerceWebsite.Services
                 {
                     Folder = "nash",
                     UseFilename = true,
-                    UniqueFilename = true,
                     Overwrite = true,
                     File = new FileDescription(file.FileName, stream)
                 };
@@ -32,6 +31,17 @@ namespace Rookies_EcommerceWebsite.Services
                 results.Add(result);
             }
             return results;
+        }
+        
+        public DeletionResult Delete(string publicId)
+        {
+            var deleteParams = new DeletionParams($"nash/{publicId}")
+            {
+                ResourceType = ResourceType.Image
+            };
+            DeletionResult result = cloudinary.Destroy(deleteParams);
+
+            return result;
         }
     }
 }
