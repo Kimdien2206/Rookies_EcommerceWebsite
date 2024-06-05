@@ -4,13 +4,14 @@
 *@
 @{
     GetListCartResponse[] carts = ViewData["Carts"] as GetListCartResponse[];
+    string message = TempData["Message"] as string;
 }
 @model Rookies_EcommerceWebsite.Customer.Models.ViewModels.InvoiceViewModel
 
 
 
         
-<div class="container-fluid mt-5">
+<div class="container mt-5">
     <div class="row mx-2">
         <div class="col-7">
             <div class="table-responsive">
@@ -122,6 +123,7 @@
                             
                         </div>
                         <hr/>
+                        <p class="text-danger">@message</p>
                         <button type="submit" class="btn btn-primary w-100">Submit</button>
                     </div>
                 </div>

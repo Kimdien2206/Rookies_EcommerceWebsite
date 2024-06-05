@@ -34,6 +34,7 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
                     return Redirect(link);
                 }
             }
+            TempData["Message"] = "Please fill all the input before submitting";
             return RedirectToAction("Index", "Cart");
         }
     }

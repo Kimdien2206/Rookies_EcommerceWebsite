@@ -38,7 +38,7 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
             string userId = HttpContext.Session.GetString("Id");
                 string token = HttpContext.Request.Cookies["access_token"];
 
-            if(userId != null && token != null)
+            if(userId != null && token != null && ModelState.IsValid)
             {
 
                 UserInfo newInfo = await _userService.Update(userId, userInfo, token);
@@ -49,6 +49,7 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
                 HttpContext.Session.SetString("Address", newInfo.Address);
             }
 
+            TempData["Message"] = "Missing fields data";
             return RedirectToAction("Index");
         }
     }

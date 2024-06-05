@@ -75,11 +75,11 @@ input {
         color: #34AC9E;
     }
 
-        label:hover,
-        label:hover ~ label,
-        input:checked ~ label {
-            color: #34AC9E;
-        }
+/*star-rating-input:hover,
+star-rating-input:hover ~ label,
+star-rating-input:checked ~ label {
+    color: #34AC9E;
+}*/
 
 .variant-radio {
     width: 20%;

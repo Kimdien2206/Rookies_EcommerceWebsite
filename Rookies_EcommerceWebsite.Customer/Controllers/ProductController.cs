@@ -25,8 +25,12 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
             ViewData["Title"] = "Product Detail";
 
             Product product = await _productService.GetBySlug(id);
-            ModelState.Clear();
-            return View("Detail", product);
+            if(product != null)
+            {
+                ModelState.Clear();
+                return View("Detail", product);
+            }
+            return View("Error", new ErrorViewModel() { RequestId = null});
         }
     }
 }

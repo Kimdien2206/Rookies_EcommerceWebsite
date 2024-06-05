@@ -13,10 +13,15 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
         }
         public async Task<IActionResult> Detail(string id)
         {
-            Category detail = await _categoryService.GetDetail(id); 
-            ViewData["Title"] = detail.Name;
+            Category detail = await _categoryService.GetDetail(id);
+            if (detail != null)
+            {
+                ViewData["Title"] = detail.Name;
 
-            return View(detail);
+                return View("Detail", detail);
+            }
+
+            return View("Error", new ErrorViewModel() { RequestId= null});
         }
     }
 }
