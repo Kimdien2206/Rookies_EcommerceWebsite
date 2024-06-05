@@ -24,8 +24,8 @@ namespace Rookies_EcommerceWebsite.Tests.MVC
                 new Product()
                 {
                     Id = "1",
-                    Name = "Test",
-                    Description = "Test",
+                    Name = "Test1",
+                    Description = "Test1",
                     Images = ["test1", "test2"],
                     Slug = "Test-1",
                     Price = 20000,
@@ -42,7 +42,7 @@ namespace Rookies_EcommerceWebsite.Tests.MVC
                     IsDeleted = true,
                 }
             });
-            mockRequest.Setup(m => m.GetDetail("Product", "1")).ReturnsAsync(new Product()
+            mockRequest.Setup(m => m.GetDetail("Product", "Test-1")).ReturnsAsync(new Product()
             {
                 Id = "1",
                 Name = "Test",
@@ -52,29 +52,71 @@ namespace Rookies_EcommerceWebsite.Tests.MVC
                 Price = 20000,
                 IsDeleted = true,
             });
+            
+            mockRequest.Setup(m => m.GetDetail("Product", "Test-2")).ReturnsAsync(new Product()
+            {
+                Id = "2",
+                Name = "Test2",
+                Description = "Test2",
+                Images = ["test1", "test2"],
+                Slug = "Test-2",
+                Price = 20000,
+                IsDeleted = true,
+            });
 
             var service = new ProductService(mockRequest.Object);
             this._controller = new ProductController(service);
         }
 
-        [Fact]
-        public async void ProductController_Detail_ViewReturn()
+        [Theory]
+        [InlineData("Test-1")]
+        [InlineData("Test-2")]
+        public async void Detail_GivenValidSlug_ShouldBeReturnValidView(string slug)
         {
-            var result = await _controller.Detail("1") as ViewResult;
+            // Arrange
+            var result = await _controller.Detail(slug) as ViewResult;
 
-            Assert.Equal("Detail", result.ViewName);
-            Assert.True(result.Model != null);
-            Assert.Equal(result.ViewData["Title"], "Product Detail");
+            // Act
+            var viewName = result.ViewName;
+            var model = result.Model;
+            var viewTitle = result.ViewData["Title"];
+
+            // Assert
+            Assert.Equal("Detail", viewName);
+            Assert.True(model != null);
+            Assert.Equal("Product Detail", viewTitle);
+        }
+        
+        [Theory]
+        [InlineData("Test-3")]
+        [InlineData("default")]
+        public async void Detail_GivenInvalidSlug_ShouldBeReturnInvalidView(string slug)
+        {
+            // Arrange
+            var result = await _controller.Detail(slug) as ViewResult;
+
+            // Act
+            var viewName = result.ViewName;
+
+            // Assert
+            Assert.Equal("Error", viewName);
         }
         
         [Fact]
         public async void ProductController_Index_ViewReturn()
         {
+            //Arrange
             var result = await _controller.Index() as ViewResult;
-
-            Assert.True(result.Model != null);
-            Assert.Equal("Index", result.ViewName);
-            Assert.Equal(result.ViewData["Title"], "Product List");
+            
+            // Act
+            var viewName = result.ViewName;
+            var model = result.Model;
+            var viewTitle = result.ViewData["Title"];
+            
+            // Assert
+            Assert.True(model != null);
+            Assert.Equal("Index", viewName);
+            Assert.Equal("Product List", viewTitle);
         }
     }
 }

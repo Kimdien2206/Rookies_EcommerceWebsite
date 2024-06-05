@@ -83,19 +83,19 @@ namespace Rookies_EcommerceWebsite.Tests.API
             };
 
         [Fact]
-        public async void ProductController_TestingGetAllReturnType()
+        public async void Get_ShouldBeResultListProudct_IfListNotEmpty()
         {
+            // Arrange
             var mockHttpContext = CreateMockHttpContext();
-
-
             var result = await controller.Get();
-            await result.ExecuteAsync(mockHttpContext);
 
+            // Act
+            await result.ExecuteAsync(mockHttpContext);
             mockHttpContext.Response.Body.Position = 0;
             var jsonOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
             var responseProduct = await JsonSerializer.DeserializeAsync<List<Product>>(mockHttpContext.Response.Body, jsonOptions);
 
-
+            // Assert
             Assert.Equal(200, mockHttpContext.Response.StatusCode);
             var expected = MockProduct.GetProducts();
             Assert.IsType<List<Product>>(responseProduct);
@@ -105,23 +105,21 @@ namespace Rookies_EcommerceWebsite.Tests.API
         [InlineData("Test-1", "Test-1")]
         [InlineData("Test-2", "Test-2")]
 
-        public async void ProductController_TestingGetBySlugSuccess(string slug, string expect)
+        public async void GetBySlug_GivenValidSlugAndExpect_ShouldBeReturnProduct_IfProductExists(string slug, string expect)
         {
+            // Arrange
             var mockHttpContext = CreateMockHttpContext();
-
-
             var result = await controller.GetBySlug(slug);
-            await result.ExecuteAsync(mockHttpContext);
 
+            // Act
+            await result.ExecuteAsync(mockHttpContext);
             mockHttpContext.Response.Body.Position = 0;
             var jsonOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
             var responseProduct = await JsonSerializer.DeserializeAsync<Product>(mockHttpContext.Response.Body, jsonOptions);
 
-
+            // Assert
             Assert.Equal(200, mockHttpContext.Response.StatusCode);
-
             Assert.IsType<Product>(responseProduct);
-
             Assert.True(responseProduct.Slug.Equals(expect));
         }
 
@@ -129,35 +127,35 @@ namespace Rookies_EcommerceWebsite.Tests.API
         [InlineData("Test-3")]
         [InlineData("Test-4")]
         [InlineData("Default")]
-        public async void ProductController_TestingGetBySlugFailed(string slug)
+        public async void GetBySlug_GivenInvalidSlugAndExpect_ShouldBeReturnNotFound_IfProductNotExists(string slug)
         {
             var mockHttpContext = CreateMockHttpContext();
-
-
             var result = await controller.GetBySlug(slug);
-            await result.ExecuteAsync(mockHttpContext);
 
+
+            await result.ExecuteAsync(mockHttpContext);
             mockHttpContext.Response.Body.Position = 0;
+
 
             Assert.Equal(404, mockHttpContext.Response.StatusCode);
         }
 
         [Fact]
-        public async void ProductController_Create_BadRequest()
+        public async void Create_GivenNoData_ShouldBeReturnBadRequest()
         {
             var mockHttpContext = CreateMockHttpContext();
-
-
             var result = await controller.Create(null);
-            await result.ExecuteAsync(mockHttpContext);
 
+
+            await result.ExecuteAsync(mockHttpContext);
             mockHttpContext.Response.Body.Position = 0;
+
 
             Assert.Equal(400, mockHttpContext.Response.StatusCode);
         }
 
         [Fact]
-        public async void ProductController_Update_BadRequest()
+        public async void Update_GivenNoData_ShouldBeReturnBadRequest()
         {
             var mockHttpContext = CreateMockHttpContext();
 
@@ -169,6 +167,5 @@ namespace Rookies_EcommerceWebsite.Tests.API
 
             Assert.Equal(400, mockHttpContext.Response.StatusCode);
         }
-
     }
 }

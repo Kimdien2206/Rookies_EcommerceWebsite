@@ -31,6 +31,7 @@ namespace Rookies_EcommerceWebsite.Tests.API
             mockSet.As<IQueryable<Product>>().Setup(m => m.ElementType).Returns(MockProduct.GetProducts().AsQueryable().ElementType);
             mockSet.As<IQueryable<Product>>().Setup(m => m.GetEnumerator()).Returns(MockProduct.GetProducts().GetEnumerator());
             mockSet.Setup(d => d.Add(It.IsAny<Product>())).Callback<Product>((s) => MockProduct.Add(s));
+            //mockSet.Setup(d => d.Add(It.IsAny<Product>())).Callback<Product>((s) => MockProduct.Add(s));
 
 
             _mockObject = new Mock<ApplicationDbContext>();
