@@ -10,6 +10,7 @@ import {
   Form,
   UploadFile,
   UploadProps,
+  Modal,
 } from "antd";
 import { FormInstance } from "antd/es/form/Form";
 import React, {
@@ -17,6 +18,7 @@ import React, {
   FC,
   SetStateAction,
   useContext,
+  useEffect,
   useState,
 } from "react";
 import { FORM_NO_BOTTOM_MARGIN } from "../../constant";
@@ -26,6 +28,7 @@ import useSWR from "swr";
 import { Category } from "../../types/Category";
 import { ProductContext } from "../../context/ProductContext";
 import { REQUIRED_RULE } from "../../constant/inputRules";
+import { deleteImage } from "../../api/ProductAPI";
 
 type ProductEditFormProps = {
   setImageList: Dispatch<SetStateAction<UploadFile[]>>;
@@ -33,16 +36,23 @@ type ProductEditFormProps = {
 };
 
 const ProductEditForm: FC<ProductEditFormProps> = ({ setImageList, form }) => {
-  const [fileList, setFileList] = useState<UploadFile[]>([
-    {
-      uid: "-1",
-      name: "image.png",
-      status: "done",
-      url: "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png",
-    },
-  ]);
-  const { data } = useSWR("https://localhost:7144/api/Category");
-  const { product } = useContext(ProductContext);
+  const { product, setProduct } = useContext(ProductContext);
+  const { data, isLoading } = useSWR("https://localhost:7144/api/Category");
+  const [fileList, setFileList] = useState<UploadFile[]>(
+    product &&
+      product.images.map((item: string, index: number) => {
+        return {
+          uid: `${index}`,
+          name: item.split("/")[8],
+          status: "done",
+          url: item,
+        };
+      })
+  );
+
+  useEffect(() => {
+    setImageList(fileList);
+  }, [fileList, setImageList]);
 
   const onChange: UploadProps["onChange"] = ({ fileList: newFileList }) => {
     console.log(newFileList);
@@ -56,6 +66,45 @@ const ProductEditForm: FC<ProductEditFormProps> = ({ setImageList, form }) => {
       return e;
     }
     return e?.fileList;
+  };
+
+  const handleOnRemove = async (item: UploadFile) => {
+    console.log(item);
+    if (item.url) {
+      let isDone = false;
+      Modal.confirm({
+        title: "Caution delete images",
+        content: "Are you sure you want to delete this image",
+        okText: "Yes",
+        cancelText: "No",
+        onOk: async () => {
+          return await deleteImage(item.url?.split("/")[8].split(".")[0])
+            .then(() => {
+              setProduct((prev: Product) => {
+                return {
+                  ...prev,
+                  images: product.images.filter(
+                    (image: string) => image !== item.url
+                  ),
+                };
+              });
+              setFileList((prev: UploadFile[]) =>
+                prev.filter((file) => file !== item)
+              );
+              form.setFieldValue(
+                "upload",
+                fileList.filter((file) => file !== item)
+              );
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        },
+      });
+      return false;
+    } else if (item.originFileObj) {
+      return true;
+    }
   };
   return (
     <Form form={form}>
@@ -84,6 +133,7 @@ const ProductEditForm: FC<ProductEditFormProps> = ({ setImageList, form }) => {
               <Select
                 allowClear
                 style={{ width: "100%" }}
+                loading={isLoading}
                 placeholder="Choose one category for product"
                 options={data?.map((item: Category) => {
                   return { value: item.id, label: item.name };
@@ -97,6 +147,7 @@ const ProductEditForm: FC<ProductEditFormProps> = ({ setImageList, form }) => {
               valuePropName="fileList"
               getValueFromEvent={normFile}
               style={FORM_NO_BOTTOM_MARGIN}
+              initialValue={fileList}
             >
               <Upload
                 name="avatar"
@@ -104,9 +155,11 @@ const ProductEditForm: FC<ProductEditFormProps> = ({ setImageList, form }) => {
                 beforeUpload={() => {
                   return false;
                 }}
+                fileList={fileList}
                 onChange={onChange}
+                onRemove={handleOnRemove}
               >
-                {fileList.length < 4 && "+ Add image"}
+                {fileList.length <= 4 && "+ Add image"}
               </Upload>
             </Form.Item>
           </Descriptions.Item>

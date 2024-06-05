@@ -17,3 +17,7 @@ export const deleteProduct = (productId: string) => {
 export const updateProduct = (productId: string, newProductInfo: ProductUpdateDto) => { 
     return http.patch(`/product/${productId}`, newProductInfo);
 } 
+
+export const deleteImage = (publicId: string) => {
+    return http.delete(`/image/${publicId}`);
+}

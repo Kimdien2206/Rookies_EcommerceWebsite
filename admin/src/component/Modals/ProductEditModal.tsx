@@ -14,6 +14,7 @@ import {
 } from "../../types/Product";
 import slugify from "slugify";
 import {
+  deleteImage,
   updateProduct,
 } from "../../api/ProductAPI";
 import { mutate } from "swr";
@@ -42,6 +43,7 @@ const ProductEditModal: FC<ProductEditModalProps> = ({
       console.log(product);
       const slugString = slugify(data.name);
 
+      console.log(imageList)
       imageList &&
         uploadImageFunc(imageList, slugString).then((URLs) => {
           const newProduct: ProductUpdateDto = {
@@ -50,7 +52,7 @@ const ProductEditModal: FC<ProductEditModalProps> = ({
             price: data.price,
             description: data.description,
             categoryId: data.category,
-            images: URLs ? URLs : undefined,
+            images: URLs ? [...product.images, ...URLs] : [...product.images],
           };
           updateProduct(product.id, newProduct)
             .then(() => {
@@ -58,7 +60,7 @@ const ProductEditModal: FC<ProductEditModalProps> = ({
               setIsModalOpen(false);
               setIsLoading(false);
               form.resetFields();
-              notification.success({ message: "Create product succeeded" });
+              notification.success({ message: "Update product succeeded" });
             })
             .catch((error) => {
               notification.error({ message: "Something went wrong" });
