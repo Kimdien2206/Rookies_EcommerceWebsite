@@ -9,6 +9,7 @@ namespace Rookies_EcommerceWebsite.API.Interfaces
         Task<Cart> Update(string id, Cart entity);
         Task Delete(string id);
         Task<Cart> GetById(string id);
+        Task<Cart> SearchIfExistCart(string userId, string variantId);
         Task<List<Cart>> GetByCustomerId(string id);
         Task Save();
     }

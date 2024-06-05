@@ -56,6 +56,11 @@ namespace Rookies_EcommerceWebsite.Repositories
             throw new NotImplementedException();
         }
 
+        public async Task<Cart> SearchIfExistCart(string userId, string variantId)
+        {
+            return _context.Carts.Where(u => (u.VariantId.Equals(variantId) && u.CustomerId.Equals(userId))).FirstOrDefault();
+        }
+
         public async Task<Cart> Update(string id, Cart entity)
         {
             Cart cart = _context.Carts.Find(id);

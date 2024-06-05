@@ -60,7 +60,7 @@ namespace Rookies_EcommerceWebsite.Controllers
         public async Task<IResult> Update(string id, [FromBody] UpdateProductRequestDto updateProductRequestDto)
         {
             Product updateProduct = _mapper.Map<Product>(updateProductRequestDto);
-            if (updateProduct == null)
+            if (updateProduct == null || id == null)
             {
                 return Results.BadRequest();
             }

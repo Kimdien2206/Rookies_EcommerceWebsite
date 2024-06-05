@@ -33,18 +33,26 @@ namespace Rookies_EcommerceWebsite.Services
             {
                 return Results.NotFound(product);
             }
+            Cart cart = await _unitOfWork.cartRepository.SearchIfExistCart(entity.CustomerId, entity.VariantId);
+            if (cart != null)
+            {
+                cart.Amount += entity.Amount;
+                cart.TotalCost = (ulong)(cart.Amount * product.Price);
+                _unitOfWork.SaveChanges();
+                return Results.Ok(cart);
+            }
 
             entity.TotalCost = (ulong)(entity.Amount * product.Price);
 
-            Cart cart = await _unitOfWork.cartRepository.Create(entity);
+            Cart createdCart = await _unitOfWork.cartRepository.Create(entity);
             _unitOfWork.SaveChanges();
 
-            if(cart == null)
+            if(createdCart == null)
             {
                 return Results.UnprocessableEntity();
             }
 
-            return Results.Ok(cart);
+            return Results.Ok(createdCart);
         }
 
         public async Task<IResult> Delete(string id)
