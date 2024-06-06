@@ -23,9 +23,12 @@ namespace Rookies_EcommerceWebsite.Repositories
         public Task Delete(string id)
         {
             Cart cart = _context.Carts.FirstOrDefault(c => c.Id == id);
-
-            _context.Carts.Remove(cart);
-            return Task.CompletedTask;
+            if(cart != null)
+            {
+                _context.Carts.Remove(cart);
+                return Task.CompletedTask;
+            }
+            return Task.FromException(new KeyNotFoundException());
         }
 
         public async Task<List<Cart>> GetAll()

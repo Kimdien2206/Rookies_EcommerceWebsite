@@ -55,36 +55,8 @@ namespace Rookies_EcommerceWebsite.Controllers
             return await _authRepository.Register(registerUser, registerRequestModel.Password);
         }
 
-        [HttpGet]
-        [Route("ConfirmEmail")]
-
-        public IActionResult ConfirmEmail()
-        {
-            return Ok();
-
-        }
-        
-        [HttpPost]
-        [Route("ResendEmail")]
-
-        public IActionResult ResendEmail()
-        {
-            return Ok();
-
-        }
-
-        [HttpPost]
-        [Route("ForgotPassword")]
-
-        public IActionResult ForgotPassword()
-        {
-            return Ok();
-
-        }
-
         [HttpPost]
         [Route("RefreshToken")]
-
         public async Task<IResult> RefreshToken([FromBody] RefreshTokenDto refreshTokenDto)
         {
             return await _authRepository.RefreshToken(refreshTokenDto);
@@ -92,7 +64,6 @@ namespace Rookies_EcommerceWebsite.Controllers
         
         [HttpPost]
         [Route("GetToken")]
-
         public async Task<IResult> GetToken([FromBody] LoginRequestDto userLogins)
         {
             return await _authRepository.GetToken(userLogins);

@@ -46,7 +46,7 @@ namespace Rookies_EcommerceWebsite.Controllers
         public async Task<IResult> Create([FromBody] CreateCartRequestDto cartDto)
         {
             Cart creatingCart = _mapper.Map<Cart>(cartDto);
-            if(creatingCart == null)
+            if(creatingCart == null || creatingCart.Amount <= 0)
             {
                 return Results.BadRequest();
             }
