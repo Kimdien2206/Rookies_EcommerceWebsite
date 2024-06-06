@@ -16,6 +16,7 @@ import { DeleteFilled, EditFilled } from "@ant-design/icons";
 import { deleteCategory, updateCategory } from "../../api/CategoryAPI";
 import { mutate } from "swr";
 import EditableCell from "../EditableCell";
+import { REQUIRED_RULE } from "../../constant/inputRules";
 
 const onDeleteButtonClick = (record: Category) => {
   Modal.confirm({
@@ -144,6 +145,7 @@ const CategoryTable: FC<CategoryTableProps> = ({ data, form }) => {
         inputType: "INPUT",
         dataIndex: col.dataIndex,
         title: col.title,
+        rules: [REQUIRED_RULE],
         editing: isEditing(record),
       }),
     };

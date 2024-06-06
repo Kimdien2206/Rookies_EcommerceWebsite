@@ -2,6 +2,7 @@ import { Descriptions, Form, FormInstance, Input, Space } from "antd";
 import React from "react";
 import { Category } from "../../types/Category";
 import { FORM_NO_BOTTOM_MARGIN } from "../../constant";
+import { REQUIRED_RULE } from "../../constant/inputRules";
 
 type CategoryCreateFormProps = {
     form: FormInstance<Category>;
@@ -18,7 +19,7 @@ const CategoryCreateForm = (props : CategoryCreateFormProps) => {
           <Descriptions.Item label="Name" span={3}>
             <Form.Item
               name={"name"}
-              //   rules={[REQUIRED_RULE]}
+                rules={[REQUIRED_RULE]}
               style={FORM_NO_BOTTOM_MARGIN}
             >
               <Input style={{ width: "100%" }} />
@@ -27,7 +28,7 @@ const CategoryCreateForm = (props : CategoryCreateFormProps) => {
           <Descriptions.Item label="Description" span={3}>
             <Form.Item
               name={"description"}
-              //   rules={[REQUIRED_RULE]}
+                rules={[REQUIRED_RULE]}
               style={FORM_NO_BOTTOM_MARGIN}
             >
               <Input.TextArea style={{ width: "100%", height: 150 }} />

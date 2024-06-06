@@ -37,7 +37,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
         <Form.Item
           name={dataIndex}
           style={{ margin: 0 }}
-          rules={rules}
+          rules={[...rules]}
           tooltip={tooltip}
         >
           <Input />
