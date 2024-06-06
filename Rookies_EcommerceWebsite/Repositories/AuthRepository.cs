@@ -38,8 +38,10 @@ namespace Rookies_EcommerceWebsite.Repositories
             if (result.Succeeded)
             {
                 User userInfo = await userManager.FindByNameAsync(userName);
+                var role = await userManager.GetRolesAsync(userInfo);
                 
                 LoggedInResponse response = _mapper.Map<LoggedInResponse>(userInfo);
+                response.Roles = role[0];
                 Console.Write(response.ToString());
 
                 return Results.Ok(response);

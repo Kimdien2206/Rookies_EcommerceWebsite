@@ -5,10 +5,10 @@ import {
 } from "@ant-design/icons/lib/icons";
 
 import Sider from "antd/es/layout/Sider";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import NavBar from "../component/NavBar";
 import { Content, Header } from "antd/es/layout/layout";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import Scrollbars from "react-custom-scrollbars";
 import Cookies from "js-cookie";
 import LocalStorage from "../helper/localStorage";
@@ -16,15 +16,25 @@ import { AppContext } from "../context/AppContext";
 
 const AdminPage = () => {
   const [collapsed, setCollapsed] = useState<boolean>(false);
-  const {setUser} = useContext(AppContext);
+  const { setUser } = useContext(AppContext);
   const nav = useNavigate();
+  const storedUser = LocalStorage.getItem("user");
 
+  console.log(storedUser)
+
+  if (storedUser == null) {
+    // user is not authenticated
+    return <Navigate to="/" />;
+  }
+  
   const handleLogout = () => {
     Cookies.remove("access_token");
     LocalStorage.deleteItem("user");
-    setUser(undefined);
+    setUser && setUser(null);
     nav('/')
   }
+  
+  
   return (
     <Layout style={{ width: "100%", height: "100vh" }}>
       <Sider trigger={null}  collapsible collapsed={collapsed}>

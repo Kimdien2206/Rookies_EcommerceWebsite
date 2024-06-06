@@ -17,46 +17,54 @@ type FieldType = {
   password?: string;
 };
 
-
 const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
-    console.log("Failed:", errorInfo);
+  console.log("Failed:", errorInfo);
 };
 
 const LoginForm = () => {
-    const [cookies, setCookie] = useCookies();
-    const {setUser} = useContext(AppContext);
-    const nav = useNavigate();
+  const [cookies, setCookie] = useCookies();
+  const { setUser } = useContext(AppContext);
+  const nav = useNavigate();
 
-    const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-      if (values.password && values.username) {
-        const loginInfo: LoginRequest = {
-          userName: values.username,
-          password: values.password,
-        };
-        login(loginInfo).then(({ data }) => {
-          console.log(data)
-          if(data?.refreshToken){
-            getToken(loginInfo).then(({data: tokenData}) => {
+  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
+    if (values.password && values.username) {
+      const loginInfo: LoginRequest = {
+        userName: values.username,
+        password: values.password,
+      };
+      login(loginInfo)
+        .then(({ data }) => {
+          console.log(data);
+          if (data.roles == "Admin") {
+            if (data?.refreshToken) {
+              getToken(loginInfo).then(({ data: tokenData }) => {
                 const tokenExpires = new Date(tokenData.expiredTime);
-                setCookie('access_token', tokenData.token, { path: '/',  expires: tokenExpires})
+                setCookie("access_token", tokenData.token, {
+                  path: "/",
+                  expires: tokenExpires,
+                });
                 const user = {
                   username: tokenData.userName,
                   email: tokenData.email,
-                  role: tokenData.role
-                }
+                  role: tokenData.role,
+                };
                 LocalStorage.setItem("user", user);
                 setUser && setUser(user);
-                notification.success({message: "Login success"})
-                nav("/admin/dashboard")
-            })
+                notification.success({ message: "Login success" });
+                nav("/admin/dashboard");
+              });
+            }
+          } else {
+            notification.error({ message: "Login failed" });
+            return;
           }
-        }).catch((error) => {
-          notification.error({message: "Login failed"})
-          throw new Error(error)
+        })
+        .catch((error) => {
+          notification.error({ message: "Login failed" });
+          throw new Error(error);
         });
-      }
-    
-    };
+    }
+  };
   return (
     <div className="col-7 me-5 ">
       <Form

@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
 import LocalStorage from "../helper/localStorage";
 import { UserLocalStorage } from "../types/User";
 
@@ -17,6 +17,8 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   const [user, setUser] = useState<UserLocalStorage | null>(
     LocalStorage.getItem("user")
   );
+
+  useEffect(() => {}, [user])
 
   return (
     <AppContext.Provider
