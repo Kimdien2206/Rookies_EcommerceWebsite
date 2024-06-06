@@ -78,7 +78,7 @@ namespace Rookies_EcommerceWebsite.Repositories
 
         public async Task<Product> GetById(string id)
         {
-            Product product = _context.Products.Find(id);
+            Product product = _context.Products.Where(x => x.Id.Equals(id)).FirstOrDefault();
 
             return product;
         }

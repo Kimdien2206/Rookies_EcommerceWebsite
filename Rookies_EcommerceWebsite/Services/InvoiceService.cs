@@ -31,6 +31,7 @@ namespace Rookies_EcommerceWebsite.Services
             {
                 return Results.BadRequest();
             }
+
             Invoice invoice = await _unitOfWork.invoiceRepository.Create(entity);
             if (invoice == null)
             {

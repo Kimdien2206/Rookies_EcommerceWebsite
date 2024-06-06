@@ -12,7 +12,7 @@ using Rookies_EcommerceWebsite.Data.Entities;
 using Rookies_EcommerceWebsite.Interfaces;
 using Rookies_EcommerceWebsite.Repositories;
 using Rookies_EcommerceWebsite.Services;
-using Rookies_EcommerceWebsite.Tests.API.MockData;
+using Rookies_EcommerceWebsite.Tests.MockData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +21,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace Rookies_EcommerceWebsite.Tests.API
+namespace Rookies_EcommerceWebsite.Tests.ControllerTest
 {
     public class ProductControllerTesting
     {

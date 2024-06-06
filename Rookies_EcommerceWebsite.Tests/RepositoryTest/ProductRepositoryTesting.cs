@@ -6,7 +6,7 @@ using Rookies_EcommerceWebsite.Data.Entities;
 using Rookies_EcommerceWebsite.Interfaces;
 using Rookies_EcommerceWebsite.Repositories;
 using Rookies_EcommerceWebsite.Services;
-using Rookies_EcommerceWebsite.Tests.API.MockData;
+using Rookies_EcommerceWebsite.Tests.MockData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rookies_EcommerceWebsite.Tests.API
+namespace Rookies_EcommerceWebsite.Tests.RepositoryTest
 {
     public class ProductRepositoryTesting
     {
@@ -31,8 +31,6 @@ namespace Rookies_EcommerceWebsite.Tests.API
             mockSet.As<IQueryable<Product>>().Setup(m => m.ElementType).Returns(MockProduct.GetProducts().AsQueryable().ElementType);
             mockSet.As<IQueryable<Product>>().Setup(m => m.GetEnumerator()).Returns(MockProduct.GetProducts().GetEnumerator());
             mockSet.Setup(d => d.Add(It.IsAny<Product>())).Callback<Product>((s) => MockProduct.Add(s));
-            //mockSet.Setup(d => d.Add(It.IsAny<Product>())).Callback<Product>((s) => MockProduct.Add(s));
-
 
             _mockObject = new Mock<ApplicationDbContext>();
             _mockObject.Setup(m => m.Products).Returns(mockSet.Object);
@@ -45,6 +43,14 @@ namespace Rookies_EcommerceWebsite.Tests.API
             var products = await _productRepository.GetAll();
 
             Assert.Equal(products, MockProduct.GetProducts());
+        }
+        
+        [Fact]
+        public async void GetById_ReturningType_Product()
+        {
+            var response = await _productRepository.GetById("1");
+
+            Assert.Equal(MockProduct.GetProducts().Find(x => x.Id == "1"), response);
         }
 
         [Fact]

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rookies_EcommerceWebsite.Tests.API.MockData
+namespace Rookies_EcommerceWebsite.Tests.MockData
 {
     public static class MockVariant
     {

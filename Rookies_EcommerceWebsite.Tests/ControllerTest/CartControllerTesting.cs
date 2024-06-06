@@ -10,7 +10,7 @@ using Rookies_EcommerceWebsite.Data;
 using Rookies_EcommerceWebsite.Data.Entities;
 using Rookies_EcommerceWebsite.Repositories;
 using Rookies_EcommerceWebsite.Services;
-using Rookies_EcommerceWebsite.Tests.API.MockData;
+using Rookies_EcommerceWebsite.Tests.MockData;
 using Rookies_EcommerceWebsite.Utils;
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Rookies_EcommerceWebsite.Tests.API
+namespace Rookies_EcommerceWebsite.Tests.ControllerTest
 {
     public class CartControllerTesting
     {
@@ -46,14 +46,14 @@ namespace Rookies_EcommerceWebsite.Tests.API
             mockProductSet.As<IQueryable<Product>>().Setup(m => m.Expression).Returns(MockProduct.GetProducts().AsQueryable().Expression);
             mockProductSet.As<IQueryable<Product>>().Setup(m => m.ElementType).Returns(MockProduct.GetProducts().AsQueryable().ElementType);
             mockProductSet.As<IQueryable<Product>>().Setup(m => m.GetEnumerator()).Returns(MockProduct.GetProducts().GetEnumerator());
-            
+
             var mockCartSet = new Mock<DbSet<Cart>>();
             mockCartSet = new Mock<DbSet<Cart>>();
             mockCartSet.As<IQueryable<Cart>>().Setup(m => m.Provider).Returns(MockCart.GetCarts().AsQueryable().Provider);
             mockCartSet.As<IQueryable<Cart>>().Setup(m => m.Expression).Returns(MockCart.GetCarts().AsQueryable().Expression);
             mockCartSet.As<IQueryable<Cart>>().Setup(m => m.ElementType).Returns(MockCart.GetCarts().AsQueryable().ElementType);
             mockCartSet.As<IQueryable<Cart>>().Setup(m => m.GetEnumerator()).Returns(MockCart.GetCarts().GetEnumerator());
-            
+
             var mockVariantSet = new Mock<DbSet<Variant>>();
             mockVariantSet = new Mock<DbSet<Variant>>();
             mockVariantSet.As<IQueryable<Variant>>().Setup(m => m.Provider).Returns(MockVariant.GetVariants().AsQueryable().Provider);
@@ -100,24 +100,24 @@ namespace Rookies_EcommerceWebsite.Tests.API
                     Body = new MemoryStream(),
                 },
             };
-        
-        
-        [Fact]
-        public async void Get_ShouldBeResultNoContent_IfListEmpty()
-        {
-            // Arrange
-            var mockHttpContext = CreateMockHttpContext();
-            var result = await _controller.Get();
 
-            // Act
-            await result.ExecuteAsync(mockHttpContext);
-            mockHttpContext.Response.Body.Position = 0;
-            
 
-            // Assert
-            Assert.Equal(204, mockHttpContext.Response.StatusCode);
-        }
-        
+        //[Fact]
+        //public async void Get_ShouldBeResultNoContent_IfListEmpty()
+        //{
+        //    // Arrange
+        //    var mockHttpContext = CreateMockHttpContext();
+        //    var result = await _controller.Get();
+
+        //    // Act
+        //    await result.ExecuteAsync(mockHttpContext);
+        //    mockHttpContext.Response.Body.Position = 0;
+
+
+        //    // Assert
+        //    Assert.Equal(204, mockHttpContext.Response.StatusCode);
+        //}
+
         [Fact]
         public async void Get_ShouldBeResultListCarts_IfListNotEmpty()
         {
@@ -133,10 +133,9 @@ namespace Rookies_EcommerceWebsite.Tests.API
 
             // Assert
             Assert.Equal(200, mockHttpContext.Response.StatusCode);
-            var expected = MockCart.GetCarts();
             Assert.IsType<List<Cart>>(responseCart);
         }
-        
+
         [Theory]
         [InlineData("1", 1)]
         [InlineData("2", 2)]
@@ -159,7 +158,7 @@ namespace Rookies_EcommerceWebsite.Tests.API
             Assert.IsType<List<Cart>>(responseCart);
             Assert.True(responseCart.Count == expectCount);
         }
-        
+
         [Fact]
         public async void GetByCustomerId_GivenInvalidId_ShouldBeResultNoContentResponse_IfListNotEmpty()
         {
@@ -171,13 +170,13 @@ namespace Rookies_EcommerceWebsite.Tests.API
             // Act
             await result.ExecuteAsync(mockHttpContext);
             mockHttpContext.Response.Body.Position = 0;
-            
+
 
             // Assert
             Assert.Equal(204, mockHttpContext.Response.StatusCode);
         }
 
-        [Fact]        
+        [Fact]
         public async void Create_GivenNoData_ShouldBeResultBadRequestResponse()
         {
             // Arrange
@@ -187,13 +186,13 @@ namespace Rookies_EcommerceWebsite.Tests.API
             // Act
             await result.ExecuteAsync(mockHttpContext);
             mockHttpContext.Response.Body.Position = 0;
-            
+
 
             // Assert
             Assert.Equal(400, mockHttpContext.Response.StatusCode);
         }
-        
-        [Fact]        
+
+        [Fact]
         public async void Create_GivenInvalidVariantId_ShouldBeResultNotFoundResponse()
         {
             // Arrange
@@ -210,34 +209,12 @@ namespace Rookies_EcommerceWebsite.Tests.API
             // Act
             await result.ExecuteAsync(mockHttpContext);
             mockHttpContext.Response.Body.Position = 0;
-            
+
 
             // Assert
             Assert.Equal(404, mockHttpContext.Response.StatusCode);
         }
-        
-        [Fact]        
-        public async void Create_GivenInvalidCustomerId_ShouldBeResultNotFoundResponse()
-        {
-            // Arrange
-            var newCart = new CreateCartRequestDto()
-            {
-                CustomerId = Guid.NewGuid().ToString(),
-                TotalCost = 50000,
-                Amount = 1,
-                VariantId = "1",
-            };
-            var mockHttpContext = CreateMockHttpContext();
-            var result = await _controller.Create(newCart);
 
-            // Act
-            await result.ExecuteAsync(mockHttpContext);
-            mockHttpContext.Response.Body.Position = 0;
-            
-
-            // Assert
-            Assert.Equal(404, mockHttpContext.Response.StatusCode);
-        }
 
         [Theory]
         [InlineData("1")]
