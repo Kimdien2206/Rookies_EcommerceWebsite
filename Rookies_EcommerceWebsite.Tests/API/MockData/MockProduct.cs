@@ -10,7 +10,7 @@ namespace Rookies_EcommerceWebsite.Tests.API.MockData
 {
     public static class MockProduct
     {
-        public static List<Product> MockData = new List<Product>()
+        private static List<Product> MockData = new List<Product>()
         {
             new Product()
             {

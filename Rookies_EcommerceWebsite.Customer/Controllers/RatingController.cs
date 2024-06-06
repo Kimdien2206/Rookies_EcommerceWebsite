@@ -2,42 +2,31 @@
 using Rookies_EcommerceWebsite.Customer.Models;
 using Rookies_EcommerceWebsite.Customer.Services;
 
-namespace Rookies_EcommerceWebsite.Customer.Controllers
+namespace Rookies_EcommerceWebsite.Customer.Controllers;
+
+public class RatingController(RatingService ratingService) : Controller
 {
-    public class RatingController : Controller
+    [HttpPost]
+    public async Task<IActionResult> Create(CreateRatingModel model)
     {
-        private readonly RatingService _ratingService;
-
-        public RatingController(RatingService ratingService)
+        if (ModelState.IsValid)
         {
-            this._ratingService = ratingService;
+            var rating = new Rating()
+            {
+                PhoneNumber = model.PhoneNumber,
+                ProductId = model.ProductId,
+                FullName = model.FullName,
+                Content = model.Content,
+                Email = model.Email,
+                Rate = model.Rate,
+            };
+            await ratingService.Create(rating);
         }
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
-
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateRatingModel model)
+        else
         {
-            if (ModelState.IsValid)
-            {
-                Rating rating = new Rating()
-                {
-                    PhoneNumber = model.PhoneNumber,
-                    ProductId = model.ProductId,
-                    FullName = model.FullName,
-                    Content = model.Content,
-                    Email = model.Email,
-                    Rate = model.Rate,
-                };
-                await _ratingService.Create(rating);
-            }
-            else
-            {
-                TempData["Message"] = "Please fill all the input before submitting";
-            }
-            return RedirectToAction("Detail", "Product", new { id = model.RedirectSlug });
+            TempData["Message"] = "Please fill all the input before submitting";
         }
+        return RedirectToAction("Detail", "Product", new { id = model.RedirectSlug });
     }
 }
+

@@ -56,13 +56,19 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
         {   
             if(creatingCart.CustomerId != null)
             {
+                Cart newCart = await _cartService.Create(creatingCart);
                 switch (Command)
                 {
                     case "Add to Cart":
-                        await _cartService.Create(creatingCart);
+                        if (newCart == null)
+                            TempData["AddToCartMessage"] = "Something went wrong while creating Cart";
                         return RedirectToAction("Detail", "Product", new { id = Slug });
                     case "Buy now":
-                        await _cartService.Create(creatingCart);
+                        if (newCart == null)
+                        {
+                            TempData["AddToCartMessage"] = "Something went wrong while creating Cart";
+                            return RedirectToAction("Detail", "Product", new { id = Slug });
+                        }
                         return RedirectToAction("Index", "Cart");
                     default:
                         return NotFound();

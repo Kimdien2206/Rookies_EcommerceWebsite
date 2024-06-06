@@ -9,13 +9,13 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
 {
     public class HomeController : Microsoft.AspNetCore.Mvc.Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        //private readonly ILogger<HomeController> _logger;
         private readonly IRequestSender<Product> _requestSender;
 
 
-        public HomeController(ILogger<HomeController> logger, IRequestSender<Product> requestSender)
+        public HomeController(IRequestSender<Product> requestSender)
         {
-            _logger = logger;
+            //_logger = logger;
             this._requestSender = requestSender;
         }
 
@@ -28,12 +28,12 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
             {
                 ViewData["Products"] = products;
             }
-            return View();
+            return View("Index");
         }
 
         public IActionResult Privacy()
         {
-            return View();
+            return View("Privacy");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

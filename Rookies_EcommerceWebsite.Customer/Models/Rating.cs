@@ -7,7 +7,7 @@ namespace Rookies_EcommerceWebsite.Customer.Models
 
         public string? Id { get; set; }
         public float Rate { get; set; }
-        public string Content { get; set; }
+        public string? Content { get; set; }
         public string ProductId { get; set; }
         public string FullName { get; set; }
         public string PhoneNumber { get; set; }

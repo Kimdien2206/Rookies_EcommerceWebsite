@@ -2,6 +2,7 @@
 @inject IHttpContextAccessor Accessor
 
 @{
+    string addToCartMessage = TempData["AddToCartMessage"] as string;
     string message = TempData["Message"] as string;
 }
 
@@ -103,7 +104,8 @@
                         </div>
 
                     </div>
-                    <div class="d-grid gap-3">
+                    <div class="d-grid gap-3 text-center">
+                        <p class="text-danger">@addToCartMessage</p>
                             <input class="btn btn-primary btn-lg btn-block" type="submit" name="Command" value="Add to Cart">
                             <input class="btn btn-primary btn-lg btn-block" type="submit" name="Command" value="Buy now">
                     </div>   
