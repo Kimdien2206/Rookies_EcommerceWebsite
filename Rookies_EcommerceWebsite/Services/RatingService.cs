@@ -13,7 +13,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> Create(Rating entity)
         {
-            Rating createdRating = _repository.Create(entity);
+            Rating createdRating = await _repository.Create(entity);
             Task task = _repository.Save();
             task.Wait();
 
@@ -37,7 +37,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> GetById(string id)
         {
-            Rating variant = _repository.GetById(id);
+            Rating variant = await _repository.GetById(id);
 
             if (variant == null)
             {
@@ -49,7 +49,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> Update(string id, Rating entity)
         {
-            Rating updatedRating = _repository.Update(id, entity);
+            Rating updatedRating = await _repository.Update(id, entity);
             Task task = _repository.Save();
 
             if (!task.IsCompleted)

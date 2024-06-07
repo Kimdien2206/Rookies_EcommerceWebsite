@@ -1,22 +1,21 @@
 ﻿using Rookies_EcommerceWebsite.Data.Entities;
 using Rookies_EcommerceWebsite.Interfaces;
 using Dtos;
-using Rookies_EcommerceWebsite.API.Repositories;
 
 namespace Rookies_EcommerceWebsite.Services
 {
     public class ProductService 
     {
-        private readonly IRepository<Product> _repository;
+        private readonly IProductRepository _repository;
 
-        public ProductService(IRepository<Product> repository)
+        public ProductService(IProductRepository repository)
         {
             this._repository = repository;
         }
 
         public async Task<IResult> Create(Product creatingProduct)
         {
-            Product createdProduct = _repository.Create(creatingProduct);
+            Product createdProduct = await _repository.Create(creatingProduct);
             await _repository.Save();
 
             if (createdProduct == null)
@@ -43,7 +42,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> GetBySlug(string slug)
         {
-            Product product = _repository.Get(x => x.Slug == slug).FirstOrDefault();
+            Product product = await _repository.GetBySlug(slug);
             if (product == null)
             {
                 return Results.NotFound();
@@ -53,7 +52,7 @@ namespace Rookies_EcommerceWebsite.Services
         
         public async Task<IResult> GetUpcoming()
         {
-            List<Product> products = _repository.Get(x => true, o => o.OrderByDescending(u => u.CreatedDate)).Take(5).ToList();
+            List<Product> products = await _repository.GetAll();
             if (products == null)
             {
                 return Results.NotFound();
@@ -65,7 +64,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> GetAll()
         {
-            List<Product> products = _repository.Get();
+            List<Product> products = await _repository.GetAll();
             if (products == null || products.Count == 0)
             {
                 return Results.NoContent();
@@ -75,7 +74,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> Update(string id, Product updatingProduct)
         {
-            Product updatedProduct = _repository.Update(id, updatingProduct);
+            Product updatedProduct = await _repository.Update(id, updatingProduct);
             Task task = _repository.Save();
             task.Wait();
 

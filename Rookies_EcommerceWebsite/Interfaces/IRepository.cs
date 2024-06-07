@@ -1,19 +1,14 @@
 ﻿using Rookies_EcommerceWebsite.Data;
-using System.Linq.Expressions;
 
 namespace Rookies_EcommerceWebsite.Interfaces
 {
-    public interface IRepository<TEntity>
+    public interface IRepository<T>
     {
-        List<TEntity> Get(
-            Expression<Func<TEntity, bool>> filter = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            string includeProperties = ""
-        );
-        TEntity GetById(object id);
-        TEntity Create(TEntity entity);
-        TEntity Update(object id, TEntity entity);
-        Task Delete(object id);
+        Task<List<T>> GetAll();
+        Task<T> Create(T entity);
+        Task<T> Update(string id, T entity);
+        Task Delete(string id);
+        Task<T> GetById(string id);
         Task Save();
 
     }
