@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using CloudinaryDotNet;
 using Rookies_EcommerceWebsite.API.Interfaces;
+using Rookies_EcommerceWebsite.API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -107,13 +108,13 @@ builder.Services.AddScoped<ImageService>();
 
 // Inject Repositories
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IRepository<Product>, GenericRepository<Product>>();
 builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
-builder.Services.AddScoped<IRepository<Category>, CategoryRepository>();
-builder.Services.AddScoped<IRepository<Variant>, VariantRepository>();
-builder.Services.AddScoped<IRepository<Rating>, RatingRepository>();
-builder.Services.AddScoped<IRepository<User>, UserRepository>();
+builder.Services.AddScoped<IRepository<Category>, GenericRepository<Category>>();
+builder.Services.AddScoped<IRepository<Variant>, GenericRepository<Variant>>();
+builder.Services.AddScoped<IRepository<Rating>, GenericRepository<Rating>>();
+builder.Services.AddScoped<IRepository<User>, GenericRepository<User>>();
 //builder.Services.AddScoped<IPasswordHasher<IdentityUser>, PasswordHasher<IdentityUser>>();
 
 

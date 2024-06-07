@@ -27,7 +27,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> GetAll()
         {
-            List<User> users = await _repository.GetAll();
+            List<User> users = _repository.Get();
 
             if(users.Count == 0) 
             {
@@ -40,7 +40,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> GetById(string id)
         {
-            User user = await _repository.GetById(id);
+            User user = _repository.GetById(id);
 
             if(user == null)
             {
@@ -54,7 +54,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> Update(string id, User entity)
         {
-            User user = await _repository.Update(id, entity);
+            User user = _repository.Update(id, entity);
 
             if (user == null)
             {

@@ -9,11 +9,11 @@ namespace Rookies_EcommerceWebsite.Services
 {
     public class CartService
     {
-        private readonly ICartRepository _repository;
+        private readonly IRepository<Cart> _repository;
         private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public CartService(ICartRepository repository, UnitOfWork unitOfWork, IMapper mapper)
+        public CartService(IRepository<Cart> repository, UnitOfWork unitOfWork, IMapper mapper)
         {
             this._repository = repository;
             this._unitOfWork = unitOfWork;
@@ -22,13 +22,13 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> Create(Cart entity)
         {
-            Variant variant = await _unitOfWork.variantRepository.GetById(entity.VariantId);
+            Variant variant = _unitOfWork.variantRepository.GetById(entity.VariantId);
             if(variant == null)
             {
                 return Results.NotFound(variant);
             }
 
-            Product product = await _unitOfWork.productRepository.GetById(variant.ProductId);
+            Product product = _unitOfWork.productRepository.GetById(variant.ProductId);
             if(product == null)
             {
                 return Results.NotFound(product);
@@ -78,7 +78,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> GetAll()
         {
-            List<Cart> carts = await _repository.GetAll();
+            List<Cart> carts = _repository.Get();
 
             if(carts == null || carts.Count == 0)
             {
@@ -90,7 +90,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> GetById(string id)
         {
-            Cart cart = await _repository.GetById(id);
+            Cart cart = _repository.GetById(id);
 
             if (cart == null)
             {
@@ -102,7 +102,7 @@ namespace Rookies_EcommerceWebsite.Services
         
         public async Task<IResult> GetByCustomrId(string id)
         {
-            List<Cart> carts = await _repository.GetByCustomerId(id);
+            List<Cart> carts = _repository.Get(x => x.CustomerId == id);
 
             if (carts == null || carts.Count == 0)
             {
@@ -113,7 +113,7 @@ namespace Rookies_EcommerceWebsite.Services
 
             foreach (var item in responses)
             {
-                item.Variant.Product = _mapper.Map<GetListCartProductResponse>(await _unitOfWork.productRepository.GetById(item.Variant.ProductId));
+                item.Variant.Product = _mapper.Map<GetListCartProductResponse>(_unitOfWork.productRepository.GetById(item.Variant.ProductId));
             }
 
             return Results.Ok(responses);
@@ -121,7 +121,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> Update(string id, Cart entity)
         {
-            Cart updatedCart = await _repository.Update(id, entity);
+            Cart updatedCart = _repository.Update(id, entity);
             Task task = _repository.Save();
 
             if (!task.IsCompleted)

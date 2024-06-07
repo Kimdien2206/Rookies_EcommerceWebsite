@@ -14,7 +14,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> Create(Category entity)
         {
-            Category cart = await _repository.Create(entity);
+            Category cart = _repository.Create(entity);
             await _repository.Save();
 
             if (cart == null)
@@ -41,7 +41,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> GetAll()
         {
-            List<Category> carts = await _repository.GetAll();
+            List<Category> carts = _repository.Get();
 
             if (carts == null || carts.Count == 0)
             {
@@ -53,7 +53,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> GetById(string id)
         {
-            Category cart = await _repository.GetById(id);
+            Category cart = _repository.GetById(id);
 
             if (cart == null)
             {
@@ -65,7 +65,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> Update(string id, Category entity)
         {
-            Category updatedCategory = await _repository.Update(id, entity);
+            Category updatedCategory = _repository.Update(id, entity);
             await _repository.Save();
 
             if (updatedCategory == null)

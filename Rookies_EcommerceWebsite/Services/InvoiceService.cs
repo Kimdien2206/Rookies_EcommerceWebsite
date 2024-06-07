@@ -13,11 +13,11 @@ namespace Rookies_EcommerceWebsite.Services
 {
     public class InvoiceService
     {
-        private readonly IInvoiceRepository _repository;
+        private readonly IRepository<Invoice> _repository;
         private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public InvoiceService(IInvoiceRepository repository, UnitOfWork unitOfWork, IMapper mapper)
+        public InvoiceService(IRepository<Invoice> repository, UnitOfWork unitOfWork, IMapper mapper)
         {
             this._repository = repository;
             this._unitOfWork = unitOfWork;
@@ -40,7 +40,7 @@ namespace Rookies_EcommerceWebsite.Services
 
             foreach (InvoiceVariant invoiceVariant in invoice.InvoiceVariants)
             {
-                Variant variant = await _unitOfWork.variantRepository.GetById(invoiceVariant.VariantID);  
+                Variant variant = _unitOfWork.variantRepository.GetById(invoiceVariant.VariantID);  
                 
                 if(invoiceVariant.Amount <= variant.Stock)
                 {
@@ -52,7 +52,7 @@ namespace Rookies_EcommerceWebsite.Services
                 }
 
 
-                Product product = await _unitOfWork.productRepository.GetById(variant.ProductId);
+                Product product = _unitOfWork.productRepository.GetById(variant.ProductId);
                 
                 if(product == null)
                 {
@@ -88,7 +88,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> GetAll()
         {
-            List<Invoice> invoices = await _repository.GetAll();
+            List<Invoice> invoices = _repository.Get();
 
             if (invoices == null || invoices.Count == 0)
             {
@@ -100,7 +100,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> GetPaidInvoice()
         {
-            List<Invoice> invoices = await _repository.GetPaidInvoice();
+            List<Invoice> invoices = _repository.Get(x => x.Status == InvoiceStatus.Paid);
 
             if (invoices == null || invoices.Count == 0)
             {
@@ -112,7 +112,7 @@ namespace Rookies_EcommerceWebsite.Services
         
         public async Task<IResult> GetUnpaidInvoice()
         {
-            List<Invoice> invoices = await _repository.GetUnpaidInvoice();
+            List<Invoice> invoices = _repository.Get(x => x.Status == InvoiceStatus.Unpaid);
 
             if (invoices == null || invoices.Count == 0)
             {
@@ -124,7 +124,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> GetById(string id)
         {
-            Invoice invoice = await _repository.GetById(id);
+            Invoice invoice = _repository.GetById(id);
 
             if (invoice == null)
             {
@@ -160,7 +160,7 @@ namespace Rookies_EcommerceWebsite.Services
             }
             else
             {
-                Invoice updatedInvoice = await _repository.Update(id, entity);
+                Invoice updatedInvoice = _repository.Update(id, entity);
                 Task task = _repository.Save();
 
                 if (!task.IsCompleted)

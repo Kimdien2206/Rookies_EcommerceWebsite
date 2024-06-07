@@ -14,7 +14,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> Create(Variant entity)
         {
-            Variant createdVariant = await _repository.Create(entity);
+            Variant createdVariant = _repository.Create(entity);
             Task task = _repository.Save();
             task.Wait();
             if(!task.IsCompleted)
@@ -45,7 +45,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> GetById(string id)
         {
-            Variant variant = await _repository.GetById(id);
+            Variant variant = _repository.GetById(id);
 
             if(variant == null)
             {
@@ -57,7 +57,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> Update(string id, Variant entity)
         {
-            Variant updatedVariant = await _repository.Update(id, entity);
+            Variant updatedVariant = _repository.Update(id, entity);
             Task task = _repository.Save();
 
             if(!task.IsCompleted)
