@@ -1,4 +1,5 @@
 ﻿using Dtos;
+using Rookies_EcommerceWebsite.Customer.Clients;
 using Rookies_EcommerceWebsite.Customer.Interface;
 using Rookies_EcommerceWebsite.Customer.Models;
 using Rookies_EcommerceWebsite.Customer.Models.ViewModels;
@@ -7,10 +8,10 @@ namespace Rookies_EcommerceWebsite.Customer.Services
 {
     public class InvoiceService
     {
-        private readonly IInvoiceRequestSender _requestSender;
-        public InvoiceService(IInvoiceRequestSender requestSender) 
+        private readonly IInvoicesClient _invoicesClient;
+        public InvoiceService(IInvoicesClient invoicesClient) 
         {
-            this._requestSender = requestSender;
+            this._invoicesClient = invoicesClient;
         }
 
         public async Task<Invoice> Create(InvoiceViewModel invoice) 
@@ -33,20 +34,14 @@ namespace Rookies_EcommerceWebsite.Customer.Services
                 Address = invoice.Address,
                 Email = invoice.Email,
                 InvoiceVariants = variants,
+                CustomerId = invoice.CustomerId
             };
-            return await _requestSender.Create(newInvoice);
+            return await _invoicesClient.CreateNewInvoice(newInvoice);
         }
-        public async Task<List<Invoice>> GetList()
-        {
-            return await _requestSender.GetList();
-        }
-        public async Task<Invoice> GetDetail(string id)
-        {
-            return await _requestSender.GetDetail(id);
-        }
+
         public async Task<string> GetPaymentLink(VnPayLinkRequestModel model)
         {
-            return await _requestSender.GetPaymentLink(model);
+            return await _invoicesClient.CreatePaymentLink(model);
         }
     }
 }

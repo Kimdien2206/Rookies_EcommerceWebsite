@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Rookies_EcommerceWebsite.Customer.Clients;
 using Rookies_EcommerceWebsite.Customer.Interface;
 using Rookies_EcommerceWebsite.Customer.Models;
 
@@ -7,13 +8,13 @@ namespace Rookies_EcommerceWebsite.Customer.ViewComponents
     [ViewComponent]
     public class NavBarViewComponent: ViewComponent
     {
-        private readonly IRequestSender<Category> _requestSender;
+        private readonly ICategoriesClient _categoriesClient;
         private readonly IAuthRequestSender _authRequestSender;
 
 
-        public NavBarViewComponent(IRequestSender<Category> requestSender, IAuthRequestSender authRequestSender)
+        public NavBarViewComponent(ICategoriesClient categoriesClient, IAuthRequestSender authRequestSender)
         {
-            _requestSender = requestSender;
+            _categoriesClient = categoriesClient;
             _authRequestSender = authRequestSender;
         }
 
@@ -21,7 +22,7 @@ namespace Rookies_EcommerceWebsite.Customer.ViewComponents
         {
             var token = HttpContext.Request.Cookies["access_token"];
             var id = HttpContext.Request.Cookies["user_id"];
-            List<Category> categories = await _requestSender.GetList("Category");
+            List<Category> categories = await _categoriesClient.GetAllCategories();
             ViewData["Categories"] = categories;
             UserInfo userModel = new UserInfo();
             if (HttpContext.Session.GetString("LastName") == null)

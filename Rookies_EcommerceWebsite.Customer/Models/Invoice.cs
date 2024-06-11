@@ -12,6 +12,7 @@ namespace Rookies_EcommerceWebsite.Customer.Models
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
         public ulong TotalCost { get; set; }
+        public string CustomerId { get; set; }
         public DateTime CreatedDate { get; set; }
         public InvoiceStatus Status { get; set; }
         public virtual ICollection<InvoiceVariant> InvoiceVariants { get; set; } = new List<InvoiceVariant>();

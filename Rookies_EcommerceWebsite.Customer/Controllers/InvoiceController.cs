@@ -1,5 +1,6 @@
 ﻿using Dtos.Response;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Rookies_EcommerceWebsite.Customer.Models;
 using Rookies_EcommerceWebsite.Customer.Models.ViewModels;
 using Rookies_EcommerceWebsite.Customer.Services;
@@ -18,6 +19,7 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(InvoiceViewModel invoiceViewModel)
         {
+            invoiceViewModel.CustomerId = HttpContext.Session.GetString("Id");
             if (ModelState.IsValid || invoiceViewModel.invoiceVariants.Count != 0)
             {
                 Invoice createdInvoice = await _invoiceService.Create(invoiceViewModel);
@@ -29,7 +31,7 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
                         Amount = createdInvoice.TotalCost,
                         CreateDate = createdInvoice.CreatedDate,
                     };
-                    string link = await _invoiceService.GetPaymentLink(requestModel);
+                    string link = JsonConvert.DeserializeObject<string>(await _invoiceService.GetPaymentLink(requestModel));
 
                     return Redirect(link);
                 }

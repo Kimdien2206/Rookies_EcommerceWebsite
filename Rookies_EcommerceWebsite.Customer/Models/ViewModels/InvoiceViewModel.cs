@@ -12,6 +12,7 @@ namespace Rookies_EcommerceWebsite.Customer.Models.ViewModels
         public string PhoneNumber { get; set; }
         [Required]
         public string Address { get; set; }
+        public string CustomerId { get; set; }
         [Required]
         public List<CreateInvoiceVariant> invoiceVariants {  get; set; } = new List<CreateInvoiceVariant>();
     }

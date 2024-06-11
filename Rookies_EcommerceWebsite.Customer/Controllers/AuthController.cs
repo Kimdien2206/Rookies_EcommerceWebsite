@@ -28,10 +28,14 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
                 UserInfo loggedInUser = await _requestSender.Login(loginModel.UserName, loginModel.Password);
                 if (loggedInUser != null)
                 {
+                    CookieOptions options = new()
+                    {
+                        HttpOnly = true,
+                    };
                     UserToken token = await _requestSender.GetToken(loginModel.UserName, loginModel.Password);
-                    Response.Cookies.Append("access_token", token.Token);
-                    Response.Cookies.Append("user_id", token.Id);
-                    Response.Cookies.Append("refresh_token", token.RefreshToken);
+                    Response.Cookies.Append("access_token", token.Token, options);
+                    Response.Cookies.Append("user_id", token.Id, options);
+                    Response.Cookies.Append("refresh_token", token.RefreshToken, options);
 
                     UserInfo userInfo = await _requestSender.GetUserInfo(token.Id, token.Token);
                     HttpContext.Session.SetString("LastName", userInfo.LastName);

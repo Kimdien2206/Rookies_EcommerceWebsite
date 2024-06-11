@@ -1,5 +1,7 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Refit;
+using Rookies_EcommerceWebsite.Customer.Clients;
+using Rookies_EcommerceWebsite.Customer.Extensions.RefitInjection;
 using Rookies_EcommerceWebsite.Customer.Interface;
 using Rookies_EcommerceWebsite.Customer.Models;
 using Rookies_EcommerceWebsite.Customer.RequestSender;
@@ -10,14 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddTransient<IRequestSender<Product>, RequestSender<Product>>();
-builder.Services.AddTransient<IRequestSender<Category>, RequestSender<Category>>();
-builder.Services.AddTransient<IRequestSender<Rating>, RequestSender<Rating>>();
-builder.Services.AddTransient<IRequestSender<Category>, RequestSender<Category>>();
-builder.Services.AddTransient<ICartRequestSender, CartRequestSender>();
 builder.Services.AddTransient<IAuthRequestSender, AuthRequestSender>();
-builder.Services.AddTransient<IInvoiceRequestSender, InvoiceRequestSender>();
-builder.Services.AddTransient<IUserRequestSender, UserRequestSender>();
+
 
 builder.Services.AddTransient<ProductService>();
 builder.Services.AddTransient<RatingService>();
@@ -26,10 +22,7 @@ builder.Services.AddTransient<CartService>();
 builder.Services.AddTransient<UserService>();
 builder.Services.AddTransient<InvoiceService>();
 
-builder.Services.AddRefitClient<IProductsClient>()
-    .ConfigureHttpClient(c => c.BaseAddress = new Uri("https://localhost:7144/api"));
-
-
+builder.Services.AddRefitClientsGroup();
 
 builder.Services.AddSession(options =>
 {

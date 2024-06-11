@@ -3,7 +3,7 @@ using System.Net.Http.Headers;
 using System.Net.Http;
 using Newtonsoft.Json;
 using Rookies_EcommerceWebsite.Customer.Interface;
-using Rookies_EcommerceWebsite.Customer.RequestSender;
+using Rookies_EcommerceWebsite.Customer.Clients;
 
 
 namespace Rookies_EcommerceWebsite.Customer.Services
