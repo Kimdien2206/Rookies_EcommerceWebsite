@@ -51,12 +51,12 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a3731718-809d-4676-a99d-955730f41a0b",
+                            Id = "090a8ad2-5c20-4158-85dd-85c48753dfc3",
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = "9b7acaeb-ce2e-4170-9d00-692b0c49a1ad",
+                            Id = "77272504-a5c4-4e34-9fd7-2e58e3a53701",
                             Name = "User"
                         });
                 });
@@ -240,6 +240,9 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -259,6 +262,8 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
                         .HasColumnType("decimal(20,0)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("Invoices");
                 });
@@ -552,6 +557,15 @@ namespace Rookies_EcommerceWebsite.Data.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("Variant");
+                });
+
+            modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.Invoice", b =>
+                {
+                    b.HasOne("Rookies_EcommerceWebsite.Data.Entities.User", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId");
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("Rookies_EcommerceWebsite.Data.Entities.InvoiceVariant", b =>

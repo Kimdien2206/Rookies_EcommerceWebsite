@@ -18,6 +18,9 @@ namespace Rookies_EcommerceWebsite.Data.Entities
         public string PhoneNumber { get; set; }
         [Required]
         public string Address { get; set; }
+
+        public string? CustomerId { get; set; }
+        public User? Customer { get; set; }
         public virtual ICollection<InvoiceVariant> InvoiceVariants { get; set; } = new List<InvoiceVariant>();
         public ulong TotalCost { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.Now;
