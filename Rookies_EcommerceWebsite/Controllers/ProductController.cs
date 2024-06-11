@@ -22,10 +22,16 @@ namespace Rookies_EcommerceWebsite.Controllers
             this._mapper = mapper;
         }
 
-        [HttpGet]
-        public async Task<IResult> Get()
+        [HttpGet("PageQuantity")]
+        public async Task<IResult> GetPageQuantity()
         {
-            return await _service.GetAll();
+            return await _service.GetPageQuantity();
+        }
+
+        [HttpGet]
+        public async Task<IResult> Get([FromQuery(Name = "page")] string page)
+        {
+            return await _service.GetPage(page);
         }
         
         [HttpGet]

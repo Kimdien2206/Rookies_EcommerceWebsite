@@ -27,7 +27,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> GetAll()
         {
-            List<User> users = await _repository.GetAll();
+            List<User> users = await _repository.Get();
 
             if(users.Count == 0) 
             {

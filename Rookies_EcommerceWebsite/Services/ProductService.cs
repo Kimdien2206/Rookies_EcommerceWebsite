@@ -6,12 +6,14 @@ namespace Rookies_EcommerceWebsite.Services
 {
     public class ProductService 
     {
-        private readonly IProductRepository _repository;
+        private readonly IRepository<Product> _repository;
 
-        public ProductService(IProductRepository repository)
+        public ProductService(IRepository<Product> repository)
         {
             this._repository = repository;
         }
+
+
 
         public async Task<IResult> Create(Product creatingProduct)
         {
@@ -28,7 +30,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> Delete(string id)
         {
-            await _repository.Delete(id);
+            _repository.Delete(id);
             Task task = _repository.Save();
             task.Wait();
 
@@ -42,7 +44,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> GetBySlug(string slug)
         {
-            Product product = await _repository.GetBySlug(slug);
+            Product product = (await _repository.Get(x => x.Slug == slug, null, "Variants,Ratings")).FirstOrDefault();
             if (product == null)
             {
                 return Results.NotFound();
@@ -50,9 +52,18 @@ namespace Rookies_EcommerceWebsite.Services
             return Results.Ok(product);
         }
         
+        public async Task<IResult> GetPageQuantity()
+        {
+            int productCount = (await _repository.Get()).Count();
+
+            int quantity = (int)Math.Ceiling((double)productCount/9);
+            
+            return Results.Ok(quantity);
+        }
+        
         public async Task<IResult> GetUpcoming()
         {
-            List<Product> products = await _repository.GetAll();
+            List<Product> products = await _repository.Get();
             if (products == null)
             {
                 return Results.NotFound();
@@ -62,14 +73,29 @@ namespace Rookies_EcommerceWebsite.Services
             return Results.Ok(upcoming);
         }
 
-        public async Task<IResult> GetAll()
+        public async Task<IResult> GetPage(string page)
         {
-            List<Product> products = await _repository.GetAll();
-            if (products == null || products.Count == 0)
+            try
             {
-                return Results.NoContent();
+                int pageIndex = Int16.Parse(page);
+                if (pageIndex >= 0)
+                {
+                    List<Product> products = await _repository.Get(x => true, p => p.OrderBy(a => a.CreatedDate).Skip((pageIndex - 1) * 9).Take(9));
+                    if (products == null || products.Count == 0)
+                    {
+                        return Results.NoContent();
+                    }
+                    return Results.Ok(products);
+                }
+                else
+                {
+                    return Results.BadRequest();
+                }
+
+            }catch (Exception ex)
+            {
+                throw ex;
             }
-            return Results.Ok(products);
         }
 
         public async Task<IResult> Update(string id, Product updatingProduct)

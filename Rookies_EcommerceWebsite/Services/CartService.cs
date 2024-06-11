@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Dtos.Response;
-using Rookies_EcommerceWebsite.API.Interfaces;
+using Rookies_EcommerceWebsite.Interfaces;
 using Rookies_EcommerceWebsite.Data.Entities;
 using Rookies_EcommerceWebsite.Interfaces;
 using Rookies_EcommerceWebsite.Repositories;
@@ -9,11 +9,11 @@ namespace Rookies_EcommerceWebsite.Services
 {
     public class CartService
     {
-        private readonly ICartRepository _repository;
+        private readonly IRepository<Cart> _repository;
         private readonly UnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public CartService(ICartRepository repository, UnitOfWork unitOfWork, IMapper mapper)
+        public CartService(IRepository<Cart> repository, UnitOfWork unitOfWork, IMapper mapper)
         {
             this._repository = repository;
             this._unitOfWork = unitOfWork;
@@ -34,7 +34,7 @@ namespace Rookies_EcommerceWebsite.Services
                 return Results.NotFound(product);
             }
 
-            Cart cart = await _unitOfWork.cartRepository.SearchIfExistCart(entity.CustomerId, entity.VariantId);
+            Cart cart = (await _unitOfWork.cartRepository.Get(x => x.CustomerId == entity.CustomerId && x.VariantId == entity.VariantId)).FirstOrDefault();
             if (cart != null)
             {
                 cart.Amount += entity.Amount;
@@ -58,7 +58,8 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> Delete(string id)
         {
-            Task task = _repository.Delete(id);
+            _repository.Delete(id);
+            Task task = _repository.Save();
 
             if (!task.IsCompletedSuccessfully)
             {
@@ -78,7 +79,7 @@ namespace Rookies_EcommerceWebsite.Services
 
         public async Task<IResult> GetAll()
         {
-            List<Cart> carts = await _repository.GetAll();
+            List<Cart> carts = await _repository.Get();
 
             if(carts == null || carts.Count == 0)
             {
@@ -102,7 +103,7 @@ namespace Rookies_EcommerceWebsite.Services
         
         public async Task<IResult> GetByCustomrId(string id)
         {
-            List<Cart> carts = await _repository.GetByCustomerId(id);
+            List<Cart> carts = await _repository.Get(x => x.CustomerId == id, null, "Variant");
 
             if (carts == null || carts.Count == 0)
             {

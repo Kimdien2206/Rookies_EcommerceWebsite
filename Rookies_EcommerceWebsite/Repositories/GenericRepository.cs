@@ -4,7 +4,7 @@ using Rookies_EcommerceWebsite.Interfaces;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Rookies_EcommerceWebsite.API.Repositories
+namespace Rookies_EcommerceWebsite.Repositories
 {
     public class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
@@ -18,19 +18,21 @@ namespace Rookies_EcommerceWebsite.API.Repositories
             this.dbSet = _context.Set<TEntity>();
         }
 
-        public virtual TEntity Create(TEntity entity)
+        public virtual async Task<TEntity> Create(TEntity entity)
         {
-            throw new NotImplementedException();
+            dbSet.AddAsync(entity);
+            return entity;
         }
 
-        public virtual Task Delete(object id)
+        public virtual void Delete(object id)
         {
-            throw new NotImplementedException();
+            TEntity entityToDelete = dbSet.Find(id);
+            _context.Remove(entityToDelete);
         }
 
-        public virtual List<TEntity> Get(
+        public virtual async Task<List<TEntity>> Get(
             Expression<Func<TEntity, bool>> filter = null, 
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, 
+            Func<IQueryable<TEntity>, IQueryable<TEntity>> queryFunc = null, 
             string includeProperties = "")
         {
             IQueryable<TEntity> query = dbSet;
@@ -46,9 +48,9 @@ namespace Rookies_EcommerceWebsite.API.Repositories
                 query = query.Include(includeProperty);
             }
 
-            if (orderBy != null)
+            if (queryFunc != null)
             {
-                return orderBy(query).ToList();
+                return queryFunc(query).ToList();
             }
             else
             {
@@ -60,14 +62,16 @@ namespace Rookies_EcommerceWebsite.API.Repositories
             return _context.SaveChangesAsync();
         }
 
-        public virtual TEntity Update(object id, TEntity entity)
+        public virtual async Task<TEntity> Update(object id, TEntity entity)
         {
-            throw new NotImplementedException();
+            dbSet.Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+            return entity;
         }
 
-        public virtual TEntity GetById(object id)
+        public virtual async Task<TEntity> GetById(object id)
         {
-            throw new NotImplementedException();
+            return dbSet.Find(id);
         }
     }
 }

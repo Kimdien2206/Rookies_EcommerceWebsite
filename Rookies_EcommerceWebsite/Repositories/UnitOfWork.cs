@@ -1,5 +1,4 @@
-﻿using Rookies_EcommerceWebsite.API.Interfaces;
-using Rookies_EcommerceWebsite.API.Repositories;
+﻿using Rookies_EcommerceWebsite.Repositories;
 using Rookies_EcommerceWebsite.Data;
 using Rookies_EcommerceWebsite.Data.Entities;
 using Rookies_EcommerceWebsite.Interfaces;
@@ -10,17 +9,17 @@ namespace Rookies_EcommerceWebsite.Repositories
     {
         private readonly ApplicationDbContext _context;
         public readonly IRepository<Product> productRepository;
-        public readonly IInvoiceRepository invoiceRepository;
-        public readonly ICartRepository cartRepository;
+        public readonly IRepository<Invoice> invoiceRepository;
+        public readonly IRepository<Cart> cartRepository;
         public readonly IRepository<Variant> variantRepository;
 
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
             productRepository = new GenericRepository<Product>(_context);
-            invoiceRepository = new InvoiceRepository(_context);
-            cartRepository = new CartRepository(_context);
-            variantRepository = new VariantRepository(_context);
+            invoiceRepository = new GenericRepository<Invoice>(_context);
+            cartRepository = new GenericRepository<Cart>(_context);
+            variantRepository = new GenericRepository<Variant>(_context);
         }
 
         public void SaveChanges()
