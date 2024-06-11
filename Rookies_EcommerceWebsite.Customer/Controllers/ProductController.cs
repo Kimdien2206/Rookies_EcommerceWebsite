@@ -12,11 +12,11 @@ namespace Rookies_EcommerceWebsite.Customer.Controllers
             this._productService = productService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery(Name = "page")] string pageIndex)
         {
             ViewData["Title"] = "Product List";
 
-            List<Product> products = await _productService.GetAll();
+            List<Product> products = await _productService.GetAll(pageIndex);
             return View("Index", products);
         }
 

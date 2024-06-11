@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Refit;
 using Rookies_EcommerceWebsite.Customer.Interface;
 using Rookies_EcommerceWebsite.Customer.Models;
 using Rookies_EcommerceWebsite.Customer.RequestSender;
@@ -24,6 +25,9 @@ builder.Services.AddTransient<CategoryService>();
 builder.Services.AddTransient<CartService>();
 builder.Services.AddTransient<UserService>();
 builder.Services.AddTransient<InvoiceService>();
+
+builder.Services.AddRefitClient<IProductsClient>()
+    .ConfigureHttpClient(c => c.BaseAddress = new Uri("https://localhost:7144/api"));
 
 
 

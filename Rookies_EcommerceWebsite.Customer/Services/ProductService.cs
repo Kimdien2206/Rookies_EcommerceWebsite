@@ -3,27 +3,27 @@ using System.Net.Http.Headers;
 using System.Net.Http;
 using Newtonsoft.Json;
 using Rookies_EcommerceWebsite.Customer.Interface;
+using Rookies_EcommerceWebsite.Customer.RequestSender;
 
 
 namespace Rookies_EcommerceWebsite.Customer.Services
 {
     public class ProductService
     {
-       
-        private readonly IRequestSender<Product> _requestSender;
+        private readonly IProductsClient _productsClient;
 
-        public ProductService(IRequestSender<Product> requestSender)
+        public ProductService(IProductsClient productsClient)
         {
-            this._requestSender = requestSender;
+            this._productsClient = productsClient;
         }
-        public async Task<List<Product>> GetAll()
+        public async Task<List<Product>> GetAll(string page)
         {
-            return await _requestSender.GetList("Product");
+            return await _productsClient.GetAllProducts(page);
         }
 
         public async Task<Product> GetBySlug(string slug)
         {
-            return await _requestSender.GetDetail("Product", slug);
+            return await _productsClient.GetProductsBySlug(slug);
         }
     }
 }
